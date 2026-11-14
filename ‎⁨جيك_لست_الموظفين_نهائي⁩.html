@@ -1,0 +1,1389 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>جيك لست النظافة والجودة اليومي</title>
+<style>
+  :root {
+    --primary: #3E2723;
+    --primary-light: #5D4037;
+    --bg: #F5F2F0;
+    --card: #FFFFFF;
+    --text: #212121;
+    --green: #2E7D32;
+    --green-bg: #E8F5E9;
+    --red: #C62828;
+    --red-bg: #FFEBEE;
+    --amber: #EF6C00;
+    --amber-bg: #FFF3E0;
+    --border: #E0D7D3;
+  }
+  * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Tahoma, Arial, sans-serif; }
+  body { margin: 0; background: var(--bg); color: var(--text); padding-bottom: 95px; }
+  header {
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    color: #fff;
+    padding: 16px;
+    text-align: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+  }
+  header h1 { margin: 0; font-size: 1.18rem; }
+  header p { margin: 4px 0 0; font-size: 0.84rem; opacity: 0.9; }
+  .container { max-width: 680px; margin: 0 auto; padding: 14px; }
+  .card {
+    background: var(--card);
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 14px;
+    box-shadow: 0 2px 6px rgba(62,39,35,0.07);
+    border: 1px solid var(--border);
+  }
+  .alert-safari {
+    background: #FFF8E1;
+    border: 1px solid #FFE082;
+    color: #6D4C41;
+    padding: 10px 12px;
+    border-radius: 10px;
+    font-size: 0.84rem;
+    margin-bottom: 12px;
+    line-height: 1.45;
+  }
+  label { display: block; font-weight: 700; margin-bottom: 6px; font-size: 0.92rem; color: var(--primary); }
+  input[type="text"], textarea {
+    width: 100%;
+    padding: 11px 12px;
+    border-radius: 10px;
+    border: 1.5px solid var(--border);
+    font-size: 0.95rem;
+    background: #fff;
+    margin-bottom: 12px;
+  }
+  input[type="text"]:focus, textarea:focus { outline: none; border-color: var(--primary); }
+  .dept-tabs {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  .dept-btn {
+    padding: 10px 6px;
+    border-radius: 10px;
+    border: 1.5px solid var(--border);
+    background: #FAFAFA;
+    font-weight: 700;
+    font-size: 0.86rem;
+    cursor: pointer;
+    text-align: center;
+    color: var(--primary);
+  }
+  .dept-btn.active {
+    background: var(--primary);
+    color: #fff;
+    border-color: var(--primary);
+  }
+  .shift-group { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+  .shift-btn {
+    padding: 11px;
+    border-radius: 10px;
+    border: 1.5px solid var(--border);
+    background: #fff;
+    font-weight: 700;
+    cursor: pointer;
+    text-align: center;
+  }
+  .shift-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+  .progress-wrap { margin-top: 8px; }
+  .progress-info { display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 700; margin-bottom: 5px; }
+  .progress-bar { height: 10px; background: #E0D7D3; border-radius: 99px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--green); width: 0%; transition: width 0.25s; }
+  .task-item {
+    background: var(--card);
+    border-radius: 12px;
+    padding: 13px;
+    margin-bottom: 10px;
+    border: 1px solid var(--border);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  }
+  .task-title { font-weight: 700; font-size: 0.96rem; margin-bottom: 10px; line-height: 1.45; }
+  .status-btns { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .st-btn {
+    padding: 10px 4px;
+    border-radius: 9px;
+    border: 1.5px solid var(--border);
+    background: #FAFAFA;
+    font-weight: 700;
+    font-size: 0.85rem;
+    cursor: pointer;
+  }
+  .st-btn.done.active { background: var(--green-bg); color: var(--green); border-color: var(--green); }
+  .st-btn.notdone.active { background: var(--red-bg); color: var(--red); border-color: var(--red); }
+  .st-btn.na.active { background: var(--amber-bg); color: var(--amber); border-color: var(--amber); }
+  .note-input { margin-top: 8px; margin-bottom: 0 !important; font-size: 0.85rem !important; padding: 8px 10px !important; }
+  .bottom-bar {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: #fff;
+    padding: 12px 16px;
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+    display: flex;
+    gap: 10px;
+    z-index: 100;
+  }
+  .btn-main {
+    flex: 1;
+    padding: 13px;
+    border: none;
+    border-radius: 11px;
+    background: #25D366;
+    color: #fff;
+    font-weight: 800;
+    font-size: 1rem;
+    cursor: pointer;
+  }
+  .btn-copy {
+    padding: 13px 16px;
+    border: none;
+    border-radius: 11px;
+    background: var(--primary);
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+  }
+  .modal {
+    display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.55);
+    z-index: 200; align-items: center; justify-content: center; padding: 16px;
+  }
+  .modal-box {
+    background: #fff; border-radius: 16px; max-width: 540px; width: 100%;
+    padding: 18px; max-height: 85vh; overflow-y: auto;
+  }
+  .report-preview {
+    background: #F5F2F0; padding: 12px; border-radius: 10px;
+    white-space: pre-wrap; font-size: 0.88rem; line-height: 1.5; border: 1px solid var(--border);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>جيك لست النظافة والجودة اليومي</h1>
+  <p>نموذج تسليم الشفت الخاص بالموظفين</p>
+</header>
+
+<div class="container">
+  <div class="alert-safari">
+    💡 <strong>ملاحظة لمستخدمي الآيفون:</strong> إذا فتحت الملف داخل الواتساب، اضغط علامة المشاركة <strong>(⬆️)</strong> بالأسفل واختر <strong>الفتح في Safari</strong> أو <strong>حفظ في الملفات</strong> حتى تشتغل الأزرار والإرسال للواتساب.
+  </div>
+
+  <div class="card">
+    <label>اختر القسم:</label>
+    <div class="dept-tabs">
+      <button type="button" class="dept-btn active" onclick="showSection(0, 'القسم الساخن', this)">القسم الساخن</button>
+      <button type="button" class="dept-btn" onclick="showSection(1, 'قسم البارد', this)">قسم البارد</button>
+      <button type="button" class="dept-btn" onclick="showSection(2, 'قسم المطبخ', this)">قسم المطبخ</button>
+      <button type="button" class="dept-btn" onclick="showSection(3, 'قسم الكيك', this)">قسم الكيك</button>
+      <button type="button" class="dept-btn" onclick="showSection(4, 'قسم الكاشير', this)">قسم الكاشير</button>
+      <button type="button" class="dept-btn" onclick="showSection(5, 'قسم الصالة', this)">قسم الصالة</button>
+    </div>
+
+    <label>الشفت:</label>
+    <div class="shift-group">
+      <button type="button" class="shift-btn active" id="shiftMorning" onclick="setShift('الصباحي')">الشفت الصباحي</button>
+      <button type="button" class="shift-btn" id="shiftEvening" onclick="setShift('المسائي')">الشفت المسائي</button>
+    </div>
+
+    <label for="empName">اسم الموظف المسؤول:</label>
+    <input type="text" id="empName" placeholder="اكتب اسمك الثلاثي أو الثنائي هنا...">
+
+    <div class="progress-wrap">
+      <div class="progress-info">
+        <span id="progressText">المنجز: 0 من 33</span>
+        <span id="progressPct">0%</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    </div>
+  </div>
+
+  <div id="allSections">
+    <div class="dept-section" id="sec_0" data-dept="القسم الساخن" style="display:block;">
+        <div class="task-item" data-dept="القسم الساخن" data-idx="0" data-title="تنظيف حاويات النفايات">
+          <div class="task-title">1. تنظيف حاويات النفايات</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="القسم الساخن" data-idx="1" data-title="تنظيف ضاغطة المحلى">
+          <div class="task-title">2. تنظيف ضاغطة المحلى</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="القسم الساخن" data-idx="2" data-title="تنظيف ماكينة التركية">
+          <div class="task-title">3. تنظيف ماكينة التركية</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="القسم الساخن" data-idx="3" data-title="تنظيف سماور الشاي">
+          <div class="task-title">4. تنظيف سماور الشاي</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="القسم الساخن" data-idx="4" data-title="تنظيف بيتشر تحضير القهوة">
+          <div class="task-title">5. تنظيف بيتشر تحضير القهوة</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="القسم الساخن" data-idx="5" data-title="تنظيف خزان الإسبريسو">
+          <div class="task-title">6. تنظيف خزان الإسبريسو</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="القسم الساخن" data-idx="6" data-title="تنظيف تمبر القهوة">
+          <div class="task-title">7. تنظيف تمبر القهوة</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="القسم الساخن" data-idx="7" data-title="تنظيف بورتافلتر">
+          <div class="task-title">8. تنظيف بورتافلتر</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="القسم الساخن" data-idx="8" data-title="تنظيف عيون ماكينة الإسبريسو">
+          <div class="task-title">9. تنظيف عيون ماكينة الإسبريسو</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="القسم الساخن" data-idx="9" data-title="تنظيف حاويات الشوت">
+          <div class="task-title">10. تنظيف حاويات الشوت</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="القسم الساخن" data-idx="10" data-title="تنظيف الملاعق المعدنية الطويلة">
+          <div class="task-title">11. تنظيف الملاعق المعدنية الطويلة</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="القسم الساخن" data-idx="11" data-title="تنظيف ملاعق المواد">
+          <div class="task-title">12. تنظيف ملاعق المواد</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="القسم الساخن" data-idx="12" data-title="تنظيف مطحنة القهوة الإلكترونية">
+          <div class="task-title">13. تنظيف مطحنة القهوة الإلكترونية</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="القسم الساخن" data-idx="13" data-title="تنظيف آلة الرسم على القهوة">
+          <div class="task-title">14. تنظيف آلة الرسم على القهوة</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="القسم الساخن" data-idx="14" data-title="تنظيف طابعة القسم">
+          <div class="task-title">15. تنظيف طابعة القسم</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="القسم الساخن" data-idx="15" data-title="تنظيف طفاية الحريق">
+          <div class="task-title">16. تنظيف طفاية الحريق</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="القسم الساخن" data-idx="16" data-title="تنظيف شاشة عرض الإعلانات">
+          <div class="task-title">17. تنظيف شاشة عرض الإعلانات</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="القسم الساخن" data-idx="17" data-title="تنظيف ميز خط عمل الساخن">
+          <div class="task-title">18. تنظيف ميز خط عمل الساخن</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="القسم الساخن" data-idx="18" data-title="تنظيف رفوف الديكور">
+          <div class="task-title">19. تنظيف رفوف الديكور</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="القسم الساخن" data-idx="19" data-title="تنظيف أرضية القسم">
+          <div class="task-title">20. تنظيف أرضية القسم</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="القسم الساخن" data-idx="20" data-title="تنظيف السنك والخلاط">
+          <div class="task-title">21. تنظيف السنك والخلاط</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="القسم الساخن" data-idx="21" data-title="تنظيف بلانك شفاف لمواد الخليط">
+          <div class="task-title">22. تنظيف بلانك شفاف لمواد الخليط</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="القسم الساخن" data-idx="22" data-title="تنظيف أدوات الكيمكس">
+          <div class="task-title">23. تنظيف أدوات الكيمكس</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="القسم الساخن" data-idx="23" data-title="تنظيف حافظة أدوات التقديم">
+          <div class="task-title">24. تنظيف حافظة أدوات التقديم</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="القسم الساخن" data-idx="24" data-title="تنظيف وصل التنظيف">
+          <div class="task-title">25. تنظيف وصل التنظيف</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="القسم الساخن" data-idx="25" data-title="ترتيب المواد السفرية بالقسم">
+          <div class="task-title">26. ترتيب المواد السفرية بالقسم</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="القسم الساخن" data-idx="26" data-title="التزام الموظف بالزي الموحد">
+          <div class="task-title">27. التزام الموظف بالزي الموحد</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="القسم الساخن" data-idx="27" data-title="فحص وزن وطعم الإسبريسو والتبوير">
+          <div class="task-title">28. فحص وزن وطعم الإسبريسو والتبوير</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="القسم الساخن" data-idx="28" data-title="فحص حليب خالي اللاكتوز واللوز والشوفان ووضع ستيكر عند الفتح">
+          <div class="task-title">29. فحص حليب خالي اللاكتوز واللوز والشوفان ووضع ستيكر عند الفتح</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="القسم الساخن" data-idx="29" data-title="تنظيف فتحة تصريف المياه">
+          <div class="task-title">30. تنظيف فتحة تصريف المياه</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="القسم الساخن" data-idx="30" data-title="التأكد من تغطية المواد المفتوحة">
+          <div class="task-title">31. التأكد من تغطية المواد المفتوحة</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="القسم الساخن" data-idx="31" data-title="التأكد من كبس أكياس الخلايط عند تعويض النقص">
+          <div class="task-title">32. التأكد من كبس أكياس الخلايط عند تعويض النقص</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="القسم الساخن" data-idx="32" data-title="وضع ستيكر عند طحن القهوة التركية">
+          <div class="task-title">33. وضع ستيكر عند طحن القهوة التركية</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div></div>
+<div class="dept-section" id="sec_1" data-dept="قسم البارد" style="display:none;">
+        <div class="task-item" data-dept="قسم البارد" data-idx="0" data-title="تنظيف تختة تقطيع الفواكه">
+          <div class="task-title">1. تنظيف تختة تقطيع الفواكه</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="قسم البارد" data-idx="1" data-title="تنظيف التي كريب">
+          <div class="task-title">2. تنظيف التي كريب</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="قسم البارد" data-idx="2" data-title="تنظيف مسدس الكريمة">
+          <div class="task-title">3. تنظيف مسدس الكريمة</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="قسم البارد" data-idx="3" data-title="تنظيف قيف العجين">
+          <div class="task-title">4. تنظيف قيف العجين</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="قسم البارد" data-idx="4" data-title="تنظيف البتشر">
+          <div class="task-title">5. تنظيف البتشر</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="قسم البارد" data-idx="5" data-title="تنظيف حافظة النعناع">
+          <div class="task-title">6. تنظيف حافظة النعناع</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="قسم البارد" data-idx="6" data-title="تنظيف الشفرات">
+          <div class="task-title">7. تنظيف الشفرات</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="قسم البارد" data-idx="7" data-title="تنظيف ماكينة الوافل">
+          <div class="task-title">8. تنظيف ماكينة الوافل</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="قسم البارد" data-idx="8" data-title="تنظيف قدح قياس السيروب">
+          <div class="task-title">9. تنظيف قدح قياس السيروب</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="قسم البارد" data-idx="9" data-title="تنظيف ماكينة الكريب">
+          <div class="task-title">10. تنظيف ماكينة الكريب</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="قسم البارد" data-idx="10" data-title="تنظيف سكوب الآيس كريم وحافظته">
+          <div class="task-title">11. تنظيف سكوب الآيس كريم وحافظته</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="قسم البارد" data-idx="11" data-title="تنظيف ماكينة عصر الجزر">
+          <div class="task-title">12. تنظيف ماكينة عصر الجزر</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="قسم البارد" data-idx="12" data-title="تنظيف الآيس ميكر">
+          <div class="task-title">13. تنظيف الآيس ميكر</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="قسم البارد" data-idx="13" data-title="تنظيف فتحة تصريف المياه">
+          <div class="task-title">14. تنظيف فتحة تصريف المياه</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="قسم البارد" data-idx="14" data-title="تنظيف الخلاط الكهربائي">
+          <div class="task-title">15. تنظيف الخلاط الكهربائي</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="قسم البارد" data-idx="15" data-title="تنظيف البلانك الشفاف لمواد الخليط">
+          <div class="task-title">16. تنظيف البلانك الشفاف لمواد الخليط</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="قسم البارد" data-idx="16" data-title="تنظيف الطابعة والهاتف">
+          <div class="task-title">17. تنظيف الطابعة والهاتف</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="قسم البارد" data-idx="17" data-title="تنظيف ماكينة عصر البرتقال">
+          <div class="task-title">18. تنظيف ماكينة عصر البرتقال</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="قسم البارد" data-idx="18" data-title="تنظيف براد عرض الآيس كريم">
+          <div class="task-title">19. تنظيف براد عرض الآيس كريم</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="قسم البارد" data-idx="19" data-title="تنظيف الملقط">
+          <div class="task-title">20. تنظيف الملقط</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="قسم البارد" data-idx="20" data-title="تنظيف البطل الزجاجي للتبوير">
+          <div class="task-title">21. تنظيف البطل الزجاجي للتبوير</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="قسم البارد" data-idx="21" data-title="تنظيف حافظات تبوير عصير البرتقال">
+          <div class="task-title">22. تنظيف حافظات تبوير عصير البرتقال</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="قسم البارد" data-idx="22" data-title="تنظيف بطل التزيين">
+          <div class="task-title">23. تنظيف بطل التزيين</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="قسم البارد" data-idx="23" data-title="تنظيف براد عرض الفواكه">
+          <div class="task-title">24. تنظيف براد عرض الفواكه</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="قسم البارد" data-idx="24" data-title="تنظيف الشيكرات">
+          <div class="task-title">25. تنظيف الشيكرات</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="قسم البارد" data-idx="25" data-title="تنظيف رفوف الديكور">
+          <div class="task-title">26. تنظيف رفوف الديكور</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="قسم البارد" data-idx="26" data-title="تنظيف ملاعق المواد">
+          <div class="task-title">27. تنظيف ملاعق المواد</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="قسم البارد" data-idx="27" data-title="تنظيف طفاية الحريق">
+          <div class="task-title">28. تنظيف طفاية الحريق</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="قسم البارد" data-idx="28" data-title="تنظيف ميز خط العمل">
+          <div class="task-title">29. تنظيف ميز خط العمل</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="قسم البارد" data-idx="29" data-title="تنظيف السنك والخلاط">
+          <div class="task-title">30. تنظيف السنك والخلاط</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="قسم البارد" data-idx="30" data-title="تنظيف شاشة عرض الإعلان">
+          <div class="task-title">31. تنظيف شاشة عرض الإعلان</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="قسم البارد" data-idx="31" data-title="فحص جودة الشاي المبور">
+          <div class="task-title">32. فحص جودة الشاي المبور</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="قسم البارد" data-idx="32" data-title="فحص جودة القهوة المثلجة بالبندق">
+          <div class="task-title">33. فحص جودة القهوة المثلجة بالبندق</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="قسم البارد" data-idx="33" data-title="فحص العجين الحلو">
+          <div class="task-title">34. فحص العجين الحلو</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="قسم البارد" data-idx="34" data-title="فحص جودة العجين المالح">
+          <div class="task-title">35. فحص جودة العجين المالح</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="قسم البارد" data-idx="35" data-title="تنظيف وصلاحية أرضية القسم">
+          <div class="task-title">36. تنظيف وصلاحية أرضية القسم</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="قسم البارد" data-idx="36" data-title="تحديث الستيكرات للمواد الغذائية داخل خط العمل (مهم جداً)">
+          <div class="task-title">37. تحديث الستيكرات للمواد الغذائية داخل خط العمل (مهم جداً)</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="قسم البارد" data-idx="37" data-title="التأكد من كبس أكياس الخلايط عند تعويض النقص">
+          <div class="task-title">38. التأكد من كبس أكياس الخلايط عند تعويض النقص</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="قسم البارد" data-idx="38" data-title="التأكد من بسكت اوريو وبسكت لوتس غير معرضين للرطوبة">
+          <div class="task-title">39. التأكد من بسكت اوريو وبسكت لوتس غير معرضين للرطوبة</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div></div>
+<div class="dept-section" id="sec_2" data-dept="قسم المطبخ" style="display:none;">
+        <div class="task-item" data-dept="قسم المطبخ" data-idx="0" data-title="تنظيف براد خزن الفواكه والكيك">
+          <div class="task-title">1. تنظيف براد خزن الفواكه والكيك</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="قسم المطبخ" data-idx="1" data-title="تنظيف المايكرويف">
+          <div class="task-title">2. تنظيف المايكرويف</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="قسم المطبخ" data-idx="2" data-title="تنظيف طفاية الحريق">
+          <div class="task-title">3. تنظيف طفاية الحريق</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="قسم المطبخ" data-idx="3" data-title="تنظيف أنابيب صرف المياه">
+          <div class="task-title">4. تنظيف أنابيب صرف المياه</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="قسم المطبخ" data-idx="4" data-title="تنظيف براد خزن الآيس كريم (التأكد من نظافة الفلتر ودرجة الحرارة لا تقل عن -15)">
+          <div class="task-title">5. تنظيف براد خزن الآيس كريم (التأكد من نظافة الفلتر ودرجة الحرارة لا تقل عن -15)</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="قسم المطبخ" data-idx="5" data-title="تنظيف طاحونة الفستق أو السكر">
+          <div class="task-title">6. تنظيف طاحونة الفستق أو السكر</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="قسم المطبخ" data-idx="6" data-title="تنظيف حمالات الفناجين">
+          <div class="task-title">7. تنظيف حمالات الفناجين</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="قسم المطبخ" data-idx="7" data-title="تنظيف الصحون والفناجين وعدم تركها داخل السنك لفترة طويلة">
+          <div class="task-title">8. تنظيف الصحون والفناجين وعدم تركها داخل السنك لفترة طويلة</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="قسم المطبخ" data-idx="8" data-title="تنظيف صيدلية الإسعافات الأولية (وترتيب محتوياتها)">
+          <div class="task-title">9. تنظيف صيدلية الإسعافات الأولية (وترتيب محتوياتها)</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="قسم المطبخ" data-idx="9" data-title="تنظيف السنك والكاونتر">
+          <div class="task-title">10. تنظيف السنك والكاونتر</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="قسم المطبخ" data-idx="10" data-title="تنظيف غسالة الوصل">
+          <div class="task-title">11. تنظيف غسالة الوصل</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="قسم المطبخ" data-idx="11" data-title="تنظيف وتفريغ حاويات النفايات">
+          <div class="task-title">12. تنظيف وتفريغ حاويات النفايات</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="قسم المطبخ" data-idx="12" data-title="تنظيف أرضية المطبخ وخلوها من الزيوت والانسكابات">
+          <div class="task-title">13. تنظيف أرضية المطبخ وخلوها من الزيوت والانسكابات</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="قسم المطبخ" data-idx="13" data-title="ترتيب صناديق الماء والحليب">
+          <div class="task-title">14. ترتيب صناديق الماء والحليب</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="قسم المطبخ" data-idx="14" data-title="ترتيب ماسحات التنظيف والوصل الخاصة بالتنظيف">
+          <div class="task-title">15. ترتيب ماسحات التنظيف والوصل الخاصة بالتنظيف</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="قسم المطبخ" data-idx="15" data-title="ترتيب الكاونتر مجرات وأبواب">
+          <div class="task-title">16. ترتيب الكاونتر مجرات وأبواب</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div></div>
+<div class="dept-section" id="sec_3" data-dept="قسم الكيك" style="display:none;">
+        <div class="task-item" data-dept="قسم الكيك" data-idx="0" data-title="تنظيف براد الكيك (الزجاج من الداخل والخارج)">
+          <div class="task-title">1. تنظيف براد الكيك (الزجاج من الداخل والخارج)</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="قسم الكيك" data-idx="1" data-title="فحص درجات الحرارة لبراد الكيك (لازم تكون بين 0–8 درجة مئوية)">
+          <div class="task-title">2. فحص درجات الحرارة لبراد الكيك (لازم تكون بين 0–8 درجة مئوية)</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="قسم الكيك" data-idx="2" data-title="ترتيب المنتجات في براد الكيك">
+          <div class="task-title">3. ترتيب المنتجات في براد الكيك</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="قسم الكيك" data-idx="3" data-title="تنظيف المايكرويف (من الداخل والخارج)">
+          <div class="task-title">4. تنظيف المايكرويف (من الداخل والخارج)</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="قسم الكيك" data-idx="4" data-title="تنظيف وترتيب الرفوف">
+          <div class="task-title">5. تنظيف وترتيب الرفوف</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="قسم الكيك" data-idx="5" data-title="ترتيب علب السفري">
+          <div class="task-title">6. ترتيب علب السفري</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="قسم الكيك" data-idx="6" data-title="تنظيف أدوات التقطيع والتقديم">
+          <div class="task-title">7. تنظيف أدوات التقطيع والتقديم</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div></div>
+<div class="dept-section" id="sec_4" data-dept="قسم الكاشير" style="display:none;">
+        <div class="task-item" data-dept="قسم الكاشير" data-idx="0" data-title="تنظيف جهاز USB">
+          <div class="task-title">1. تنظيف جهاز USB</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="قسم الكاشير" data-idx="1" data-title="تنظيف وترتيب أرقام الطاولات">
+          <div class="task-title">2. تنظيف وترتيب أرقام الطاولات</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="قسم الكاشير" data-idx="2" data-title="فحص وتشغيل نظام الصوت">
+          <div class="task-title">3. فحص وتشغيل نظام الصوت</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="قسم الكاشير" data-idx="3" data-title="ترتيب أكياس البيع المباشر (لوجو)">
+          <div class="task-title">4. ترتيب أكياس البيع المباشر (لوجو)</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="قسم الكاشير" data-idx="4" data-title="ترتيب وتنظيف الدكان (علب القهوة)">
+          <div class="task-title">5. ترتيب وتنظيف الدكان (علب القهوة)</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="قسم الكاشير" data-idx="5" data-title="ترتيب التمر والمكسرات">
+          <div class="task-title">6. ترتيب التمر والمكسرات</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="قسم الكاشير" data-idx="6" data-title="تنظيف رفوف الديكور">
+          <div class="task-title">7. تنظيف رفوف الديكور</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div></div>
+<div class="dept-section" id="sec_5" data-dept="قسم الصالة" style="display:none;">
+        <div class="task-item" data-dept="قسم الصالة" data-idx="0" data-title="تنظيف باب دخول الفرع">
+          <div class="task-title">1. تنظيف باب دخول الفرع</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="قسم الصالة" data-idx="1" data-title="تنظيف أرضية الصالة">
+          <div class="task-title">2. تنظيف أرضية الصالة</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="قسم الصالة" data-idx="2" data-title="تنظيف اللوكو الخارجي والداخلي">
+          <div class="task-title">3. تنظيف اللوكو الخارجي والداخلي</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="قسم الصالة" data-idx="3" data-title="تنظيف الطاولات">
+          <div class="task-title">4. تنظيف الطاولات</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="قسم الصالة" data-idx="4" data-title="تنظيف الكراسي">
+          <div class="task-title">5. تنظيف الكراسي</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="قسم الصالة" data-idx="5" data-title="ترتيب وتنظيف محتويات الطاولة (النفاظة، حافظة الكلينكس)">
+          <div class="task-title">6. ترتيب وتنظيف محتويات الطاولة (النفاظة، حافظة الكلينكس)</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="قسم الصالة" data-idx="6" data-title="تنظيف وترتيب رف المنيو">
+          <div class="task-title">7. تنظيف وترتيب رف المنيو</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="قسم الصالة" data-idx="7" data-title="تنظيف الزجاج (الجام)">
+          <div class="task-title">8. تنظيف الزجاج (الجام)</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="قسم الصالة" data-idx="8" data-title="العناية بالنباتات وتنظيف السنادين">
+          <div class="task-title">9. العناية بالنباتات وتنظيف السنادين</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="قسم الصالة" data-idx="9" data-title="تنظيف وترتيب المكتبة">
+          <div class="task-title">10. تنظيف وترتيب المكتبة</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div>
+        <div class="task-item" data-dept="قسم الصالة" data-idx="10" data-title="تنظيف طفاية الحريق">
+          <div class="task-title">11. تنظيف طفاية الحريق</div>
+          <div class="status-btns">
+            <button type="button" class="st-btn done" onclick="markTask(this, 'تم')">✅ تم</button>
+            <button type="button" class="st-btn notdone" onclick="markTask(this, 'غير منفذ')">❌ غير منفذ</button>
+            <button type="button" class="st-btn na" onclick="markTask(this, 'لا ينطبق')">➖ لا ينطبق</button>
+          </div>
+          <input type="text" class="note-input" placeholder="ملاحظة على هذا البند (اختياري)...">
+        </div></div>
+
+  </div>
+
+  <div class="card">
+    <label for="generalNote">ملاحظات عامة للشفت (اختياري):</label>
+    <textarea id="generalNote" rows="2" placeholder="أي نقص بالمواد أو صيانة مطلوبة..."></textarea>
+  </div>
+</div>
+
+<div class="bottom-bar">
+  <button type="button" class="btn-copy" onclick="previewReport()">معاينة ونسخ</button>
+  <button type="button" class="btn-main" onclick="sendWhatsApp()">إرسال التقرير واتساب</button>
+</div>
+
+<div class="modal" id="reportModal">
+  <div class="modal-box">
+    <h3 style="margin-top:0;color:var(--primary)">ملخص التقرير الجاهز</h3>
+    <div class="report-preview" id="reportText"></div>
+    <div style="display:flex;gap:10px;margin-top:14px;">
+      <button type="button" class="btn-copy" style="flex:1" onclick="copyReportText()">نسخ النص</button>
+      <button type="button" class="btn-main" style="flex:1" onclick="sendWhatsApp()">إرسال واتساب</button>
+      <button type="button" class="st-btn" style="padding:0 14px" onclick="closeModal()">إغلاق</button>
+    </div>
+  </div>
+</div>
+
+<script>
+var activeSecIdx = 0;
+var activeDeptName = "القسم الساخن";
+var currentShift = "الصباحي";
+
+function showSection(idx, deptName, btn) {
+  activeSecIdx = idx;
+  activeDeptName = deptName;
+  var tabs = document.querySelectorAll(".dept-btn");
+  for (var i = 0; i < tabs.length; i++) {
+    tabs[i].classList.remove("active");
+  }
+  btn.classList.add("active");
+
+  var secs = document.querySelectorAll(".dept-section");
+  for (var j = 0; j < secs.length; j++) {
+    secs[j].style.display = (j === idx) ? "block" : "none";
+  }
+  updateProgress();
+}
+
+function setShift(s) {
+  currentShift = s;
+  document.getElementById("shiftMorning").classList.toggle("active", s === "الصباحي");
+  document.getElementById("shiftEvening").classList.toggle("active", s === "المسائي");
+}
+
+function markTask(btn, status) {
+  var card = btn.parentNode.parentNode;
+  card.setAttribute("data-status", status);
+  var btns = btn.parentNode.querySelectorAll(".st-btn");
+  for (var i = 0; i < btns.length; i++) {
+    btns[i].classList.remove("active");
+  }
+  btn.classList.add("active");
+  updateProgress();
+}
+
+function updateProgress() {
+  var sec = document.getElementById("sec_" + activeSecIdx);
+  var items = sec.querySelectorAll(".task-item");
+  var done = 0;
+  for (var i = 0; i < items.length; i++) {
+    if (items[i].getAttribute("data-status") === "تم") done++;
+  }
+  var total = items.length;
+  var pct = total ? Math.round((done / total) * 100) : 0;
+  document.getElementById("progressText").innerText = "المنجز: " + done + " من " + total;
+  document.getElementById("progressPct").innerText = pct + "%";
+  document.getElementById("progressFill").style.width = pct + "%";
+}
+
+function buildReport() {
+  var emp = document.getElementById("empName").value.trim() || "غير محدد";
+  var genNote = document.getElementById("generalNote").value.trim();
+  var sec = document.getElementById("sec_" + activeSecIdx);
+  var items = sec.querySelectorAll(".task-item");
+  var today = new Date().toLocaleDateString("ar-IQ");
+
+  var done = 0, notDone = 0, na = 0, pending = 0;
+  for (var i = 0; i < items.length; i++) {
+    var st = items[i].getAttribute("data-status") || "";
+    if (st === "تم") done++;
+    else if (st === "غير منفذ") notDone++;
+    else if (st === "لا ينطبق") na++;
+    else pending++;
+  }
+
+  var lines = [
+    "📋 *تقرير جيك لست النظافة والجودة*",
+    "🏢 *القسم:* " + activeDeptName,
+    "👤 *الموظف:* " + emp,
+    "🕒 *الشفت:* " + currentShift,
+    "📅 *التاريخ:* " + today,
+    "📊 *الملخص:* ✅ تم (" + done + ") | ❌ غير منفذ (" + notDone + ") | ➖ لا ينطبق (" + na + ")" + (pending ? " | ⏳ غير محدد (" + pending + ")" : ""),
+    "--------------------------------"
+  ];
+
+  for (var k = 0; k < items.length; k++) {
+    var title = items[k].getAttribute("data-title");
+    var s = items[k].getAttribute("data-status") || "غير محدد";
+    var note = items[k].querySelector(".note-input").value.trim();
+    var icon = s === "تم" ? "✅" : s === "غير منفذ" ? "❌" : s === "لا ينطبق" ? "➖" : "⏳";
+    var line = (k + 1) + ". " + icon + " " + title + " (" + s + ")";
+    if (note) line += "\n   📝 ملاحظة: " + note;
+    lines.push(line);
+  }
+
+  if (genNote) {
+    lines.push("--------------------------------");
+    lines.push("📌 *ملاحظات عامة:* " + genNote);
+  }
+  return lines.join("\n");
+}
+
+function previewReport() {
+  document.getElementById("reportText").innerText = buildReport();
+  document.getElementById("reportModal").style.display = "flex";
+}
+
+function closeModal() {
+  document.getElementById("reportModal").style.display = "none";
+}
+
+function copyReportText() {
+  var txt = buildReport();
+  var ta = document.createElement("textarea");
+  ta.value = txt;
+  document.body.appendChild(ta);
+  ta.select();
+  document.execCommand("copy");
+  document.body.removeChild(ta);
+  alert("تم نسخ التقرير للحافظة!");
+}
+
+function sendWhatsApp() {
+  var emp = document.getElementById("empName").value.trim();
+  if (!emp) {
+    alert("يرجى كتابة اسم الموظف قبل الإرسال.");
+    document.getElementById("empName").focus();
+    return;
+  }
+  var txt = encodeURIComponent(buildReport());
+  window.location.href = "https://wa.me/?text=" + txt;
+}
+</script>
+</body>
+</html>

@@ -155,6 +155,9 @@
               placeholder="اكتب اسمك الكامل هنا..."
               class="w-full py-3.5 px-4 rounded-2xl border-2 border-[#D7CCC8] focus:border-[#3E2723] focus:outline-none bg-[#F7F4F2] focus:bg-white text-sm sm:text-base font-bold text-[#3E2723] transition"
             />
+            <p id="supervisorModeHint" class="hidden mt-1.5 text-xs font-extrabold text-[#1B5E20]">
+              ✓ تم تفعيل وضع مسؤول الشفت — تم فتح جميع الأقسام للمراجعة الشاملة.
+            </p>
           </div>
 
           <div>
@@ -195,7 +198,7 @@
         </div>
 
         <!-- Department Selection -->
-        <div>
+        <div id="departmentSelectorWrapper">
           <label class="block text-sm font-bold text-[#3E2723] mb-2">
             اختيار القسم <span class="text-red-600">*</span>
           </label>
@@ -537,6 +540,28 @@
     ];
 
     // =========================================================================
+    // 1B. SHIFT SUPERVISORS CONFIGURATION
+    // =========================================================================
+    const SHIFT_SUPERVISORS = [
+      'علي خضير فرعين',
+      'سجاد خالد جميل'
+    ];
+
+    function normalizeName(name) {
+      return String(name || '').trim().replace(/\s+/g, ' ');
+    }
+
+    function isShiftSupervisor() {
+      const inputEl = document.getElementById('staffNameInput');
+      const currentName = normalizeName(inputEl ? inputEl.value : '');
+      return SHIFT_SUPERVISORS.includes(currentName);
+    }
+
+    function getTargetDepartments() {
+      return isShiftSupervisor() ? DEPARTMENTS : [getActiveDept()];
+    }
+
+    // =========================================================================
     // 2. APPLICATION STATE
     // =========================================================================
     const state = {
@@ -590,6 +615,17 @@
     // 4. RENDERING FUNCTIONS
     // =========================================================================
     function renderDepartments() {
+      const supervisorMode = isShiftSupervisor();
+      const selectorWrapper = document.getElementById('departmentSelectorWrapper');
+      const supervisorHint = document.getElementById('supervisorModeHint');
+
+      if (selectorWrapper) {
+        selectorWrapper.classList.toggle('hidden', supervisorMode);
+      }
+      if (supervisorHint) {
+        supervisorHint.classList.toggle('hidden', !supervisorMode);
+      }
+
       const grid = document.getElementById('departmentGrid');
       grid.innerHTML = DEPARTMENTS.map(dept => {
         ensureDeptState(dept.id);
@@ -636,145 +672,184 @@
     }
 
     function updateProgressAndStats() {
-      const dept = getActiveDept();
-      ensureDeptState(dept.id);
-      const statusObj = state.statuses[dept.id];
-      const total = dept.items.length;
+      const supervisorMode = isShiftSupervisor();
+      const targetDepts = getTargetDepartments();
 
+      let total = 0;
       let done = 0;
       let notDone = 0;
       let na = 0;
 
-      for (let i = 0; i < total; i++) {
-        if (statusObj[i] === 'DONE') done++;
-        else if (statusObj[i] === 'NOT_DONE') notDone++;
-        else if (statusObj[i] === 'NA') na++;
-      }
+      targetDepts.forEach(dept => {
+        ensureDeptState(dept.id);
+        const statusObj = state.statuses[dept.id];
+        total += dept.items.length;
+
+        for (let i = 0; i < dept.items.length; i++) {
+          if (statusObj[i] === 'DONE') done++;
+          else if (statusObj[i] === 'NOT_DONE') notDone++;
+          else if (statusObj[i] === 'NA') na++;
+        }
+      });
 
       const completedTotal = done + notDone + na;
-      // Completion percentage based on applicable items (or done out of applicable)
       const applicable = total - na;
       const pct = applicable > 0 ? Math.round((done / applicable) * 100) : (na === total && total > 0 ? 100 : 0);
 
-      document.getElementById('headerDeptLabel').textContent = `${dept.icon} ${dept.name} • ${state.selectedShift}`;
+      if (supervisorMode) {
+        document.getElementById('headerDeptLabel').textContent = `👑 جميع الأقسام (${DEPARTMENTS.length} أقسام) • ${state.selectedShift}`;
+        document.getElementById('activeSectionHeading').textContent = `جميع أقسام المقهى (${total} بند)`;
+      } else {
+        const dept = getActiveDept();
+        document.getElementById('headerDeptLabel').textContent = `${dept.icon} ${dept.name} • ${state.selectedShift}`;
+        document.getElementById('activeSectionHeading').textContent = `بنود ${dept.name} (${total} بند)`;
+      }
+
       document.getElementById('headerProgressText').textContent = `${done} منجز • ${completedTotal} من ${total} معبأ`;
       document.getElementById('headerPercentBadge').textContent = `${pct}%`;
       document.getElementById('headerProgressBar').style.width = `${pct}%`;
 
-      document.getElementById('activeSectionHeading').textContent = `بنود ${dept.name} (${total} بند)`;
       document.getElementById('countDone').textContent = done;
       document.getElementById('countNotDone').textContent = notDone;
       document.getElementById('countNa').textContent = na;
     }
 
-    function renderChecklistItems() {
-      const dept = getActiveDept();
+    function buildDeptItemCardHtml(dept, itemText, idx) {
       ensureDeptState(dept.id);
       const statusObj = state.statuses[dept.id];
       const notesObj = state.notes[dept.id];
       const showNoteObj = state.showNoteInput[dept.id];
 
-      const container = document.getElementById('checklistContainer');
-      container.innerHTML = dept.items.map((itemText, idx) => {
-        const st = statusObj[idx] || null;
-        const noteText = notesObj[idx] || '';
-        const isNoteVisible = !!showNoteObj[idx] || st === 'NOT_DONE' || noteText.trim().length > 0;
+      const st = statusObj[idx] || null;
+      const noteText = notesObj[idx] || '';
+      const isNoteVisible = !!showNoteObj[idx] || st === 'NOT_DONE' || noteText.trim().length > 0;
 
-        let cardBorder = 'border-[#D7CCC8] bg-white';
-        if (st === 'DONE') cardBorder = 'border-[#1B5E20]/60 bg-emerald-50/40';
-        else if (st === 'NOT_DONE') cardBorder = 'border-rose-400 bg-rose-50/40';
-        else if (st === 'NA') cardBorder = 'border-stone-300 bg-stone-50/70';
+      let cardBorder = 'border-[#D7CCC8] bg-white';
+      if (st === 'DONE') cardBorder = 'border-[#1B5E20]/60 bg-emerald-50/40';
+      else if (st === 'NOT_DONE') cardBorder = 'border-rose-400 bg-rose-50/40';
+      else if (st === 'NA') cardBorder = 'border-stone-300 bg-stone-50/70';
 
-        return `
-          <div class="rounded-2xl border-2 ${cardBorder} p-3.5 sm:p-4 shadow-sm transition space-y-3">
-            <!-- Item Title & Note Toggle -->
-            <div class="flex items-start justify-between gap-2">
-              <div class="text-sm sm:text-base font-extrabold text-[#3E2723] leading-snug">
-                <span class="inline-block min-w-[24px] text-[#8D6E63] font-extrabold">${idx + 1}.</span>
-                <span>${itemText}</span>
-              </div>
-
-              <button
-                type="button"
-                data-toggle-note="${idx}"
-                class="toggle-note-btn shrink-0 px-2.5 py-1 rounded-xl text-[11px] font-bold border transition ${
-                  noteText.trim()
-                    ? 'bg-amber-100 border-amber-300 text-amber-900'
-                    : 'bg-[#F7F4F2] border-[#D7CCC8] text-[#5D4037] hover:bg-[#EFEBE9]'
-                }"
-              >
-                ${noteText.trim() ? '📝 ملاحظة' : '+ ملاحظة'}
-              </button>
+      return `
+        <div class="rounded-2xl border-2 ${cardBorder} p-3.5 sm:p-4 shadow-sm transition space-y-3">
+          <!-- Item Title & Note Toggle -->
+          <div class="flex items-start justify-between gap-2">
+            <div class="text-sm sm:text-base font-extrabold text-[#3E2723] leading-snug">
+              <span class="inline-block min-w-[24px] text-[#8D6E63] font-extrabold">${idx + 1}.</span>
+              <span>${itemText}</span>
             </div>
 
-            <!-- 3 Touch-Friendly Status Buttons -->
-            <div class="grid grid-cols-3 gap-2">
-              <button
-                type="button"
-                data-idx="${idx}"
-                data-val="DONE"
-                class="status-choice-btn py-3 px-2 rounded-xl text-xs sm:text-sm font-extrabold border-2 transition flex items-center justify-center gap-1 ${
-                  st === 'DONE'
-                    ? 'bg-[#1B5E20] border-[#1B5E20] text-white shadow-sm'
-                    : 'bg-[#F7F4F2] border-[#D7CCC8] text-[#3E2723] hover:border-[#1B5E20]/50'
-                }"
-              >
-                <span>✓</span>
-                <span>تم</span>
-              </button>
-
-              <button
-                type="button"
-                data-idx="${idx}"
-                data-val="NOT_DONE"
-                class="status-choice-btn py-3 px-2 rounded-xl text-xs sm:text-sm font-extrabold border-2 transition flex items-center justify-center gap-1 ${
-                  st === 'NOT_DONE'
-                    ? 'bg-rose-700 border-rose-700 text-white shadow-sm'
-                    : 'bg-[#F7F4F2] border-[#D7CCC8] text-[#3E2723] hover:border-rose-400'
-                }"
-              >
-                <span>✕</span>
-                <span>غير منفذ</span>
-              </button>
-
-              <button
-                type="button"
-                data-idx="${idx}"
-                data-val="NA"
-                class="status-choice-btn py-3 px-2 rounded-xl text-xs sm:text-sm font-extrabold border-2 transition flex items-center justify-center gap-1 ${
-                  st === 'NA'
-                    ? 'bg-stone-600 border-stone-600 text-white shadow-sm'
-                    : 'bg-[#F7F4F2] border-[#D7CCC8] text-[#3E2723] hover:border-stone-400'
-                }"
-              >
-                <span>—</span>
-                <span>لا ينطبق</span>
-              </button>
-            </div>
-
-            <!-- Optional Note Input -->
-            <div id="itemNoteWrapper_${idx}" class="${isNoteVisible ? '' : 'hidden'}">
-              <input
-                type="text"
-                data-note-input="${idx}"
-                value="${escapeAttr(noteText)}"
-                placeholder="${st === 'NOT_DONE' ? 'اكتب سبب عدم التنفيذ (اختياري)...' : 'اكتب ملاحظة قصيرة لهذا البند...'}"
-                class="w-full py-2.5 px-3.5 rounded-xl border border-[#D7CCC8] bg-white focus:border-[#3E2723] focus:outline-none text-xs sm:text-sm font-semibold text-[#3E2723]"
-              />
-            </div>
+            <button
+              type="button"
+              data-dept-id="${dept.id}"
+              data-toggle-note="${idx}"
+              class="toggle-note-btn shrink-0 px-2.5 py-1 rounded-xl text-[11px] font-bold border transition ${
+                noteText.trim()
+                  ? 'bg-amber-100 border-amber-300 text-amber-900'
+                  : 'bg-[#F7F4F2] border-[#D7CCC8] text-[#5D4037] hover:bg-[#EFEBE9]'
+              }"
+            >
+              ${noteText.trim() ? '📝 ملاحظة' : '+ ملاحظة'}
+            </button>
           </div>
-        `;
-      }).join('');
+
+          <!-- 3 Touch-Friendly Status Buttons -->
+          <div class="grid grid-cols-3 gap-2">
+            <button
+              type="button"
+              data-dept-id="${dept.id}"
+              data-idx="${idx}"
+              data-val="DONE"
+              class="status-choice-btn py-3 px-2 rounded-xl text-xs sm:text-sm font-extrabold border-2 transition flex items-center justify-center gap-1 ${
+                st === 'DONE'
+                  ? 'bg-[#1B5E20] border-[#1B5E20] text-white shadow-sm'
+                  : 'bg-[#F7F4F2] border-[#D7CCC8] text-[#3E2723] hover:border-[#1B5E20]/50'
+              }"
+            >
+              <span>✓</span>
+              <span>تم</span>
+            </button>
+
+            <button
+              type="button"
+              data-dept-id="${dept.id}"
+              data-idx="${idx}"
+              data-val="NOT_DONE"
+              class="status-choice-btn py-3 px-2 rounded-xl text-xs sm:text-sm font-extrabold border-2 transition flex items-center justify-center gap-1 ${
+                st === 'NOT_DONE'
+                  ? 'bg-rose-700 border-rose-700 text-white shadow-sm'
+                  : 'bg-[#F7F4F2] border-[#D7CCC8] text-[#3E2723] hover:border-rose-400'
+              }"
+            >
+              <span>✕</span>
+              <span>غير منفذ</span>
+            </button>
+
+            <button
+              type="button"
+              data-dept-id="${dept.id}"
+              data-idx="${idx}"
+              data-val="NA"
+              class="status-choice-btn py-3 px-2 rounded-xl text-xs sm:text-sm font-extrabold border-2 transition flex items-center justify-center gap-1 ${
+                st === 'NA'
+                  ? 'bg-stone-600 border-stone-600 text-white shadow-sm'
+                  : 'bg-[#F7F4F2] border-[#D7CCC8] text-[#3E2723] hover:border-stone-400'
+              }"
+            >
+              <span>—</span>
+              <span>لا ينطبق</span>
+            </button>
+          </div>
+
+          <!-- Optional Note Input -->
+          <div id="itemNoteWrapper_${dept.id}_${idx}" class="${isNoteVisible ? '' : 'hidden'}">
+            <input
+              type="text"
+              data-dept-id="${dept.id}"
+              data-note-input="${idx}"
+              value="${escapeAttr(noteText)}"
+              placeholder="${st === 'NOT_DONE' ? 'اكتب سبب عدم التنفيذ (اختياري)...' : 'اكتب ملاحظة قصيرة لهذا البند...'}"
+              class="w-full py-2.5 px-3.5 rounded-xl border border-[#D7CCC8] bg-white focus:border-[#3E2723] focus:outline-none text-xs sm:text-sm font-semibold text-[#3E2723]"
+            />
+          </div>
+        </div>
+      `;
+    }
+
+    function renderChecklistItems() {
+      const supervisorMode = isShiftSupervisor();
+      const targetDepts = getTargetDepartments();
+      const container = document.getElementById('checklistContainer');
+
+      if (supervisorMode) {
+        container.innerHTML = targetDepts.map(dept => {
+          const cardsHtml = dept.items.map((itemText, idx) => buildDeptItemCardHtml(dept, itemText, idx)).join('');
+          return `
+            <div class="space-y-3 pt-2">
+              <div class="rounded-2xl bg-[#3E2723] text-white px-4 py-3 shadow-sm flex items-center justify-between">
+                <span class="text-sm sm:text-base font-extrabold">${dept.icon} ${dept.name}</span>
+                <span class="text-xs font-bold text-[#D7CCC8]">${dept.items.length} بند</span>
+              </div>
+              <div class="space-y-3">
+                ${cardsHtml}
+              </div>
+            </div>
+          `;
+        }).join('');
+      } else {
+        const dept = targetDepts[0];
+        container.innerHTML = dept.items.map((itemText, idx) => buildDeptItemCardHtml(dept, itemText, idx)).join('');
+      }
 
       // Attach status button handlers
       container.querySelectorAll('.status-choice-btn').forEach(btn => {
         btn.addEventListener('click', () => {
+          const deptId = btn.dataset.deptId;
+          ensureDeptState(deptId);
           const idx = Number(btn.dataset.idx);
           const val = btn.dataset.val;
-          // Toggle off if clicked again, or set new status
-          statusObj[idx] = statusObj[idx] === val ? null : val;
-          if (statusObj[idx] === 'NOT_DONE') {
-            showNoteObj[idx] = true;
+          state.statuses[deptId][idx] = state.statuses[deptId][idx] === val ? null : val;
+          if (state.statuses[deptId][idx] === 'NOT_DONE') {
+            state.showNoteInput[deptId][idx] = true;
           }
           renderDepartments();
           updateProgressAndStats();
@@ -785,13 +860,17 @@
       // Attach note toggle button handlers
       container.querySelectorAll('.toggle-note-btn').forEach(btn => {
         btn.addEventListener('click', () => {
+          const deptId = btn.dataset.deptId;
+          ensureDeptState(deptId);
           const idx = Number(btn.dataset.toggleNote);
-          showNoteObj[idx] = !showNoteObj[idx];
-          const wrapper = document.getElementById(`itemNoteWrapper_${idx}`);
-          wrapper.classList.toggle('hidden');
-          if (!wrapper.classList.contains('hidden')) {
-            const inp = wrapper.querySelector('input');
-            if (inp) inp.focus();
+          state.showNoteInput[deptId][idx] = !state.showNoteInput[deptId][idx];
+          const wrapper = document.getElementById(`itemNoteWrapper_${deptId}_${idx}`);
+          if (wrapper) {
+            wrapper.classList.toggle('hidden');
+            if (!wrapper.classList.contains('hidden')) {
+              const inp = wrapper.querySelector('input');
+              if (inp) inp.focus();
+            }
           }
         });
       });
@@ -799,8 +878,10 @@
       // Attach note text input handlers
       container.querySelectorAll('input[data-note-input]').forEach(inp => {
         inp.addEventListener('input', () => {
+          const deptId = inp.dataset.deptId;
+          ensureDeptState(deptId);
           const idx = Number(inp.dataset.noteInput);
-          notesObj[idx] = inp.value;
+          state.notes[deptId][idx] = inp.value;
         });
       });
     }
@@ -816,7 +897,7 @@
     // =========================================================================
     function handleFinishAndGenerateReport() {
       const validationAlert = document.getElementById('validationAlert');
-      const staffName = document.getElementById('staffNameInput').value.trim();
+      const staffName = normalizeName(document.getElementById('staffNameInput').value);
       const reportDate = document.getElementById('reportDateInput').value;
 
       if (!staffName) {
@@ -827,21 +908,25 @@
         return;
       }
 
-      const dept = getActiveDept();
-      ensureDeptState(dept.id);
-      const statusObj = state.statuses[dept.id];
-      const notesObj = state.notes[dept.id];
+      const supervisorMode = isShiftSupervisor();
+      const targetDepts = getTargetDepartments();
 
-      // Check for any unanswered items
-      const unansweredIndices = [];
-      dept.items.forEach((_, idx) => {
-        if (!statusObj[idx]) unansweredIndices.push(idx + 1);
+      // Check for any unanswered items across target departments
+      const unansweredList = [];
+      targetDepts.forEach(dept => {
+        ensureDeptState(dept.id);
+        const statusObj = state.statuses[dept.id];
+        dept.items.forEach((_, idx) => {
+          if (!statusObj[idx]) {
+            unansweredList.push(supervisorMode ? `${dept.name} (${idx + 1})` : `${idx + 1}`);
+          }
+        });
       });
 
-      if (unansweredIndices.length > 0) {
-        const previewNums = unansweredIndices.slice(0, 6).join('، ');
-        const moreText = unansweredIndices.length > 6 ? ` ... وغيرها (${unansweredIndices.length} بنود متبقية)` : '';
-        validationAlert.textContent = `يرجى تحديد حالة جميع البنود قبل الإرسال. البنود غير المحددة: رقم (${previewNums})${moreText}.`;
+      if (unansweredList.length > 0) {
+        const previewNums = unansweredList.slice(0, 6).join('، ');
+        const moreText = unansweredList.length > 6 ? ` ... وغيرها (${unansweredList.length} بنود متبقية)` : '';
+        validationAlert.textContent = `يرجى تحديد حالة جميع البنود قبل الإرسال. البنود غير المحددة: ${previewNums}${moreText}.`;
         validationAlert.classList.remove('hidden');
         validationAlert.scrollIntoView({ behavior: 'smooth', block: 'center' });
         return;
@@ -849,19 +934,30 @@
 
       validationAlert.classList.add('hidden');
 
-      // Calculate final counts
-      const total = dept.items.length;
+      let total = 0;
       const doneItems = [];
       const notDoneItems = [];
       const naItems = [];
 
-      dept.items.forEach((label, idx) => {
-        const st = statusObj[idx];
-        const note = (notesObj[idx] || '').trim();
-        const entry = { num: idx + 1, label, note };
-        if (st === 'DONE') doneItems.push(entry);
-        else if (st === 'NOT_DONE') notDoneItems.push(entry);
-        else if (st === 'NA') naItems.push(entry);
+      targetDepts.forEach(dept => {
+        ensureDeptState(dept.id);
+        const statusObj = state.statuses[dept.id];
+        const notesObj = state.notes[dept.id];
+        total += dept.items.length;
+
+        dept.items.forEach((label, idx) => {
+          const st = statusObj[idx];
+          const note = (notesObj[idx] || '').trim();
+          const entry = {
+            num: idx + 1,
+            deptName: dept.name,
+            label,
+            note
+          };
+          if (st === 'DONE') doneItems.push(entry);
+          else if (st === 'NOT_DONE') notDoneItems.push(entry);
+          else if (st === 'NA') naItems.push(entry);
+        });
       });
 
       const applicable = total - naItems.length;
@@ -875,17 +971,19 @@
 
       const formattedDateStr = reportDate || now.toISOString().split('T')[0];
       const generalNote = document.getElementById('generalNoteInput').value.trim();
+      const deptSummaryLabel = supervisorMode
+        ? `جميع الأقسام (${DEPARTMENTS.length} أقسام — مسؤول شفت)`
+        : targetDepts[0].name;
 
       // Build formatted Arabic WhatsApp text
-        // Build formatted Arabic WhatsApp text
-  let lines = [];
-  lines.push(`إلى حضرة المدير المحترم: محمود عماد`);
-  lines.push(``);
-  lines.push(`☕ *تقرير جيك لست النظافة والجودة اليومي*`);
-  lines.push(`*مقهى بن رضا علوان*`);
+      let lines = [];
+      lines.push(`إلى حضرة المدير المحترم: محمود عماد`);
+      lines.push(``);
+      lines.push(`☕ *تقرير جيك لست النظافة والجودة اليومي*`);
+      lines.push(`*مقهى بن رضا علوان*`);
 
       lines.push(`━━━━━━━━━━━━━━━━━━━━`);
-      lines.push(`🏢 *القسم:* ${dept.name}`);
+      lines.push(`🏢 *القسم:* ${deptSummaryLabel}`);
       lines.push(`🕒 *الشفت:* ${state.selectedShift}`);
       lines.push(`👤 *اسم الموظف:* ${staffName}`);
       lines.push(`📅 *التاريخ:* ${formattedDateStr}`);
@@ -898,7 +996,8 @@
         lines.push(`- لا يوجد`);
       } else {
         doneItems.forEach(item => {
-          lines.push(`✓ ${item.num}. ${item.label}${item.note ? ` (${item.note})` : ''}`);
+          const prefix = supervisorMode ? `[${item.deptName}] ` : '';
+          lines.push(`✓ ${prefix}${item.num}. ${item.label}${item.note ? ` (${item.note})` : ''}`);
         });
       }
 
@@ -906,7 +1005,8 @@
         lines.push(``);
         lines.push(`❌ *بنود غير منفذة (${notDoneItems.length}):*`);
         notDoneItems.forEach(item => {
-          lines.push(`✕ ${item.num}. ${item.label}${item.note ? ` — السبب/ملاحظة: ${item.note}` : ''}`);
+          const prefix = supervisorMode ? `[${item.deptName}] ` : '';
+          lines.push(`✕ ${prefix}${item.num}. ${item.label}${item.note ? ` — السبب/ملاحظة: ${item.note}` : ''}`);
         });
       }
 
@@ -914,7 +1014,8 @@
         lines.push(``);
         lines.push(`➖ *بنود لا تنطبق (${naItems.length}):*`);
         naItems.forEach(item => {
-          lines.push(`- ${item.num}. ${item.label}${item.note ? ` (${item.note})` : ''}`);
+          const prefix = supervisorMode ? `[${item.deptName}] ` : '';
+          lines.push(`- ${prefix}${item.num}. ${item.label}${item.note ? ` (${item.note})` : ''}`);
         });
       }
 
@@ -930,10 +1031,11 @@
 
       // Populate Summary View UI
       const metaGrid = document.getElementById('summaryMetaGrid');
+      const deptIconDisplay = supervisorMode ? '👑' : targetDepts[0].icon;
       metaGrid.innerHTML = `
         <div>
           <span class="text-[#6D4C41] font-bold block">القسم:</span>
-          <span class="font-extrabold text-[#3E2723]">${dept.icon} ${dept.name}</span>
+          <span class="font-extrabold text-[#3E2723]">${deptIconDisplay} ${deptSummaryLabel}</span>
         </div>
         <div>
           <span class="text-[#6D4C41] font-bold block">الشفت:</span>
@@ -987,10 +1089,12 @@
     }
 
     function startNewChecklist() {
-      const dept = getActiveDept();
-      state.statuses[dept.id] = {};
-      state.notes[dept.id] = {};
-      state.showNoteInput[dept.id] = {};
+      const targetDepts = getTargetDepartments();
+      targetDepts.forEach(dept => {
+        state.statuses[dept.id] = {};
+        state.notes[dept.id] = {};
+        state.showNoteInput[dept.id] = {};
+      });
       document.getElementById('generalNoteInput').value = '';
       document.getElementById('validationAlert').classList.add('hidden');
 
@@ -1012,6 +1116,18 @@
       const dd = String(now.getDate()).padStart(2, '0');
       document.getElementById('reportDateInput').value = `${yyyy}-${mm}-${dd}`;
 
+      // Staff name live listener for Shift Supervisor mode
+      const staffNameInput = document.getElementById('staffNameInput');
+      let lastSupervisorState = isShiftSupervisor();
+      staffNameInput.addEventListener('input', () => {
+        const currentSupervisorState = isShiftSupervisor();
+        if (currentSupervisorState !== lastSupervisorState) {
+          lastSupervisorState = currentSupervisorState;
+          document.getElementById('validationAlert').classList.add('hidden');
+          renderAll();
+        }
+      });
+
       // Shift buttons
       document.querySelectorAll('.shift-btn').forEach(btn => {
         btn.addEventListener('click', () => {
@@ -1028,25 +1144,35 @@
 
       // Mark All as Done button
       document.getElementById('markAllDoneBtn').addEventListener('click', () => {
-        const dept = getActiveDept();
-        ensureDeptState(dept.id);
-        dept.items.forEach((_, idx) => {
-          state.statuses[dept.id][idx] = 'DONE';
+        const supervisorMode = isShiftSupervisor();
+        const targetDepts = getTargetDepartments();
+        targetDepts.forEach(dept => {
+          ensureDeptState(dept.id);
+          dept.items.forEach((_, idx) => {
+            state.statuses[dept.id][idx] = 'DONE';
+          });
         });
         document.getElementById('validationAlert').classList.add('hidden');
         renderAll();
-        showToast(`تم تحديد جميع بنود ${dept.name} كـ (تم)`);
+        showToast(
+          supervisorMode
+            ? 'تم تحديد جميع بنود كل الأقسام كـ (تم)'
+            : `تم تحديد جميع بنود ${targetDepts[0].name} كـ (تم)`
+        );
       });
 
-      // Reset current section button
+      // Reset current section (or all sections for supervisor) button
       document.getElementById('resetSectionBtn').addEventListener('click', () => {
-        const dept = getActiveDept();
-        state.statuses[dept.id] = {};
-        state.notes[dept.id] = {};
-        state.showNoteInput[dept.id] = {};
+        const supervisorMode = isShiftSupervisor();
+        const targetDepts = getTargetDepartments();
+        targetDepts.forEach(dept => {
+          state.statuses[dept.id] = {};
+          state.notes[dept.id] = {};
+          state.showNoteInput[dept.id] = {};
+        });
         document.getElementById('validationAlert').classList.add('hidden');
         renderAll();
-        showToast('تم تصفير اختيارات القسم');
+        showToast(supervisorMode ? 'تم تصفير اختيارات جميع الأقسام' : 'تم تصفير اختيارات القسم');
       });
 
       // Finish & Generate Report

@@ -2,11 +2,11 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8" /><link rel="icon" href="./icon.png.jpeg" />
-<link rel="apple-touch-icon" href="./icon.png.jpeg" />
-<meta name="apple-mobile-web-app-title" content="فحص مجمع البدور" />
+  <link rel="apple-touch-icon" href="./icon.png.jpeg" />
+  <meta name="apple-mobile-web-app-title" content="فحص مجمع البدور" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>قائمة الفحص اليومي  بن رضا علوان فرع مجمع البدور </title>
+  <title>قائمة الفحص اليومي بن رضا علوان فرع مجمع البدور</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -94,7 +94,7 @@
               مقهى بُن رضا علوان
             </h1>
             <p class="text-xs text-[#D7CCC8] font-medium">
-              قائمة الفحص اليومي  بُن رضا علوان فرع مجمع البدور — نموذج الموظف
+              قائمة الفحص اليومي بُن رضا علوان فرع مجمع البدور — نموذج الموظف
             </p>
           </div>
         </div>
@@ -108,7 +108,7 @@
       <div class="space-y-1.5">
         <div class="flex items-center justify-between text-xs text-[#EFEBE9]">
           <span id="headerDeptLabel" class="font-bold">القسم الساخن</span>
-          <span id="headerProgressText" class="font-semibold text-[#D7CCC8]">0 من 33 بند مكتمل</span>
+          <span id="headerProgressText" class="font-semibold text-[#D7CCC8]">0 من 34 بند مكتمل</span>
         </div>
         <div class="w-full h-2.5 rounded-full bg-[#261613] overflow-hidden">
           <div
@@ -135,7 +135,7 @@
           </svg>
         </div>
         <div class="text-xs sm:text-sm leading-relaxed text-[#3E2723]">
-          <span class="font-extrabold">تعليمات :</span> يُمنع خلع الصدرية أو المغادرة المبكرة بدون موافقة مسؤول الشفت، ويُمنع الإجازة أو الخروج المبكر يومي الخميس والجمعة لأي سبب. يرجى إكمال التنظيف والتدقيق بدقةعالية قبل إرسال التقرير.
+          <span class="font-extrabold">تعليمات:</span> يُمنع خلع الصدرية أو المغادرة المبكرة بدون موافقة مسؤول الشفت، ويُمنع الإجازة أو الخروج المبكر يومي الخميس والجمعة لأي سبب. يرجى إكمال التنظيف والتدقيق بدقة عالية قبل إرسال التقرير.
         </div>
       </div>
 
@@ -159,7 +159,7 @@
               class="w-full py-3.5 px-4 rounded-2xl border-2 border-[#D7CCC8] focus:border-[#3E2723] focus:outline-none bg-[#F7F4F2] focus:bg-white text-sm sm:text-base font-bold text-[#3E2723] transition"
             />
             <p id="supervisorModeHint" class="hidden mt-1.5 text-xs font-extrabold text-[#1B5E20]">
-              ✓ تم تفعيل وضع مسؤول الشفت — تم فتح جميع الأقسام للمراجعة الشاملة.
+              ✓ تم تفعيل وضع مسؤول الشفت — تم فتح جميع الأقسام وبنود المسؤول (بصور إجبارية) للمراجعة الشاملة.
             </p>
           </div>
 
@@ -216,10 +216,10 @@
         <div class="flex flex-wrap items-center justify-between gap-2">
           <div>
             <h2 id="activeSectionHeading" class="text-base sm:text-lg font-extrabold text-[#3E2723]">
-              بنود القسم الساخن (33 بنداً)
+              بنود القسم الساخن
             </h2>
             <p class="text-xs text-[#6D4C41] font-medium">
-              اختر حالة كل بند (تم / غير منفذ / لا ينطبق)
+              اختر حالة كل بند (تم / غير منفذ / لا ينطبق) وأرفق الصور الإجبارية للبنود المحددة
             </p>
           </div>
 
@@ -309,8 +309,8 @@
             <h2 class="text-lg sm:text-xl font-extrabold text-[#1B5E20]">
               تقرير الجيك لست جاهز للإرسال!
             </h2>
-            <p class="text-xs sm:text-sm text-[#5D4037] font-semibold">
-              اضغط على زر واتساب أدناه لإرسال التقرير مباشرة إلى المدير.
+            <p id="summarySubtitleText" class="text-xs sm:text-sm text-[#5D4037] font-semibold">
+              اضغط على زر واتساب أدناه لإرسال التقرير والصور مباشرة إلى المدير.
             </p>
           </div>
         </div>
@@ -318,6 +318,14 @@
         <!-- Structured Summary Metadata -->
         <div id="summaryMetaGrid" class="grid grid-cols-2 gap-3 rounded-2xl bg-[#F7F4F2] border border-[#D7CCC8] p-4 text-xs sm:text-sm">
           <!-- Populated dynamically -->
+        </div>
+
+        <!-- Attached Photos Preview in Summary -->
+        <div id="summaryPhotosBox" class="hidden space-y-2">
+          <div class="text-xs sm:text-sm font-extrabold text-[#3E2723]">
+            الصور المرفقة مع التقرير:
+          </div>
+          <div id="summaryPhotosGrid" class="grid grid-cols-2 sm:grid-cols-3 gap-3"></div>
         </div>
 
         <!-- Formatted Report Preview Box -->
@@ -334,19 +342,17 @@
 
         <!-- Action Buttons -->
         <div class="space-y-3 pt-1">
-          <!-- Direct WhatsApp Send Button -->
-          <a
-            id="whatsappSendLink"
-            href="#"
-            target="_blank"
-            rel="noopener noreferrer"
+          <!-- Direct WhatsApp / Share Send Button -->
+          <button
+            id="whatsappSendBtn"
+            type="button"
             class="w-full py-4 px-5 rounded-2xl bg-[#1B5E20] hover:bg-[#144718] active:scale-[0.99] text-white font-extrabold text-base sm:text-lg shadow-lg transition flex items-center justify-center gap-2.5"
           >
             <svg class="w-6 h-6 shrink-0" fill="currentColor" viewBox="0 0 24 24">
               <path d="M12.031 2c-5.516 0-9.97 4.454-9.97 9.97 0 1.76.46 3.477 1.335 4.993L2 22l5.217-1.368a9.93 9.93 0 004.814 1.238h.004c5.515 0 9.969-4.454 9.969-9.97 0-2.664-1.038-5.168-2.922-7.052A9.904 9.904 0 0012.031 2zm5.816 14.083c-.245.69-1.425 1.32-1.99 1.405-.51.076-1.155.108-1.865-.117-.43-.137-.98-.32-1.685-.625-2.965-1.28-4.9-4.265-5.048-4.463-.147-.197-1.205-1.603-1.205-3.058 0-1.455.763-2.17 1.034-2.466.27-.296.59-.37.787-.37.197 0 .394.002.566.01.182.008.425-.069.665.507.245.59.835 2.036.908 2.184.074.148.123.32.025.518-.098.197-.147.32-.295.493-.147.172-.31.385-.443.517-.147.148-.301.308-.13.604.173.295.768 1.266 1.648 2.05 1.132 1.01 2.086 1.323 2.382 1.47.295.148.468.124.64-.073.172-.197.738-.86.935-1.156.197-.295.394-.246.665-.148.27.099 1.72.812 2.015.96.295.147.492.221.566.344.074.123.074.714-.172 1.404z"/>
             </svg>
-            <span>إرسال التقرير عبر واتساب للمدير</span>
-          </a>
+            <span id="whatsappSendBtnLabel">إرسال التقرير والصور عبر واتساب للمدير</span>
+          </button>
 
           <!-- Copy Report & Start New Checklist Buttons -->
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -382,47 +388,52 @@
 
   <script>
     // =========================================================================
-    // 1. EXACT DEPARTMENT DATA & 113 CHECKLIST ITEMS
+    // 1. DEPARTMENT DATA & MANDATORY PHOTO ITEMS
     // =========================================================================
+    function createItem(text, requiresPhoto = false) {
+      return { text, requiresPhoto };
+    }
+
     const DEPARTMENTS = [
       {
         id: 'hot_bar',
         name: 'القسم الساخن',
         icon: '☕',
         items: [
-          'تنظيف حاويات النفايات',
-          'تنظيف ضاغطة المحلى',
-          'تنظيف ماكينة التركية',
-          'تنظيف سماور الشاي',
-          'تنظيف بيتشر تحضير القهوة',
-          'تنظيف خزان الإسبريسو',
-          'تنظيف تمبر القهوة',
-          'تنظيف بورتافلتر',
-          'تنظيف عيون ماكينة الإسبريسو',
-          'تنظيف حاويات الشوت',
-          'تنظيف الملاعق المعدنية الطويلة',
-          'تنظيف ملاعق المواد',
-          'تنظيف مطحنة القهوة الإلكترونية',
-          'تنظيف آلة الرسم على القهوة',
-          'تنظيف طابعة القسم',
-          'تنظيف طفاية الحريق',
-          'تنظيف شاشة عرض الإعلانات',
-          'تنظيف ميز خط عمل الساخن',
-          'تنظيف رفوف الديكور',
-          'تنظيف أرضية القسم',
-          'تنظيف السنك والخلاط',
-          'تنظيف بلانك شفاف لمواد الخليط',
-          'تنظيف أدوات الكيمكس',
-          'تنظيف حافظة أدوات التقديم',
-          'تنظيف وصل التنظيف',
-          'ترتيب المواد السفرية بالقسم',
-          'التزام الموظف بالزي الموحد',
-          'فحص وزن وطعم الإسبريسو والتبوير',
-          'فحص حليب خالي اللاكتوز واللوز والشوفان ووضع ستيكر عند الفتح',
-          'تنظيف فتحة تصريف المياه',
-          'التأكد من تغطية المواد المفتوحة',
-          'التأكد من كبس أكياس الخلايط عند تعويض النقص',
-          'وضع ستيكر عند طحن القهوة التركية'
+          createItem('تنظيف حاويات النفايات'),
+          createItem('تنظيف ضاغطة المحلى'),
+          createItem('تنظيف ماكينة التركية'),
+          createItem('تنظيف سماور الشاي'),
+          createItem('تنظيف بيتشر تحضير القهوة'),
+          createItem('تنظيف خزان الإسبريسو'),
+          createItem('تنظيف تمبر القهوة'),
+          createItem('تنظيف بورتافلتر'),
+          createItem('تنظيف عيون ماكينة الإسبريسو'),
+          createItem('تنظيف حاويات الشوت'),
+          createItem('تنظيف الملاعق المعدنية الطويلة'),
+          createItem('تنظيف ملاعق المواد'),
+          createItem('تنظيف مطحنة القهوة الإلكترونية'),
+          createItem('تنظيف آلة الرسم على القهوة'),
+          createItem('تنظيف طابعة القسم'),
+          createItem('تنظيف طفاية الحريق'),
+          createItem('تنظيف شاشة عرض الإعلانات'),
+          createItem('تنظيف ميز خط عمل الساخن'),
+          createItem('تنظيف رفوف الديكور'),
+          createItem('تنظيف أرضية القسم'),
+          createItem('تنظيف السنك والخلاط'),
+          createItem('تنظيف بلانك شفاف لمواد الخليط'),
+          createItem('تنظيف أدوات الكيمكس'),
+          createItem('تنظيف حافظة أدوات التقديم'),
+          createItem('تنظيف وصل التنظيف'),
+          createItem('ترتيب المواد السفرية بالقسم'),
+          createItem('التزام الموظف بالزي الموحد'),
+          createItem('فحص وزن وطعم الإسبريسو والتبوير'),
+          createItem('فحص حليب خالي اللاكتوز واللوز والشوفان ووضع ستيكر عند الفتح'),
+          createItem('التأكد من وضع ستيكر يوضح تاريخ فتح العبوة على الحليب بأنواعه عند فتحها', true),
+          createItem('تنظيف فتحة تصريف المياه'),
+          createItem('التأكد من تغطية المواد المفتوحة'),
+          createItem('التأكد من كبس أكياس الخلايط عند تعويض النقص'),
+          createItem('وضع ستيكر عند طحن القهوة التركية')
         ]
       },
       {
@@ -430,45 +441,47 @@
         name: 'قسم البارد',
         icon: '🧊',
         items: [
-          'تنظيف تختة تقطيع الفواكه',
-          'تنظيف التي كريب',
-          'تنظيف مسدس الكريمة',
-          'تنظيف قيف العجين',
-          'تنظيف البتشر',
-          'تنظيف حافظة النعناع',
-          'تنظيف الشفرات',
-          'تنظيف ماكينة الوافل',
-          'تنظيف قدح قياس السيروب',
-          'تنظيف ماكينة الكريب',
-          'تنظيف سكوب الآيس كريم وحافظته',
-          'تنظيف ماكينة عصر الجزر',
-          'تنظيف الآيس ميكر',
-          'تنظيف فتحة تصريف المياه',
-          'تنظيف الخلاط الكهربائي',
-          'تنظيف البلانك الشفاف لمواد الخليط',
-          'تنظيف الطابعة والهاتف',
-          'تنظيف ماكينة عصر البرتقال',
-          'تنظيف براد عرض الآيس كريم',
-          'تنظيف الملقط',
-          'تنظيف البطل الزجاجي للتبوير',
-          'تنظيف حافظات تبوير عصير البرتقال',
-          'تنظيف بطل التزيين',
-          'تنظيف براد عرض الفواكه',
-          'تنظيف الشيكرات',
-          'تنظيف رفوف الديكور',
-          'تنظيف ملاعق المواد',
-          'تنظيف طفاية الحريق',
-          'تنظيف ميز خط العمل',
-          'تنظيف السنك والخلاط',
-          'تنظيف شاشة عرض الإعلان',
-          'فحص جودة الشاي المبور',
-          'فحص جودة القهوة المثلجة بالبندق',
-          'فحص العجين الحلو',
-          'فحص جودة العجين المالح',
-          'تنظيف وصلاحية أرضية القسم',
-          'تحديث الستيكرات للمواد الغذائية داخل خط العمل (مهم جداً)',
-          'التأكد من كبس أكياس الخلايط عند تعويض النقص',
-          'التأكد من بسكت اوريو وبسكت لوتس غير معرضين للرطوبة'
+          createItem('تنظيف تختة تقطيع الفواكه'),
+          createItem('تنظيف التي كريب'),
+          createItem('تنظيف مسدس الكريمة'),
+          createItem('تنظيف قيف العجين'),
+          createItem('تنظيف البتشر'),
+          createItem('تنظيف حافظة النعناع'),
+          createItem('تنظيف الشفرات'),
+          createItem('تنظيف ماكينة الوافل'),
+          createItem('تنظيف قدح قياس السيروب'),
+          createItem('تنظيف ماكينة الكريب'),
+          createItem('تنظيف سكوب الآيس كريم وحافظته'),
+          createItem('تنظيف ماكينة عصر الجزر'),
+          createItem('تنظيف الآيس ميكر'),
+          createItem('تنظيف فتحة تصريف المياه'),
+          createItem('تنظيف الخلاط الكهربائي'),
+          createItem('تنظيف البلانك الشفاف لمواد الخليط'),
+          createItem('تنظيف الطابعة والهاتف'),
+          createItem('تنظيف ماكينة عصر البرتقال'),
+          createItem('تنظيف براد عرض الآيس كريم'),
+          createItem('تنظيف الملقط'),
+          createItem('تنظيف البطل الزجاجي للتبوير'),
+          createItem('تنظيف حافظات تبوير عصير البرتقال'),
+          createItem('تنظيف بطل التزيين'),
+          createItem('تنظيف براد عرض الفواكه'),
+          createItem('تنظيف الشيكرات'),
+          createItem('تنظيف رفوف الديكور'),
+          createItem('تنظيف ملاعق المواد'),
+          createItem('تنظيف طفاية الحريق'),
+          createItem('تنظيف ميز خط العمل'),
+          createItem('تنظيف السنك والخلاط'),
+          createItem('تنظيف شاشة عرض الإعلان'),
+          createItem('فحص جودة الشاي المبور'),
+          createItem('فحص جودة القهوة المثلجة بالبندق'),
+          createItem('فحص العجين الحلو'),
+          createItem('التأكد من وضع العجينة الحلوة في البراد والتقاط صورة توضح الستيكر الموضوع', true),
+          createItem('فحص جودة العجين المالح'),
+          createItem('تنظيف وصلاحية أرضية القسم'),
+          createItem('تحديث الستيكرات للمواد الغذائية داخل خط العمل (مهم جداً)'),
+          createItem('وضع ستيكرات على الحليب بأنواعه، المربى، الجبن، والعسل، والتقاط صورة واحدة لجميع المنتجات توضح الستيكرات', true),
+          createItem('التأكد من كبس أكياس الخلايط عند تعويض النقص'),
+          createItem('التأكد من بسكت اوريو وبسكت لوتس غير معرضين للرطوبة')
         ]
       },
       {
@@ -476,22 +489,24 @@
         name: 'قسم المطبخ',
         icon: '🍳',
         items: [
-          'تنظيف براد خزن الفواكه والكيك',
-          'تنظيف المايكرويف',
-          'تنظيف طفاية الحريق',
-          'تنظيف أنابيب صرف المياه',
-          'تنظيف براد خزن الآيس كريم (التأكد من نظافة الفلتر ودرجة الحرارة لا تقل عن -15)',
-          'تنظيف طاحونة الفستق أو السكر',
-          'تنظيف حمالات الفناجين',
-          'تنظيف الصحون والفناجين وعدم تركها داخل السنك لفترة طويلة',
-          'تنظيف صيدلية الإسعافات الأولية (وترتيب محتوياتها)',
-          'تنظيف السنك والكاونتر',
-          'تنظيف غسالة الوصل',
-          'تنظيف وتفريغ حاويات النفايات',
-          'تنظيف أرضية المطبخ وخلوها من الزيوت والانسكابات',
-          'ترتيب صناديق الماء والحليب',
-          'ترتيب ماسحات التنظيف والوصل الخاصة بالتنظيف',
-          'ترتيب الكاونتر مجرات وأبواب'
+          createItem('تنظيف براد خزن الفواكه والكيك'),
+          createItem('تنظيف المايكرويف'),
+          createItem('تنظيف طفاية الحريق'),
+          createItem('تنظيف أنابيب صرف المياه'),
+          createItem('تنظيف براد خزن الآيس كريم (التأكد من نظافة الفلتر ودرجة الحرارة لا تقل عن -15)'),
+          createItem('تنظيف طاحونة الفستق أو السكر'),
+          createItem('تنظيف حمالات الفناجين'),
+          createItem('تنظيف الصحون والفناجين وعدم تركها داخل السنك لفترة طويلة'),
+          createItem('تنظيف صيدلية الإسعافات الأولية (وترتيب محتوياتها)'),
+          createItem('تنظيف السنك والكاونتر'),
+          createItem('تنظيف غسالة الوصل'),
+          createItem('تنظيف وتفريغ حاويات النفايات'),
+          createItem('تنظيف أرضية المطبخ وخلوها من الزيوت والانسكابات'),
+          createItem('ترتيب صناديق الماء والحليب'),
+          createItem('ترتيب ماسحات التنظيف والوصل الخاصة بالتنظيف'),
+          createItem('ترتيب الكاونتر مجرات وأبواب'),
+          createItem('التأكد من نظافة رفوف المخزن وصناديق الخلاطات'),
+          createItem('ترتيب وتنظيم المواد السفري بشكل مرتب وسهل الوصول')
         ]
       },
       {
@@ -499,13 +514,13 @@
         name: 'قسم الكيك',
         icon: '🎂',
         items: [
-          'تنظيف براد الكيك (الزجاج من الداخل والخارج)',
-          'فحص درجات الحرارة لبراد الكيك (لازم تكون بين 0–8 درجة مئوية)',
-          'ترتيب المنتجات في براد الكيك',
-          'تنظيف المايكرويف (من الداخل والخارج)',
-          'تنظيف وترتيب الرفوف',
-          'ترتيب علب السفري',
-          'تنظيف أدوات التقطيع والتقديم'
+          createItem('تنظيف براد الكيك (الزجاج من الداخل والخارج)'),
+          createItem('فحص درجات الحرارة لبراد الكيك (لازم تكون بين 0–8 درجة مئوية)'),
+          createItem('ترتيب المنتجات في براد الكيك'),
+          createItem('تنظيف المايكرويف (من الداخل والخارج)'),
+          createItem('تنظيف وترتيب الرفوف'),
+          createItem('ترتيب علب السفري'),
+          createItem('تنظيف أدوات التقطيع والتقديم')
         ]
       },
       {
@@ -513,13 +528,13 @@
         name: 'قسم الكاشير',
         icon: '🧾',
         items: [
-          'تنظيف جهاز USB',
-          'تنظيف وترتيب أرقام الطاولات',
-          'فحص وتشغيل نظام الصوت',
-          'ترتيب أكياس البيع المباشر (لوجو)',
-          'ترتيب وتنظيف الدكان (علب القهوة)',
-          'ترتيب التمر والمكسرات',
-          'تنظيف رفوف الديكور'
+          createItem('تنظيف جهاز USB'),
+          createItem('تنظيف وترتيب أرقام الطاولات'),
+          createItem('فحص وتشغيل نظام الصوت'),
+          createItem('ترتيب أكياس البيع المباشر (لوجو)'),
+          createItem('ترتيب وتنظيف الدكان (علب القهوة)'),
+          createItem('ترتيب التمر والمكسرات'),
+          createItem('تنظيف رفوف الديكور')
         ]
       },
       {
@@ -527,20 +542,33 @@
         name: 'قسم الصالة',
         icon: '🪑',
         items: [
-          'تنظيف باب دخول الفرع',
-          'تنظيف أرضية الصالة',
-          'تنظيف اللوكو الخارجي والداخلي',
-          'تنظيف الطاولات',
-          'تنظيف الكراسي',
-          'ترتيب وتنظيف محتويات الطاولة (النفاظة، حافظة الكلينكس)',
-          'تنظيف وترتيب رف المنيو',
-          'تنظيف الزجاج (الجام)',
-          'العناية بالنباتات وتنظيف السنادين',
-          'تنظيف وترتيب المكتبة',
-          'تنظيف طفاية الحريق'
+          createItem('تنظيف باب دخول الفرع'),
+          createItem('تنظيف أرضية الصالة'),
+          createItem('تنظيف اللوكو الخارجي والداخلي'),
+          createItem('تنظيف الطاولات'),
+          createItem('تنظيف الكراسي'),
+          createItem('ترتيب وتنظيف محتويات الطاولة (النفاظة، حافظة الكلينكس)'),
+          createItem('تنظيف وترتيب رف المنيو'),
+          createItem('تنظيف الزجاج (الجام)'),
+          createItem('العناية بالنباتات وتنظيف السنادين'),
+          createItem('تنظيف وترتيب المكتبة'),
+          createItem('تنظيف طفاية الحريق'),
+          createItem('التأكد من نظافة حمامات الزبائن وتوفر الكلينكس، الصابون، والمعطر')
         ]
       }
     ];
+
+    const SUPERVISOR_SECTION = {
+      id: 'supervisor_checks',
+      name: 'بنود المسؤول (صور إجبارية)',
+      icon: '🌡️',
+      items: [
+        createItem('فحص درجة حرارة عارضة الكيك والتأكد من أنها أقل من 6 درجات مئوية، مع التقاط صورة توضح القراءة', true),
+        createItem('فحص درجة حرارة عارضة الآيس كريم والتأكد من وصولها إلى -16 درجة مئوية، مع التقاط صورة توضح القراءة', true),
+        createItem('فحص درجة حرارة الصاعق والتأكد من وصولها إلى -20 درجة مئوية، مع التقاط صورة توضح القراءة', true),
+        createItem('فحص درجة حرارة براد الفواكه والتأكد من أنها لا تتجاوز 8 درجات مئوية كحد أقصى، مع التقاط صورة توضح القراءة', true)
+      ]
+    };
 
     // =========================================================================
     // 1B. SHIFT SUPERVISORS CONFIGURATION
@@ -561,7 +589,7 @@
     }
 
     function getTargetDepartments() {
-      return isShiftSupervisor() ? DEPARTMENTS : [getActiveDept()];
+      return isShiftSupervisor() ? [...DEPARTMENTS, SUPERVISOR_SECTION] : [getActiveDept()];
     }
 
     // =========================================================================
@@ -576,13 +604,17 @@
       notes: {},
       // showNoteInput[deptId][index] = boolean
       showNoteInput: {},
-      lastGeneratedReportText: ''
+      // photos[deptId][index] = { file, previewUrl, name }
+      photos: {},
+      lastGeneratedReportText: '',
+      lastAttachedFiles: []
     };
 
     function ensureDeptState(deptId) {
       if (!state.statuses[deptId]) state.statuses[deptId] = {};
       if (!state.notes[deptId]) state.notes[deptId] = {};
       if (!state.showNoteInput[deptId]) state.showNoteInput[deptId] = {};
+      if (!state.photos[deptId]) state.photos[deptId] = {};
     }
 
     function getActiveDept() {
@@ -700,8 +732,8 @@
       const pct = applicable > 0 ? Math.round((done / applicable) * 100) : (na === total && total > 0 ? 100 : 0);
 
       if (supervisorMode) {
-        document.getElementById('headerDeptLabel').textContent = `👑 جميع الأقسام (${DEPARTMENTS.length} أقسام) • ${state.selectedShift}`;
-        document.getElementById('activeSectionHeading').textContent = `جميع أقسام المقهى (${total} بند)`;
+        document.getElementById('headerDeptLabel').textContent = `👑 جميع الأقسام + بنود المسؤول • ${state.selectedShift}`;
+        document.getElementById('activeSectionHeading').textContent = `جميع الأقسام وبنود المسؤول (${total} بند)`;
       } else {
         const dept = getActiveDept();
         document.getElementById('headerDeptLabel').textContent = `${dept.icon} ${dept.name} • ${state.selectedShift}`;
@@ -717,28 +749,97 @@
       document.getElementById('countNa').textContent = na;
     }
 
-    function buildDeptItemCardHtml(dept, itemText, idx) {
+    function buildDeptItemCardHtml(dept, itemObj, idx) {
       ensureDeptState(dept.id);
       const statusObj = state.statuses[dept.id];
       const notesObj = state.notes[dept.id];
       const showNoteObj = state.showNoteInput[dept.id];
+      const photosObj = state.photos[dept.id];
+
+      const itemText = typeof itemObj === 'string' ? itemObj : itemObj.text;
+      const requiresPhoto = typeof itemObj === 'object' && !!itemObj.requiresPhoto;
 
       const st = statusObj[idx] || null;
       const noteText = notesObj[idx] || '';
       const isNoteVisible = !!showNoteObj[idx] || st === 'NOT_DONE' || noteText.trim().length > 0;
+      const photoData = photosObj[idx] || null;
 
       let cardBorder = 'border-[#D7CCC8] bg-white';
       if (st === 'DONE') cardBorder = 'border-[#1B5E20]/60 bg-emerald-50/40';
       else if (st === 'NOT_DONE') cardBorder = 'border-rose-400 bg-rose-50/40';
       else if (st === 'NA') cardBorder = 'border-stone-300 bg-stone-50/70';
 
+      const photoBadgeHtml = requiresPhoto
+        ? `<span class="inline-flex items-center gap-1 mt-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-extrabold ${
+            photoData ? 'bg-emerald-100 text-[#1B5E20] border border-emerald-300' : 'bg-amber-100 text-amber-900 border border-amber-300'
+          }">
+            <span>📷</span>
+            <span>${photoData ? 'تم إرفاق الصورة' : 'صورة إجبارية'}</span>
+          </span>`
+        : '';
+
+      const photoBoxHtml = requiresPhoto
+        ? `<div class="rounded-2xl border border-dashed ${
+            photoData ? 'border-[#1B5E20] bg-emerald-50/50' : 'border-amber-500 bg-amber-50/50'
+          } p-3 space-y-2.5">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <span class="text-xs font-extrabold text-[#3E2723]">
+                ${photoData ? '✓ الصورة جاهزة للإرفاق' : 'يرجى التقاط أو اختيار صورة واضحة لهذا البند:'}
+              </span>
+              <div class="flex items-center gap-2">
+                <label class="cursor-pointer py-2 px-3 rounded-xl bg-[#3E2723] hover:bg-[#261613] text-white text-xs font-extrabold transition flex items-center gap-1.5">
+                  <span>📷</span>
+                  <span>${photoData ? 'تغيير الصورة' : 'التقاط / إرفاق صورة'}</span>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    capture="environment"
+                    data-dept-id="${dept.id}"
+                    data-photo-input="${idx}"
+                    class="hidden"
+                  />
+                </label>
+                ${
+                  photoData
+                    ? `<button
+                        type="button"
+                        data-dept-id="${dept.id}"
+                        data-remove-photo="${idx}"
+                        class="remove-photo-btn py-2 px-2.5 rounded-xl bg-rose-100 hover:bg-rose-200 text-rose-800 text-xs font-extrabold transition"
+                      >
+                        حذف
+                      </button>`
+                    : ''
+                }
+              </div>
+            </div>
+            ${
+              photoData
+                ? `<div class="flex items-center gap-3 pt-1">
+                    <img
+                      src="${photoData.previewUrl}"
+                      alt="صورة البند ${idx + 1}"
+                      class="w-20 h-20 object-cover rounded-xl border border-[#D7CCC8] shadow-sm shrink-0"
+                    />
+                    <div class="text-xs text-[#5D4037] font-bold break-all">
+                      ${escapeAttr(photoData.name)}
+                    </div>
+                  </div>`
+                : ''
+            }
+          </div>`
+        : '';
+
       return `
         <div class="rounded-2xl border-2 ${cardBorder} p-3.5 sm:p-4 shadow-sm transition space-y-3">
           <!-- Item Title & Note Toggle -->
           <div class="flex items-start justify-between gap-2">
             <div class="text-sm sm:text-base font-extrabold text-[#3E2723] leading-snug">
-              <span class="inline-block min-w-[24px] text-[#8D6E63] font-extrabold">${idx + 1}.</span>
-              <span>${itemText}</span>
+              <div>
+                <span class="inline-block min-w-[24px] text-[#8D6E63] font-extrabold">${idx + 1}.</span>
+                <span>${itemText}</span>
+              </div>
+              ${photoBadgeHtml}
             </div>
 
             <button
@@ -754,6 +855,9 @@
               ${noteText.trim() ? '📝 ملاحظة' : '+ ملاحظة'}
             </button>
           </div>
+
+          <!-- Mandatory Photo Box -->
+          ${photoBoxHtml}
 
           <!-- 3 Touch-Friendly Status Buttons -->
           <div class="grid grid-cols-3 gap-2">
@@ -825,7 +929,7 @@
 
       if (supervisorMode) {
         container.innerHTML = targetDepts.map(dept => {
-          const cardsHtml = dept.items.map((itemText, idx) => buildDeptItemCardHtml(dept, itemText, idx)).join('');
+          const cardsHtml = dept.items.map((itemObj, idx) => buildDeptItemCardHtml(dept, itemObj, idx)).join('');
           return `
             <div class="space-y-3 pt-2">
               <div class="rounded-2xl bg-[#3E2723] text-white px-4 py-3 shadow-sm flex items-center justify-between">
@@ -840,7 +944,7 @@
         }).join('');
       } else {
         const dept = targetDepts[0];
-        container.innerHTML = dept.items.map((itemText, idx) => buildDeptItemCardHtml(dept, itemText, idx)).join('');
+        container.innerHTML = dept.items.map((itemObj, idx) => buildDeptItemCardHtml(dept, itemObj, idx)).join('');
       }
 
       // Attach status button handlers
@@ -887,6 +991,46 @@
           state.notes[deptId][idx] = inp.value;
         });
       });
+
+      // Attach photo file input handlers
+      container.querySelectorAll('input[type="file"][data-photo-input]').forEach(fileInp => {
+        fileInp.addEventListener('change', (e) => {
+          const file = e.target.files && e.target.files[0];
+          if (!file) return;
+          const deptId = fileInp.dataset.deptId;
+          const idx = Number(fileInp.dataset.photoInput);
+          ensureDeptState(deptId);
+
+          if (state.photos[deptId][idx] && state.photos[deptId][idx].previewUrl) {
+            URL.revokeObjectURL(state.photos[deptId][idx].previewUrl);
+          }
+
+          state.photos[deptId][idx] = {
+            file,
+            previewUrl: URL.createObjectURL(file),
+            name: file.name
+          };
+
+          document.getElementById('validationAlert').classList.add('hidden');
+          renderChecklistItems();
+          showToast('تم إرفاق الصورة بنجاح');
+        });
+      });
+
+      // Attach photo remove button handlers
+      container.querySelectorAll('.remove-photo-btn').forEach(remBtn => {
+        remBtn.addEventListener('click', () => {
+          const deptId = remBtn.dataset.deptId;
+          const idx = Number(remBtn.dataset.removePhoto);
+          ensureDeptState(deptId);
+          if (state.photos[deptId][idx] && state.photos[deptId][idx].previewUrl) {
+            URL.revokeObjectURL(state.photos[deptId][idx].previewUrl);
+          }
+          delete state.photos[deptId][idx];
+          renderChecklistItems();
+          showToast('تم حذف الصورة');
+        });
+      });
     }
 
     function renderAll() {
@@ -896,7 +1040,7 @@
     }
 
     // =========================================================================
-    // 5. REPORT GENERATION & WHATSAPP INTEGRATION
+    // 5. REPORT GENERATION & WHATSAPP / SHARE INTEGRATION
     // =========================================================================
     function handleFinishAndGenerateReport() {
       const validationAlert = document.getElementById('validationAlert');
@@ -916,12 +1060,22 @@
 
       // Check for any unanswered items across target departments
       const unansweredList = [];
+      const missingPhotosList = [];
+
       targetDepts.forEach(dept => {
         ensureDeptState(dept.id);
         const statusObj = state.statuses[dept.id];
-        dept.items.forEach((_, idx) => {
+        const photosObj = state.photos[dept.id];
+
+        dept.items.forEach((itemObj, idx) => {
+          const requiresPhoto = typeof itemObj === 'object' && !!itemObj.requiresPhoto;
+          const hasPhoto = !!(photosObj[idx] && photosObj[idx].file);
+
           if (!statusObj[idx]) {
             unansweredList.push(supervisorMode ? `${dept.name} (${idx + 1})` : `${idx + 1}`);
+          }
+          if (requiresPhoto && !hasPhoto) {
+            missingPhotosList.push(supervisorMode ? `${dept.name} (${idx + 1})` : `${idx + 1}`);
           }
         });
       });
@@ -935,27 +1089,51 @@
         return;
       }
 
+      if (missingPhotosList.length > 0) {
+        const previewPhotoNums = missingPhotosList.slice(0, 6).join('، ');
+        const morePhotoText = missingPhotosList.length > 6 ? ` ... وغيرها (${missingPhotosList.length} صور مطلوبة)` : '';
+        validationAlert.textContent = `يرجى إرفاق الصور الإجبارية للبنود المطلوبة قبل إنهاء التقرير. البنود الناقصة صورتها: ${previewPhotoNums}${morePhotoText}.`;
+        validationAlert.classList.remove('hidden');
+        validationAlert.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+
       validationAlert.classList.add('hidden');
 
       let total = 0;
       const doneItems = [];
       const notDoneItems = [];
       const naItems = [];
+      const attachedFiles = [];
+      const attachedPhotoPreviews = [];
 
       targetDepts.forEach(dept => {
         ensureDeptState(dept.id);
         const statusObj = state.statuses[dept.id];
         const notesObj = state.notes[dept.id];
+        const photosObj = state.photos[dept.id];
         total += dept.items.length;
 
-        dept.items.forEach((label, idx) => {
+        dept.items.forEach((itemObj, idx) => {
+          const label = typeof itemObj === 'string' ? itemObj : itemObj.text;
           const st = statusObj[idx];
           const note = (notesObj[idx] || '').trim();
+          const photo = photosObj[idx] || null;
+
+          if (photo && photo.file) {
+            attachedFiles.push(photo.file);
+            attachedPhotoPreviews.push({
+              previewUrl: photo.previewUrl,
+              caption: `${supervisorMode ? dept.name + ' - ' : ''}بند ${idx + 1}: ${label}`
+            });
+          }
+
           const entry = {
             num: idx + 1,
             deptName: dept.name,
             label,
-            note
+            note,
+            hasPhoto: !!(photo && photo.file)
           };
           if (st === 'DONE') doneItems.push(entry);
           else if (st === 'NOT_DONE') notDoneItems.push(entry);
@@ -975,7 +1153,7 @@
       const formattedDateStr = reportDate || now.toISOString().split('T')[0];
       const generalNote = document.getElementById('generalNoteInput').value.trim();
       const deptSummaryLabel = supervisorMode
-        ? `جميع الأقسام (${DEPARTMENTS.length} أقسام — مسؤول شفت)`
+        ? `جميع الأقسام + بنود المسؤول (مسؤول شفت)`
         : targetDepts[0].name;
 
       // Build formatted Arabic WhatsApp text
@@ -991,6 +1169,7 @@
       lines.push(`👤 *اسم الموظف:* ${staffName}`);
       lines.push(`📅 *التاريخ:* ${formattedDateStr}`);
       lines.push(`⏰ *وقت الإرسال:* ${actualTimeStr}`);
+      lines.push(`📷 *عدد الصور المرفقة:* ${attachedFiles.length}`);
       lines.push(`📊 *نسبة الإنجاز:* ${pct}% (${doneItems.length} من ${applicable} بند مطبق)`);
       lines.push(`━━━━━━━━━━━━━━━━━━━━`);
       lines.push(`✅ *البنود المنجزة (${doneItems.length}):*`);
@@ -1000,7 +1179,8 @@
       } else {
         doneItems.forEach(item => {
           const prefix = supervisorMode ? `[${item.deptName}] ` : '';
-          lines.push(`✓ ${prefix}${item.num}. ${item.label}${item.note ? ` (${item.note})` : ''}`);
+          const photoTag = item.hasPhoto ? ' [صورة مرفقة 📷]' : '';
+          lines.push(`✓ ${prefix}${item.num}. ${item.label}${photoTag}${item.note ? ` (${item.note})` : ''}`);
         });
       }
 
@@ -1009,7 +1189,8 @@
         lines.push(`❌ *بنود غير منفذة (${notDoneItems.length}):*`);
         notDoneItems.forEach(item => {
           const prefix = supervisorMode ? `[${item.deptName}] ` : '';
-          lines.push(`✕ ${prefix}${item.num}. ${item.label}${item.note ? ` — السبب/ملاحظة: ${item.note}` : ''}`);
+          const photoTag = item.hasPhoto ? ' [صورة مرفقة 📷]' : '';
+          lines.push(`✕ ${prefix}${item.num}. ${item.label}${photoTag}${item.note ? ` — السبب/ملاحظة: ${item.note}` : ''}`);
         });
       }
 
@@ -1031,6 +1212,7 @@
 
       const finalReport = lines.join('\n');
       state.lastGeneratedReportText = finalReport;
+      state.lastAttachedFiles = attachedFiles;
 
       // Populate Summary View UI
       const metaGrid = document.getElementById('summaryMetaGrid');
@@ -1053,23 +1235,74 @@
           <span class="font-extrabold text-[#3E2723]">${formattedDateStr} • ${actualTimeStr}</span>
         </div>
         <div class="col-span-2 pt-2 border-t border-[#D7CCC8] flex items-center justify-between">
-          <span class="font-extrabold text-[#3E2723]">نسبة الإنجاز النهائية:</span>
+          <span class="font-extrabold text-[#3E2723]">نسبة الإنجاز النهائية (${attachedFiles.length} صور):</span>
           <span class="px-3 py-1 rounded-full bg-[#1B5E20] text-white font-extrabold text-sm">
             ${pct}% (${doneItems.length}/${applicable})
           </span>
         </div>
       `;
 
-      document.getElementById('formattedReportPreview').textContent = finalReport;
+      // Render summary photos if any
+      const summaryPhotosBox = document.getElementById('summaryPhotosBox');
+      const summaryPhotosGrid = document.getElementById('summaryPhotosGrid');
+      if (attachedPhotoPreviews.length > 0) {
+        summaryPhotosBox.classList.remove('hidden');
+        summaryPhotosGrid.innerHTML = attachedPhotoPreviews.map(p => `
+          <div class="rounded-xl border border-[#D7CCC8] bg-[#F7F4F2] p-2 space-y-1.5">
+            <img src="${p.previewUrl}" alt="${escapeAttr(p.caption)}" class="w-full h-24 object-cover rounded-lg" />
+            <p class="text-[11px] font-bold text-[#3E2723] line-clamp-2">${escapeAttr(p.caption)}</p>
+          </div>
+        `).join('');
+      } else {
+        summaryPhotosBox.classList.add('hidden');
+        summaryPhotosGrid.innerHTML = '';
+      }
 
-      // Set WhatsApp deep link
-      const encodedText = encodeURIComponent(finalReport);
-      document.getElementById('whatsappSendLink').href = `https://api.whatsapp.com/send?text=${encodedText}`;
+      document.getElementById('formattedReportPreview').textContent = finalReport;
+      document.getElementById('whatsappSendBtnLabel').textContent =
+        attachedFiles.length > 0
+          ? `إرسال التقرير و (${attachedFiles.length}) صور عبر واتساب`
+          : 'إرسال التقرير عبر واتساب للمدير';
 
       // Switch to Summary View
       document.getElementById('formView').classList.add('hidden');
       document.getElementById('summaryView').classList.remove('hidden');
       window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    async function sendReportViaWhatsAppOrShare() {
+      const text = state.lastGeneratedReportText;
+      const files = state.lastAttachedFiles || [];
+      if (!text) return;
+
+      if (navigator.share) {
+        const sharePayload = {
+          title: 'تقرير الفحص اليومي - مقهى بن رضا علوان',
+          text
+        };
+
+        if (files.length > 0 && (!navigator.canShare || navigator.canShare({ files }))) {
+          sharePayload.files = files;
+        }
+
+        try {
+          await navigator.share(sharePayload);
+          showToast('تم فتح نافذة المشاركة بنجاح');
+          return;
+        } catch (err) {
+          if (err && err.name === 'AbortError') {
+            showToast('تم إلغاء المشاركة');
+            return;
+          }
+        }
+      }
+
+      if (files.length > 0) {
+        showToast('متصفحك لا يدعم إرسال الصور تلقائياً عبر الرابط؛ سيتم فتح واتساب للنص وأرفق الصور يدوياً');
+      }
+
+      const encodedText = encodeURIComponent(text);
+      window.open(`https://api.whatsapp.com/send?text=${encodedText}`, '_blank', 'noopener,noreferrer');
     }
 
     function copyReportToClipboard() {
@@ -1097,7 +1330,14 @@
         state.statuses[dept.id] = {};
         state.notes[dept.id] = {};
         state.showNoteInput[dept.id] = {};
+        if (state.photos[dept.id]) {
+          Object.values(state.photos[dept.id]).forEach(p => {
+            if (p && p.previewUrl) URL.revokeObjectURL(p.previewUrl);
+          });
+          state.photos[dept.id] = {};
+        }
       });
+      state.lastAttachedFiles = [];
       document.getElementById('generalNoteInput').value = '';
       document.getElementById('validationAlert').classList.add('hidden');
 
@@ -1172,6 +1412,12 @@
           state.statuses[dept.id] = {};
           state.notes[dept.id] = {};
           state.showNoteInput[dept.id] = {};
+          if (state.photos[dept.id]) {
+            Object.values(state.photos[dept.id]).forEach(p => {
+              if (p && p.previewUrl) URL.revokeObjectURL(p.previewUrl);
+            });
+            state.photos[dept.id] = {};
+          }
         });
         document.getElementById('validationAlert').classList.add('hidden');
         renderAll();
@@ -1181,7 +1427,8 @@
       // Finish & Generate Report
       document.getElementById('finishReportBtn').addEventListener('click', handleFinishAndGenerateReport);
 
-      // Copy & Start New buttons in Summary View
+      // WhatsApp / Share, Copy & Start New buttons in Summary View
+      document.getElementById('whatsappSendBtn').addEventListener('click', sendReportViaWhatsAppOrShare);
       document.getElementById('copyReportBtn').addEventListener('click', copyReportToClipboard);
       document.getElementById('startNewChecklistBtn').addEventListener('click', startNewChecklist);
 
@@ -1191,8 +1438,7 @@
     window.addEventListener('DOMContentLoaded', init);
   </script>
   <footer style="text-align:center; padding:12px; font-size:12px; opacity:0.75;">
-  متابعة المدير: محمود عماد
-</footer>
-
+    متابعة المدير: محمود عماد
+  </footer>
 </body>
 </html>

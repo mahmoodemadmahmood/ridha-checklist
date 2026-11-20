@@ -4,6 +4,7 @@
   <meta charset="UTF-8" /><link rel="icon" href="./icon.png.jpeg" />
   <link rel="apple-touch-icon" href="./icon.png.jpeg" />
   <meta name="apple-mobile-web-app-title" content="فحص مجمع البدور" />
+  <meta name="theme-color" content="#B71C1C" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>قائمة الفحص اليومي بن رضا علوان فرع مجمع البدور</title>
@@ -13,11 +14,11 @@
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
-      --espresso-dark: #3E2723;
-      --espresso-deep: #261613;
-      --cream-bg: #EFEBE9;
-      --cream-soft: #F7F4F2;
-      --caramel-accent: #8D6E63;
+      --espresso-dark: #B71C1C;
+      --espresso-deep: #7F1111;
+      --cream-bg: #FDECEA;
+      --cream-soft: #FFF6F5;
+      --caramel-accent: #E57373;
       --green-done: #1B5E20;
     }
 
@@ -38,10 +39,10 @@
       height: 6px;
     }
     ::-webkit-scrollbar-track {
-      background: #EFEBE9;
+      background: #FDECEA;
     }
     ::-webkit-scrollbar-thumb {
-      background: #8D6E63;
+      background: #E57373;
       border-radius: 9999px;
     }
 
@@ -78,14 +79,14 @@
 <body class="min-h-screen pb-16">
 
   <!-- Sticky Header & Live Progress -->
-  <header class="sticky top-0 z-30 bg-[#3E2723] text-white shadow-lg border-b border-[#5D4037]">
+  <header class="sticky top-0 z-30 bg-[#B71C1C] text-white shadow-lg border-b border-[#C62828]">
     <div class="max-w-3xl mx-auto px-4 py-3.5 space-y-3">
       <!-- Brand Title -->
       <div class="flex items-center justify-between gap-3">
         <div class="flex items-center gap-3">
-          <div class="w-11 h-11 rounded-2xl bg-[#5D4037] border border-[#8D6E63]/50 flex items-center justify-center shadow-inner shrink-0">
+          <div class="w-11 h-11 rounded-2xl bg-[#C62828] border border-[#E57373]/50 flex items-center justify-center shadow-inner shrink-0">
             <!-- Coffee Cup Icon -->
-            <svg class="w-6 h-6 text-[#EFEBE9]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <svg class="w-6 h-6 text-[#FDECEA]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" d="M18 8h1a4 4 0 010 8h-1M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8zm4-7v3m4-3v3m4-3v3"/>
             </svg>
           </div>
@@ -93,7 +94,7 @@
             <h1 class="text-base sm:text-lg font-extrabold leading-tight">
               مقهى بُن رضا علوان
             </h1>
-            <p class="text-xs text-[#D7CCC8] font-medium">
+            <p class="text-xs text-[#F3C4C0] font-medium">
               قائمة الفحص اليومي بُن رضا علوان فرع مجمع البدور — نموذج الموظف
             </p>
           </div>
@@ -106,11 +107,11 @@
 
       <!-- Live Progress Bar -->
       <div class="space-y-1.5">
-        <div class="flex items-center justify-between text-xs text-[#EFEBE9]">
+        <div class="flex items-center justify-between text-xs text-[#FDECEA]">
           <span id="headerDeptLabel" class="font-bold">القسم الساخن</span>
-          <span id="headerProgressText" class="font-semibold text-[#D7CCC8]">0 من 34 بند مكتمل</span>
+          <span id="headerProgressText" class="font-semibold text-[#F3C4C0]">0 من 34 بند مكتمل</span>
         </div>
-        <div class="w-full h-2.5 rounded-full bg-[#261613] overflow-hidden">
+        <div class="w-full h-2.5 rounded-full bg-[#7F1111] overflow-hidden">
           <div
             id="headerProgressBar"
             class="h-full rounded-full bg-gradient-to-l from-emerald-400 to-[#1B5E20] transition-all duration-300"
@@ -128,35 +129,35 @@
     <section id="formView" class="space-y-5 fade-in">
 
       <!-- Operational Policy Reminder Banner -->
-      <div class="rounded-2xl bg-white border border-[#D7CCC8] p-3.5 sm:p-4 shadow-sm flex items-start gap-3">
-        <div class="w-9 h-9 rounded-xl bg-[#3E2723] text-[#EFEBE9] flex items-center justify-center shrink-0 mt-0.5">
+      <div class="rounded-2xl bg-white border border-[#F3C4C0] p-3.5 sm:p-4 shadow-sm flex items-start gap-3">
+        <div class="w-9 h-9 rounded-xl bg-[#B71C1C] text-[#FDECEA] flex items-center justify-center shrink-0 mt-0.5">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
           </svg>
         </div>
-        <div class="text-xs sm:text-sm leading-relaxed text-[#3E2723]">
+        <div class="text-xs sm:text-sm leading-relaxed text-[#B71C1C]">
           <span class="font-extrabold">تعليمات:</span> يُمنع خلع الصدرية أو المغادرة المبكرة بدون موافقة مسؤول الشفت، ويُمنع الإجازة أو الخروج المبكر يومي الخميس والجمعة لأي سبب. يرجى إكمال التنظيف والتدقيق بدقة عالية قبل إرسال التقرير.
         </div>
       </div>
 
       <!-- Step 1: Staff Info Card -->
-      <div class="rounded-3xl bg-white border border-[#D7CCC8] shadow-sm p-4 sm:p-6 space-y-4">
-        <h2 class="text-base sm:text-lg font-extrabold text-[#3E2723] flex items-center gap-2 border-b border-[#EFEBE9] pb-3">
-          <span class="w-2.5 h-6 rounded-full bg-[#3E2723] inline-block"></span>
+      <div class="rounded-3xl bg-white border border-[#F3C4C0] shadow-sm p-4 sm:p-6 space-y-4">
+        <h2 class="text-base sm:text-lg font-extrabold text-[#B71C1C] flex items-center gap-2 border-b border-[#FDECEA] pb-3">
+          <span class="w-2.5 h-6 rounded-full bg-[#B71C1C] inline-block"></span>
           <span>1. البيانات الأساسية</span>
         </h2>
 
         <!-- Staff Name & Date -->
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label for="staffNameInput" class="block text-sm font-bold text-[#3E2723] mb-1.5">
+            <label for="staffNameInput" class="block text-sm font-bold text-[#B71C1C] mb-1.5">
               اسم الموظف <span class="text-red-600">*</span>
             </label>
             <input
               id="staffNameInput"
               type="text"
               placeholder="اكتب اسمك الكامل هنا..."
-              class="w-full py-3.5 px-4 rounded-2xl border-2 border-[#D7CCC8] focus:border-[#3E2723] focus:outline-none bg-[#F7F4F2] focus:bg-white text-sm sm:text-base font-bold text-[#3E2723] transition"
+              class="w-full py-3.5 px-4 rounded-2xl border-2 border-[#F3C4C0] focus:border-[#B71C1C] focus:outline-none bg-[#FFF6F5] focus:bg-white text-sm sm:text-base font-bold text-[#B71C1C] transition"
             />
             <p id="supervisorModeHint" class="hidden mt-1.5 text-xs font-extrabold text-[#1B5E20]">
               ✓ تم تفعيل وضع مسؤول الشفت — تم فتح جميع الأقسام وبنود المسؤول (بصور إجبارية) للمراجعة الشاملة.
@@ -164,27 +165,27 @@
           </div>
 
           <div>
-            <label for="reportDateInput" class="block text-sm font-bold text-[#3E2723] mb-1.5">
+            <label for="reportDateInput" class="block text-sm font-bold text-[#B71C1C] mb-1.5">
               التاريخ
             </label>
             <input
               id="reportDateInput"
               type="date"
-              class="w-full py-3.5 px-4 rounded-2xl border-2 border-[#D7CCC8] focus:border-[#3E2723] focus:outline-none bg-[#F7F4F2] focus:bg-white text-sm sm:text-base font-bold text-[#3E2723] transition"
+              class="w-full py-3.5 px-4 rounded-2xl border-2 border-[#F3C4C0] focus:border-[#B71C1C] focus:outline-none bg-[#FFF6F5] focus:bg-white text-sm sm:text-base font-bold text-[#B71C1C] transition"
             />
           </div>
         </div>
 
         <!-- Shift Selection -->
         <div>
-          <label class="block text-sm font-bold text-[#3E2723] mb-2">
+          <label class="block text-sm font-bold text-[#B71C1C] mb-2">
             اختيار الشفت <span class="text-red-600">*</span>
           </label>
           <div class="grid grid-cols-2 gap-3">
             <button
               type="button"
               data-shift="الشفت الصباحي"
-              class="shift-btn py-3.5 px-4 rounded-2xl border-2 border-[#3E2723] bg-[#3E2723] text-white font-extrabold text-sm sm:text-base shadow-sm transition flex items-center justify-center gap-2"
+              class="shift-btn py-3.5 px-4 rounded-2xl border-2 border-[#B71C1C] bg-[#B71C1C] text-white font-extrabold text-sm sm:text-base shadow-sm transition flex items-center justify-center gap-2"
             >
               <span>☀️</span>
               <span>الشفت الصباحي</span>
@@ -192,7 +193,7 @@
             <button
               type="button"
               data-shift="الشفت المسائي"
-              class="shift-btn py-3.5 px-4 rounded-2xl border-2 border-[#D7CCC8] bg-[#F7F4F2] text-[#3E2723] font-extrabold text-sm sm:text-base transition flex items-center justify-center gap-2"
+              class="shift-btn py-3.5 px-4 rounded-2xl border-2 border-[#F3C4C0] bg-[#FFF6F5] text-[#B71C1C] font-extrabold text-sm sm:text-base transition flex items-center justify-center gap-2"
             >
               <span>🌙</span>
               <span>الشفت المسائي</span>
@@ -202,7 +203,7 @@
 
         <!-- Department Selection -->
         <div id="departmentSelectorWrapper">
-          <label class="block text-sm font-bold text-[#3E2723] mb-2">
+          <label class="block text-sm font-bold text-[#B71C1C] mb-2">
             اختيار القسم <span class="text-red-600">*</span>
           </label>
           <div id="departmentGrid" class="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
@@ -212,13 +213,13 @@
       </div>
 
       <!-- Step 2: Checklist Action Toolbar -->
-      <div class="rounded-3xl bg-white border border-[#D7CCC8] shadow-sm p-4 sm:p-5 space-y-3">
+      <div class="rounded-3xl bg-white border border-[#F3C4C0] shadow-sm p-4 sm:p-5 space-y-3">
         <div class="flex flex-wrap items-center justify-between gap-2">
           <div>
-            <h2 id="activeSectionHeading" class="text-base sm:text-lg font-extrabold text-[#3E2723]">
+            <h2 id="activeSectionHeading" class="text-base sm:text-lg font-extrabold text-[#B71C1C]">
               بنود القسم الساخن
             </h2>
-            <p class="text-xs text-[#6D4C41] font-medium">
+            <p class="text-xs text-[#A93226] font-medium">
               اختر حالة كل بند (تم / غير منفذ / لا ينطبق) وأرفق الصور الإجبارية للبنود المحددة
             </p>
           </div>
@@ -235,7 +236,7 @@
             <button
               id="resetSectionBtn"
               type="button"
-              class="py-2.5 px-3 rounded-xl bg-[#EFEBE9] hover:bg-[#D7CCC8] active:scale-95 text-[#3E2723] text-xs font-bold transition"
+              class="py-2.5 px-3 rounded-xl bg-[#FDECEA] hover:bg-[#F3C4C0] active:scale-95 text-[#B71C1C] text-xs font-bold transition"
             >
               تصفير
             </button>
@@ -265,16 +266,16 @@
       </div>
 
       <!-- General Note & Submit Card -->
-      <div class="rounded-3xl bg-white border border-[#D7CCC8] shadow-sm p-4 sm:p-6 space-y-4">
+      <div class="rounded-3xl bg-white border border-[#F3C4C0] shadow-sm p-4 sm:p-6 space-y-4">
         <div>
-          <label for="generalNoteInput" class="block text-sm font-bold text-[#3E2723] mb-1.5">
+          <label for="generalNoteInput" class="block text-sm font-bold text-[#B71C1C] mb-1.5">
             ملاحظة عامة عن القسم (اختياري)
           </label>
           <textarea
             id="generalNoteInput"
             rows="3"
             placeholder="أضف أي ملاحظة إضافية حول حالة الأجهزة، نقص المواد، أو تسليم الشفت..."
-            class="w-full p-3.5 rounded-2xl border-2 border-[#D7CCC8] focus:border-[#3E2723] focus:outline-none bg-[#F7F4F2] focus:bg-white text-sm font-medium text-[#3E2723] transition"
+            class="w-full p-3.5 rounded-2xl border-2 border-[#F3C4C0] focus:border-[#B71C1C] focus:outline-none bg-[#FFF6F5] focus:bg-white text-sm font-medium text-[#B71C1C] transition"
           ></textarea>
         </div>
 
@@ -285,7 +286,7 @@
         <button
           id="finishReportBtn"
           type="button"
-          class="w-full py-4 px-6 rounded-2xl bg-[#3E2723] hover:bg-[#261613] active:scale-[0.99] text-white font-extrabold text-base sm:text-lg shadow-lg transition flex items-center justify-center gap-2.5"
+          class="w-full py-4 px-6 rounded-2xl bg-[#B71C1C] hover:bg-[#7F1111] active:scale-[0.99] text-white font-extrabold text-base sm:text-lg shadow-lg transition flex items-center justify-center gap-2.5"
         >
           <svg class="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
@@ -299,7 +300,7 @@
     <section id="summaryView" class="hidden space-y-5 fade-in">
       <div class="rounded-3xl bg-white border-2 border-[#1B5E20]/40 shadow-md p-5 sm:p-6 space-y-5">
         <!-- Success Header -->
-        <div class="flex items-center gap-3.5 border-b border-[#EFEBE9] pb-4">
+        <div class="flex items-center gap-3.5 border-b border-[#FDECEA] pb-4">
           <div class="w-12 h-12 rounded-2xl bg-[#1B5E20] text-white flex items-center justify-center shrink-0 shadow">
             <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2.6" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
@@ -309,20 +310,23 @@
             <h2 class="text-lg sm:text-xl font-extrabold text-[#1B5E20]">
               تقرير الجيك لست جاهز للإرسال!
             </h2>
-            <p id="summarySubtitleText" class="text-xs sm:text-sm text-[#5D4037] font-semibold">
+            <p id="summarySubtitleText" class="text-xs sm:text-sm text-[#C62828] font-semibold">
               اضغط على زر واتساب أدناه لإرسال التقرير والصور مباشرة إلى المدير.
             </p>
           </div>
         </div>
 
+        <!-- Save-to-sheet status -->
+        <div id="sheetStatus" class="hidden"></div>
+
         <!-- Structured Summary Metadata -->
-        <div id="summaryMetaGrid" class="grid grid-cols-2 gap-3 rounded-2xl bg-[#F7F4F2] border border-[#D7CCC8] p-4 text-xs sm:text-sm">
+        <div id="summaryMetaGrid" class="grid grid-cols-2 gap-3 rounded-2xl bg-[#FFF6F5] border border-[#F3C4C0] p-4 text-xs sm:text-sm">
           <!-- Populated dynamically -->
         </div>
 
         <!-- Attached Photos Preview in Summary -->
         <div id="summaryPhotosBox" class="hidden space-y-2">
-          <div class="text-xs sm:text-sm font-extrabold text-[#3E2723]">
+          <div class="text-xs sm:text-sm font-extrabold text-[#B71C1C]">
             الصور المرفقة مع التقرير:
           </div>
           <div id="summaryPhotosGrid" class="grid grid-cols-2 sm:grid-cols-3 gap-3"></div>
@@ -331,12 +335,12 @@
         <!-- Formatted Report Preview Box -->
         <div class="space-y-2">
           <div class="flex items-center justify-between">
-            <span class="text-xs sm:text-sm font-extrabold text-[#3E2723]">معاينة نص التقرير المنسق:</span>
-            <span class="text-[11px] font-bold text-[#6D4C41]">جاهز للإرسال</span>
+            <span class="text-xs sm:text-sm font-extrabold text-[#B71C1C]">معاينة نص التقرير المنسق:</span>
+            <span class="text-[11px] font-bold text-[#A93226]">جاهز للإرسال</span>
           </div>
           <pre
             id="formattedReportPreview"
-            class="w-full max-h-80 overflow-y-auto whitespace-pre-wrap break-words rounded-2xl bg-[#EFEBE9] border border-[#D7CCC8] p-4 text-xs sm:text-sm font-semibold text-[#261613] leading-relaxed"
+            class="w-full max-h-80 overflow-y-auto whitespace-pre-wrap break-words rounded-2xl bg-[#FDECEA] border border-[#F3C4C0] p-4 text-xs sm:text-sm font-semibold text-[#7F1111] leading-relaxed"
           ></pre>
         </div>
 
@@ -359,7 +363,7 @@
             <button
               id="copyReportBtn"
               type="button"
-              class="py-3.5 px-4 rounded-2xl bg-[#3E2723] hover:bg-[#261613] active:scale-[0.99] text-white font-extrabold text-sm sm:text-base transition flex items-center justify-center gap-2"
+              class="py-3.5 px-4 rounded-2xl bg-[#B71C1C] hover:bg-[#7F1111] active:scale-[0.99] text-white font-extrabold text-sm sm:text-base transition flex items-center justify-center gap-2"
             >
               <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
@@ -370,7 +374,7 @@
             <button
               id="startNewChecklistBtn"
               type="button"
-              class="py-3.5 px-4 rounded-2xl bg-[#EFEBE9] hover:bg-[#D7CCC8] active:scale-[0.99] text-[#3E2723] font-extrabold text-sm sm:text-base transition flex items-center justify-center gap-2"
+              class="py-3.5 px-4 rounded-2xl bg-[#FDECEA] hover:bg-[#F3C4C0] active:scale-[0.99] text-[#B71C1C] font-extrabold text-sm sm:text-base transition flex items-center justify-center gap-2"
             >
               <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
@@ -381,10 +385,41 @@
         </div>
       </div>
     </section>
+
+    <!-- ==================== MANAGER DASHBOARD VIEW ==================== -->
+    <section id="managerView" class="hidden space-y-5 fade-in">
+      <div class="rounded-3xl bg-white border border-[#F3C4C0] shadow-sm p-4 sm:p-6 space-y-4">
+        <div class="flex items-center justify-between gap-2 border-b border-[#FDECEA] pb-3">
+          <h2 class="text-base sm:text-lg font-extrabold text-[#B71C1C]">📊 لوحة المدير — الإنجاز الشهري</h2>
+          <button id="closeManagerBtn" type="button" class="py-2 px-3.5 rounded-xl bg-[#FDECEA] hover:bg-[#F3C4C0] text-[#B71C1C] text-xs font-extrabold transition">
+            رجوع
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label for="managerMonthInput" class="block text-sm font-bold text-[#B71C1C] mb-1.5">الشهر</label>
+            <input id="managerMonthInput" type="month" class="w-full py-3 px-4 rounded-2xl border-2 border-[#F3C4C0] focus:border-[#B71C1C] focus:outline-none bg-[#FFF6F5] text-sm font-bold text-[#B71C1C]" />
+          </div>
+          <div>
+            <label for="managerPinInput" class="block text-sm font-bold text-[#B71C1C] mb-1.5">رمز المدير</label>
+            <input id="managerPinInput" type="password" inputmode="numeric" autocomplete="off" placeholder="••••" class="w-full py-3 px-4 rounded-2xl border-2 border-[#F3C4C0] focus:border-[#B71C1C] focus:outline-none bg-[#FFF6F5] text-sm font-bold text-[#B71C1C]" />
+          </div>
+        </div>
+
+        <button id="loadManagerBtn" type="button" class="w-full py-3.5 px-5 rounded-2xl bg-[#B71C1C] hover:bg-[#7F1111] active:scale-[0.99] text-white font-extrabold text-sm sm:text-base shadow transition">
+          عرض النتائج
+        </button>
+
+        <div id="managerMessage" class="hidden rounded-2xl border-2 p-3 text-xs sm:text-sm font-bold"></div>
+      </div>
+
+      <div id="managerResults" class="space-y-3"></div>
+    </section>
   </main>
 
   <!-- Toast Message Box -->
-  <div id="toastBox" class="hidden fixed bottom-5 left-1/2 z-50 px-5 py-3 rounded-2xl bg-[#3E2723] text-white text-sm font-extrabold shadow-2xl border border-[#8D6E63] toast-pop"></div>
+  <div id="toastBox" class="hidden fixed bottom-5 left-1/2 z-50 px-5 py-3 rounded-2xl bg-[#B71C1C] text-white text-sm font-extrabold shadow-2xl border border-[#E57373] toast-pop"></div>
 
   <script>
     // =========================================================================
@@ -675,21 +710,21 @@
             data-dept="${dept.id}"
             class="dept-btn p-3.5 rounded-2xl border-2 text-right transition flex flex-col justify-between gap-1.5 ${
               isSelected
-                ? 'border-[#3E2723] bg-[#3E2723] text-white shadow-md'
-                : 'border-[#D7CCC8] bg-[#F7F4F2] hover:bg-[#EFEBE9] text-[#3E2723]'
+                ? 'border-[#B71C1C] bg-[#B71C1C] text-white shadow-md'
+                : 'border-[#F3C4C0] bg-[#FFF6F5] hover:bg-[#FDECEA] text-[#B71C1C]'
             }"
           >
             <div class="flex items-center justify-between w-full">
               <span class="text-xl">${dept.icon}</span>
               <span class="text-[11px] font-extrabold px-2 py-0.5 rounded-full ${
-                isSelected ? 'bg-[#1B5E20] text-white' : 'bg-white text-[#5D4037] border border-[#D7CCC8]'
+                isSelected ? 'bg-[#1B5E20] text-white' : 'bg-white text-[#C62828] border border-[#F3C4C0]'
               }">
                 ${answeredCount}/${total}
               </span>
             </div>
             <div>
               <div class="text-xs sm:text-sm font-extrabold leading-snug">${dept.name}</div>
-              <div class="text-[11px] ${isSelected ? 'text-[#D7CCC8]' : 'text-[#6D4C41]'} font-semibold">
+              <div class="text-[11px] ${isSelected ? 'text-[#F3C4C0]' : 'text-[#A93226]'} font-semibold">
                 ${total} بند
               </div>
             </div>
@@ -764,7 +799,7 @@
       const isNoteVisible = !!showNoteObj[idx] || st === 'NOT_DONE' || noteText.trim().length > 0;
       const photoData = photosObj[idx] || null;
 
-      let cardBorder = 'border-[#D7CCC8] bg-white';
+      let cardBorder = 'border-[#F3C4C0] bg-white';
       if (st === 'DONE') cardBorder = 'border-[#1B5E20]/60 bg-emerald-50/40';
       else if (st === 'NOT_DONE') cardBorder = 'border-rose-400 bg-rose-50/40';
       else if (st === 'NA') cardBorder = 'border-stone-300 bg-stone-50/70';
@@ -783,11 +818,11 @@
             photoData ? 'border-[#1B5E20] bg-emerald-50/50' : 'border-amber-500 bg-amber-50/50'
           } p-3 space-y-2.5">
             <div class="flex flex-wrap items-center justify-between gap-2">
-              <span class="text-xs font-extrabold text-[#3E2723]">
+              <span class="text-xs font-extrabold text-[#B71C1C]">
                 ${photoData ? '✓ الصورة جاهزة للإرفاق' : 'يرجى التقاط أو اختيار صورة واضحة لهذا البند:'}
               </span>
               <div class="flex items-center gap-2">
-                <label class="cursor-pointer py-2 px-3 rounded-xl bg-[#3E2723] hover:bg-[#261613] text-white text-xs font-extrabold transition flex items-center gap-1.5">
+                <label class="cursor-pointer py-2 px-3 rounded-xl bg-[#B71C1C] hover:bg-[#7F1111] text-white text-xs font-extrabold transition flex items-center gap-1.5">
                   <span>📷</span>
                   <span>${photoData ? 'تغيير الصورة' : 'التقاط / إرفاق صورة'}</span>
                   <input
@@ -819,9 +854,9 @@
                     <img
                       src="${photoData.previewUrl}"
                       alt="صورة البند ${idx + 1}"
-                      class="w-20 h-20 object-cover rounded-xl border border-[#D7CCC8] shadow-sm shrink-0"
+                      class="w-20 h-20 object-cover rounded-xl border border-[#F3C4C0] shadow-sm shrink-0"
                     />
-                    <div class="text-xs text-[#5D4037] font-bold break-all">
+                    <div class="text-xs text-[#C62828] font-bold break-all">
                       ${escapeAttr(photoData.name)}
                     </div>
                   </div>`
@@ -834,9 +869,9 @@
         <div class="rounded-2xl border-2 ${cardBorder} p-3.5 sm:p-4 shadow-sm transition space-y-3">
           <!-- Item Title & Note Toggle -->
           <div class="flex items-start justify-between gap-2">
-            <div class="text-sm sm:text-base font-extrabold text-[#3E2723] leading-snug">
+            <div class="text-sm sm:text-base font-extrabold text-[#B71C1C] leading-snug">
               <div>
-                <span class="inline-block min-w-[24px] text-[#8D6E63] font-extrabold">${idx + 1}.</span>
+                <span class="inline-block min-w-[24px] text-[#E57373] font-extrabold">${idx + 1}.</span>
                 <span>${itemText}</span>
               </div>
               ${photoBadgeHtml}
@@ -849,7 +884,7 @@
               class="toggle-note-btn shrink-0 px-2.5 py-1 rounded-xl text-[11px] font-bold border transition ${
                 noteText.trim()
                   ? 'bg-amber-100 border-amber-300 text-amber-900'
-                  : 'bg-[#F7F4F2] border-[#D7CCC8] text-[#5D4037] hover:bg-[#EFEBE9]'
+                  : 'bg-[#FFF6F5] border-[#F3C4C0] text-[#C62828] hover:bg-[#FDECEA]'
               }"
             >
               ${noteText.trim() ? '📝 ملاحظة' : '+ ملاحظة'}
@@ -869,7 +904,7 @@
               class="status-choice-btn py-3 px-2 rounded-xl text-xs sm:text-sm font-extrabold border-2 transition flex items-center justify-center gap-1 ${
                 st === 'DONE'
                   ? 'bg-[#1B5E20] border-[#1B5E20] text-white shadow-sm'
-                  : 'bg-[#F7F4F2] border-[#D7CCC8] text-[#3E2723] hover:border-[#1B5E20]/50'
+                  : 'bg-[#FFF6F5] border-[#F3C4C0] text-[#B71C1C] hover:border-[#1B5E20]/50'
               }"
             >
               <span>✓</span>
@@ -884,7 +919,7 @@
               class="status-choice-btn py-3 px-2 rounded-xl text-xs sm:text-sm font-extrabold border-2 transition flex items-center justify-center gap-1 ${
                 st === 'NOT_DONE'
                   ? 'bg-rose-700 border-rose-700 text-white shadow-sm'
-                  : 'bg-[#F7F4F2] border-[#D7CCC8] text-[#3E2723] hover:border-rose-400'
+                  : 'bg-[#FFF6F5] border-[#F3C4C0] text-[#B71C1C] hover:border-rose-400'
               }"
             >
               <span>✕</span>
@@ -899,7 +934,7 @@
               class="status-choice-btn py-3 px-2 rounded-xl text-xs sm:text-sm font-extrabold border-2 transition flex items-center justify-center gap-1 ${
                 st === 'NA'
                   ? 'bg-stone-600 border-stone-600 text-white shadow-sm'
-                  : 'bg-[#F7F4F2] border-[#D7CCC8] text-[#3E2723] hover:border-stone-400'
+                  : 'bg-[#FFF6F5] border-[#F3C4C0] text-[#B71C1C] hover:border-stone-400'
               }"
             >
               <span>—</span>
@@ -915,7 +950,7 @@
               data-note-input="${idx}"
               value="${escapeAttr(noteText)}"
               placeholder="${st === 'NOT_DONE' ? 'اكتب سبب عدم التنفيذ (اختياري)...' : 'اكتب ملاحظة قصيرة لهذا البند...'}"
-              class="w-full py-2.5 px-3.5 rounded-xl border border-[#D7CCC8] bg-white focus:border-[#3E2723] focus:outline-none text-xs sm:text-sm font-semibold text-[#3E2723]"
+              class="w-full py-2.5 px-3.5 rounded-xl border border-[#F3C4C0] bg-white focus:border-[#B71C1C] focus:outline-none text-xs sm:text-sm font-semibold text-[#B71C1C]"
             />
           </div>
         </div>
@@ -932,9 +967,9 @@
           const cardsHtml = dept.items.map((itemObj, idx) => buildDeptItemCardHtml(dept, itemObj, idx)).join('');
           return `
             <div class="space-y-3 pt-2">
-              <div class="rounded-2xl bg-[#3E2723] text-white px-4 py-3 shadow-sm flex items-center justify-between">
+              <div class="rounded-2xl bg-[#B71C1C] text-white px-4 py-3 shadow-sm flex items-center justify-between">
                 <span class="text-sm sm:text-base font-extrabold">${dept.icon} ${dept.name}</span>
-                <span class="text-xs font-bold text-[#D7CCC8]">${dept.items.length} بند</span>
+                <span class="text-xs font-bold text-[#F3C4C0]">${dept.items.length} بند</span>
               </div>
               <div class="space-y-3">
                 ${cardsHtml}
@@ -1214,28 +1249,51 @@
       state.lastGeneratedReportText = finalReport;
       state.lastAttachedFiles = attachedFiles;
 
+      // Save this report to the shared Google Sheet (monthly tracking)
+      const reportRecord = {
+        id: 'r_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8),
+        date: formattedDateStr,
+        month: String(formattedDateStr).slice(0, 7),
+        staff: staffName,
+        shift: state.selectedShift,
+        dept: deptSummaryLabel,
+        total: total,
+        applicable: applicable,
+        done: doneItems.length,
+        notDone: notDoneItems.length,
+        na: naItems.length,
+        pct: pct,
+        photos: attachedFiles.length,
+        notDoneItems: notDoneItems.map(i =>
+          (supervisorMode ? `[${i.deptName}] ` : '') + `${i.num}. ${i.label}` + (i.note ? ` (${i.note})` : '')
+        ).join(' | '),
+        note: generalNote,
+        sentAt: now.toISOString()
+      };
+      submitReportToSheet(reportRecord);
+
       // Populate Summary View UI
       const metaGrid = document.getElementById('summaryMetaGrid');
       const deptIconDisplay = supervisorMode ? '👑' : targetDepts[0].icon;
       metaGrid.innerHTML = `
         <div>
-          <span class="text-[#6D4C41] font-bold block">القسم:</span>
-          <span class="font-extrabold text-[#3E2723]">${deptIconDisplay} ${deptSummaryLabel}</span>
+          <span class="text-[#A93226] font-bold block">القسم:</span>
+          <span class="font-extrabold text-[#B71C1C]">${deptIconDisplay} ${deptSummaryLabel}</span>
         </div>
         <div>
-          <span class="text-[#6D4C41] font-bold block">الشفت:</span>
-          <span class="font-extrabold text-[#3E2723]">${state.selectedShift}</span>
+          <span class="text-[#A93226] font-bold block">الشفت:</span>
+          <span class="font-extrabold text-[#B71C1C]">${state.selectedShift}</span>
         </div>
         <div>
-          <span class="text-[#6D4C41] font-bold block">اسم الموظف:</span>
-          <span class="font-extrabold text-[#3E2723]">${escapeAttr(staffName)}</span>
+          <span class="text-[#A93226] font-bold block">اسم الموظف:</span>
+          <span class="font-extrabold text-[#B71C1C]">${escapeAttr(staffName)}</span>
         </div>
         <div>
-          <span class="text-[#6D4C41] font-bold block">التاريخ والوقت:</span>
-          <span class="font-extrabold text-[#3E2723]">${formattedDateStr} • ${actualTimeStr}</span>
+          <span class="text-[#A93226] font-bold block">التاريخ والوقت:</span>
+          <span class="font-extrabold text-[#B71C1C]">${formattedDateStr} • ${actualTimeStr}</span>
         </div>
-        <div class="col-span-2 pt-2 border-t border-[#D7CCC8] flex items-center justify-between">
-          <span class="font-extrabold text-[#3E2723]">نسبة الإنجاز النهائية (${attachedFiles.length} صور):</span>
+        <div class="col-span-2 pt-2 border-t border-[#F3C4C0] flex items-center justify-between">
+          <span class="font-extrabold text-[#B71C1C]">نسبة الإنجاز النهائية (${attachedFiles.length} صور):</span>
           <span class="px-3 py-1 rounded-full bg-[#1B5E20] text-white font-extrabold text-sm">
             ${pct}% (${doneItems.length}/${applicable})
           </span>
@@ -1248,9 +1306,9 @@
       if (attachedPhotoPreviews.length > 0) {
         summaryPhotosBox.classList.remove('hidden');
         summaryPhotosGrid.innerHTML = attachedPhotoPreviews.map(p => `
-          <div class="rounded-xl border border-[#D7CCC8] bg-[#F7F4F2] p-2 space-y-1.5">
+          <div class="rounded-xl border border-[#F3C4C0] bg-[#FFF6F5] p-2 space-y-1.5">
             <img src="${p.previewUrl}" alt="${escapeAttr(p.caption)}" class="w-full h-24 object-cover rounded-lg" />
-            <p class="text-[11px] font-bold text-[#3E2723] line-clamp-2">${escapeAttr(p.caption)}</p>
+            <p class="text-[11px] font-bold text-[#B71C1C] line-clamp-2">${escapeAttr(p.caption)}</p>
           </div>
         `).join('');
       } else {
@@ -1349,6 +1407,221 @@
     }
 
     // =========================================================================
+    // 5B. MONTHLY TRACKING (GOOGLE SHEET) + MANAGER DASHBOARD
+    // =========================================================================
+    // الصق هنا رابط Web App الناتج من Google Apps Script (ينتهي بـ /exec)
+    const SHEET_API_URL = 'https://script.google.com/macros/s/AKfycbwDFPAm4zPWnjg97sE0qjP6NIkDd32XqwZNNFXoU147EIvXJUO5FuYKdcU9szq39gLbdg/exec';
+    const PENDING_KEY = 'bdoor_pending_reports_v1';
+
+    function sheetConfigured() {
+      return !!SHEET_API_URL && SHEET_API_URL.indexOf('PASTE_') === -1;
+    }
+
+    function getPending() {
+      try { return JSON.parse(localStorage.getItem(PENDING_KEY) || '[]'); } catch (e) { return []; }
+    }
+    function setPending(list) {
+      try { localStorage.setItem(PENDING_KEY, JSON.stringify(list)); } catch (e) {}
+    }
+
+    function setSheetStatus(kind, msg) {
+      const el = document.getElementById('sheetStatus');
+      if (!el) return;
+      const styles = {
+        ok: 'bg-emerald-50 border-emerald-300 text-[#1B5E20]',
+        wait: 'bg-amber-50 border-amber-300 text-amber-900',
+        err: 'bg-rose-50 border-rose-300 text-rose-800'
+      };
+      el.className = 'rounded-2xl border-2 p-3 text-xs sm:text-sm font-bold ' + styles[kind];
+      el.textContent = msg;
+    }
+
+    async function postRecord(rec) {
+      const res = await fetch(SHEET_API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({ action: 'submit', record: rec })
+      });
+      const data = await res.json();
+      return !!(data && data.ok);
+    }
+
+    async function flushPending() {
+      if (!sheetConfigured()) return { sent: 0, left: getPending().length };
+      let sent = 0;
+      for (const rec of getPending()) {
+        try {
+          if (await postRecord(rec)) {
+            sent++;
+            setPending(getPending().filter(r => r.id !== rec.id));
+          } else {
+            break;
+          }
+        } catch (e) {
+          break;
+        }
+      }
+      return { sent, left: getPending().length };
+    }
+
+    async function submitReportToSheet(rec) {
+      if (!sheetConfigured()) {
+        setSheetStatus('err', '⚠️ حفظ السجل الشهري غير مفعّل بعد (رابط Google Sheet غير مضاف). التقرير جاهز للواتساب فقط.');
+        return;
+      }
+      const list = getPending();
+      list.push(rec);
+      setPending(list);
+      setSheetStatus('wait', '⏳ جاري حفظ التقرير في السجل الشهري...');
+      const r = await flushPending();
+      if (r.left === 0) {
+        setSheetStatus('ok', '✓ تم حفظ التقرير في السجل الشهري.');
+      } else {
+        setSheetStatus('err', '⚠️ لم يُحفظ بعد (لا يوجد اتصال). سيُعاد الحفظ تلقائياً عند فتح الصفحة مرة ثانية.');
+      }
+    }
+
+    // ---------- Manager dashboard ----------
+    function showManagerMessage(kind, msg) {
+      const el = document.getElementById('managerMessage');
+      const styles = {
+        ok: 'bg-emerald-50 border-emerald-300 text-[#1B5E20]',
+        wait: 'bg-amber-50 border-amber-300 text-amber-900',
+        err: 'bg-rose-50 border-rose-300 text-rose-800'
+      };
+      el.className = 'rounded-2xl border-2 p-3 text-xs sm:text-sm font-bold ' + styles[kind];
+      el.textContent = msg;
+    }
+
+    function openManager() {
+      document.getElementById('formView').classList.add('hidden');
+      document.getElementById('summaryView').classList.add('hidden');
+      document.getElementById('managerView').classList.remove('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function closeManager() {
+      document.getElementById('managerView').classList.add('hidden');
+      document.getElementById('formView').classList.remove('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function pctBgClass(p) {
+      if (p >= 90) return 'bg-[#1B5E20]';
+      if (p >= 70) return 'bg-amber-500';
+      return 'bg-rose-700';
+    }
+
+    async function loadManagerStats() {
+      const month = document.getElementById('managerMonthInput').value;
+      const pin = document.getElementById('managerPinInput').value.trim();
+      const results = document.getElementById('managerResults');
+      results.innerHTML = '';
+
+      if (!sheetConfigured()) {
+        showManagerMessage('err', 'رابط Google Sheet غير مضاف في الكود بعد.');
+        return;
+      }
+      if (!month) { showManagerMessage('err', 'اختر الشهر أولاً.'); return; }
+      if (!pin) { showManagerMessage('err', 'اكتب رمز المدير.'); return; }
+
+      showManagerMessage('wait', '⏳ جاري تحميل البيانات...');
+      try {
+        const url = `${SHEET_API_URL}?action=month&month=${encodeURIComponent(month)}&pin=${encodeURIComponent(pin)}`;
+        const res = await fetch(url);
+        const data = await res.json();
+        if (!data.ok) {
+          showManagerMessage('err', data.error === 'pin' ? 'الرمز غير صحيح.' : 'تعذر تحميل البيانات.');
+          return;
+        }
+        document.getElementById('managerMessage').className = 'hidden';
+        renderManagerStats(data.rows || [], month);
+      } catch (e) {
+        showManagerMessage('err', 'تعذر الاتصال بالسجل. تأكد من الإنترنت ومن رابط Apps Script.');
+      }
+    }
+
+    function renderManagerStats(rows, month) {
+      const results = document.getElementById('managerResults');
+      if (!rows.length) {
+        results.innerHTML = `<div class="rounded-2xl bg-white border border-[#F3C4C0] p-5 text-center text-sm font-bold text-[#A93226]">لا توجد تقارير مسجلة لشهر ${escapeAttr(month)}.</div>`;
+        return;
+      }
+
+      const byStaff = {};
+      let allDone = 0, allApplicable = 0;
+
+      rows.forEach(r => {
+        const name = normalizeName(r.staff) || 'بدون اسم';
+        const s = byStaff[name] || (byStaff[name] = { name, reports: [], days: {}, done: 0, applicable: 0, notDone: 0 });
+        const done = Number(r.done) || 0;
+        const applicable = Number(r.applicable) || 0;
+        s.reports.push(r);
+        s.days[String(r.date)] = true;
+        s.done += done;
+        s.applicable += applicable;
+        s.notDone += Number(r.notDone) || 0;
+        allDone += done;
+        allApplicable += applicable;
+      });
+
+      const list = Object.values(byStaff).map(s => ({
+        ...s,
+        pct: s.applicable > 0 ? Math.round((s.done / s.applicable) * 100) : 0,
+        daysCount: Object.keys(s.days).length
+      })).sort((a, b) => b.pct - a.pct);
+
+      const overallPct = allApplicable > 0 ? Math.round((allDone / allApplicable) * 100) : 0;
+
+      const summaryHtml = `
+        <div class="rounded-2xl bg-[#B71C1C] text-white p-4 shadow flex items-center justify-between gap-3">
+          <div>
+            <div class="text-xs font-bold text-[#F3C4C0]">إجمالي الشهر ${escapeAttr(month)}</div>
+            <div class="text-sm font-extrabold">${rows.length} تقرير • ${list.length} موظف</div>
+          </div>
+          <span class="px-3.5 py-1.5 rounded-full bg-white text-[#B71C1C] text-base font-extrabold">${overallPct}%</span>
+        </div>
+      `;
+
+      const cardsHtml = list.map(s => {
+        const reportsSorted = s.reports.slice().sort((a, b) => String(a.date).localeCompare(String(b.date)));
+        const detailsHtml = reportsSorted.map(r => {
+          const nd = String(r.notDoneItems || '').trim();
+          return `
+            <div class="rounded-xl bg-[#FFF6F5] border border-[#F3C4C0] p-2.5 text-xs font-semibold text-[#B71C1C] space-y-1">
+              <div class="flex items-center justify-between gap-2">
+                <span>${escapeAttr(r.date)} • ${escapeAttr(r.dept)} • ${escapeAttr(r.shift)}</span>
+                <span class="px-2 py-0.5 rounded-full ${pctBgClass(Number(r.pct) || 0)} text-white font-extrabold">${Number(r.pct) || 0}%</span>
+              </div>
+              ${nd ? `<div class="text-rose-800 font-bold">❌ ${escapeAttr(nd)}</div>` : ''}
+              ${String(r.note || '').trim() ? `<div class="text-[#A93226]">📝 ${escapeAttr(r.note)}</div>` : ''}
+            </div>
+          `;
+        }).join('');
+
+        return `
+          <details class="rounded-2xl bg-white border border-[#F3C4C0] shadow-sm p-4">
+            <summary class="cursor-pointer list-none space-y-2.5">
+              <div class="flex items-center justify-between gap-3">
+                <span class="text-sm sm:text-base font-extrabold text-[#B71C1C]">👤 ${escapeAttr(s.name)}</span>
+                <span class="px-3 py-1 rounded-full ${pctBgClass(s.pct)} text-white text-sm font-extrabold">${s.pct}%</span>
+              </div>
+              <div class="w-full h-2 rounded-full bg-[#FDECEA] overflow-hidden">
+                <div class="h-full rounded-full ${pctBgClass(s.pct)}" style="width:${s.pct}%"></div>
+              </div>
+              <div class="text-[11px] sm:text-xs font-bold text-[#A93226]">
+                ${s.reports.length} تقرير • ${s.daysCount} يوم • ${s.done} بند منجز من ${s.applicable} • ${s.notDone} غير منفذ
+              </div>
+            </summary>
+            <div class="mt-3 space-y-2">${detailsHtml}</div>
+          </details>
+        `;
+      }).join('');
+
+      results.innerHTML = summaryHtml + cardsHtml;
+    }
+
+    // =========================================================================
     // 6. INITIALIZATION
     // =========================================================================
     function init() {
@@ -1378,8 +1651,8 @@
           document.querySelectorAll('.shift-btn').forEach(b => {
             const active = b.dataset.shift === state.selectedShift;
             b.className = active
-              ? 'shift-btn py-3.5 px-4 rounded-2xl border-2 border-[#3E2723] bg-[#3E2723] text-white font-extrabold text-sm sm:text-base shadow-sm transition flex items-center justify-center gap-2'
-              : 'shift-btn py-3.5 px-4 rounded-2xl border-2 border-[#D7CCC8] bg-[#F7F4F2] text-[#3E2723] font-extrabold text-sm sm:text-base transition flex items-center justify-center gap-2';
+              ? 'shift-btn py-3.5 px-4 rounded-2xl border-2 border-[#B71C1C] bg-[#B71C1C] text-white font-extrabold text-sm sm:text-base shadow-sm transition flex items-center justify-center gap-2'
+              : 'shift-btn py-3.5 px-4 rounded-2xl border-2 border-[#F3C4C0] bg-[#FFF6F5] text-[#B71C1C] font-extrabold text-sm sm:text-base transition flex items-center justify-center gap-2';
           });
           updateProgressAndStats();
         });
@@ -1432,13 +1705,25 @@
       document.getElementById('copyReportBtn').addEventListener('click', copyReportToClipboard);
       document.getElementById('startNewChecklistBtn').addEventListener('click', startNewChecklist);
 
+      // Manager dashboard
+      document.getElementById('managerMonthInput').value = `${yyyy}-${mm}`;
+      document.getElementById('openManagerBtn').addEventListener('click', openManager);
+      document.getElementById('closeManagerBtn').addEventListener('click', closeManager);
+      document.getElementById('loadManagerBtn').addEventListener('click', loadManagerStats);
+
+      // Retry any reports that failed to save earlier (offline etc.)
+      flushPending();
+
       renderAll();
     }
 
     window.addEventListener('DOMContentLoaded', init);
   </script>
-  <footer style="text-align:center; padding:12px; font-size:12px; opacity:0.75;">
-    متابعة المدير: محمود عماد
+  <footer style="text-align:center; padding:12px; font-size:12px;">
+    <div style="opacity:0.75;">متابعة المدير: محمود عماد</div>
+    <button id="openManagerBtn" type="button" style="margin-top:8px; padding:6px 14px; border-radius:12px; border:1px solid #F3C4C0; background:#fff; color:#B71C1C; font-weight:800; font-size:12px;">
+      📊 لوحة المدير
+    </button>
   </footer>
 </body>
 </html>

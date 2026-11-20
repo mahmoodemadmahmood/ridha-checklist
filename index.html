@@ -390,16 +390,45 @@
     <section id="managerView" class="hidden space-y-5 fade-in">
       <div class="rounded-3xl bg-white border border-[#F3C4C0] shadow-sm p-4 sm:p-6 space-y-4">
         <div class="flex items-center justify-between gap-2 border-b border-[#FDECEA] pb-3">
-          <h2 class="text-base sm:text-lg font-extrabold text-[#B71C1C]">📊 لوحة المدير — الإنجاز الشهري</h2>
+          <h2 id="managerTitleHeading" class="text-base sm:text-lg font-extrabold text-[#B71C1C]">📊 لوحة المدير — الإنجاز الشهري</h2>
           <button id="closeManagerBtn" type="button" class="py-2 px-3.5 rounded-xl bg-[#FDECEA] hover:bg-[#F3C4C0] text-[#B71C1C] text-xs font-extrabold transition">
             رجوع
           </button>
         </div>
 
+        <!-- Period Mode Selector: Daily or Monthly -->
+        <div>
+          <label class="block text-sm font-bold text-[#B71C1C] mb-2">نوع النسبة</label>
+          <div class="grid grid-cols-2 gap-3">
+            <button
+              id="modeDailyBtn"
+              type="button"
+              data-period-mode="daily"
+              class="period-mode-btn py-3 px-4 rounded-2xl border-2 border-[#F3C4C0] bg-[#FFF6F5] text-[#B71C1C] font-extrabold text-sm transition flex items-center justify-center gap-2"
+            >
+              <span>📅</span>
+              <span>نسبة يومية</span>
+            </button>
+            <button
+              id="modeMonthlyBtn"
+              type="button"
+              data-period-mode="monthly"
+              class="period-mode-btn py-3 px-4 rounded-2xl border-2 border-[#B71C1C] bg-[#B71C1C] text-white font-extrabold text-sm shadow-sm transition flex items-center justify-center gap-2"
+            >
+              <span>🗓️</span>
+              <span>نسبة شهرية</span>
+            </button>
+          </div>
+        </div>
+
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <div>
+          <div id="monthlyPickerWrapper">
             <label for="managerMonthInput" class="block text-sm font-bold text-[#B71C1C] mb-1.5">الشهر</label>
             <input id="managerMonthInput" type="month" class="w-full py-3 px-4 rounded-2xl border-2 border-[#F3C4C0] focus:border-[#B71C1C] focus:outline-none bg-[#FFF6F5] text-sm font-bold text-[#B71C1C]" />
+          </div>
+          <div id="dailyPickerWrapper" class="hidden">
+            <label for="managerDayInput" class="block text-sm font-bold text-[#B71C1C] mb-1.5">اليوم</label>
+            <input id="managerDayInput" type="date" class="w-full py-3 px-4 rounded-2xl border-2 border-[#F3C4C0] focus:border-[#B71C1C] focus:outline-none bg-[#FFF6F5] text-sm font-bold text-[#B71C1C]" />
           </div>
           <div>
             <label for="managerPinInput" class="block text-sm font-bold text-[#B71C1C] mb-1.5">رمز المدير</label>
@@ -567,7 +596,7 @@
           createItem('تنظيف وترتيب أرقام الطاولات'),
           createItem('فحص وتشغيل نظام الصوت'),
           createItem('ترتيب أكياس البيع المباشر (لوجو)'),
-          createItem('ترتيب وتنظيف الدكان (علب القهوة)'),
+          createItem('تنظيف وترتيب الدكان (علب القهوة)'),
           createItem('ترتيب التمر والمكسرات'),
           createItem('تنظيف رفوف الديكور')
         ]
@@ -633,6 +662,7 @@
     const state = {
       selectedDeptId: 'hot_bar',
       selectedShift: 'الشفت الصباحي',
+      managerPeriodMode: 'monthly', // 'daily' | 'monthly'
       // statuses[deptId][index] = 'DONE' | 'NOT_DONE' | 'NA' | null
       statuses: {},
       // notes[deptId][index] = string
@@ -1249,7 +1279,7 @@
       state.lastGeneratedReportText = finalReport;
       state.lastAttachedFiles = attachedFiles;
 
-      // Save this report to the shared Google Sheet (monthly tracking)
+      // Save this report to the shared Google Sheet (daily & monthly tracking)
       const reportRecord = {
         id: 'r_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8),
         date: formattedDateStr,
@@ -1407,7 +1437,7 @@
     }
 
     // =========================================================================
-    // 5B. MONTHLY TRACKING (GOOGLE SHEET) + MANAGER DASHBOARD
+    // 5B. DAILY & MONTHLY TRACKING (GOOGLE SHEET) + MANAGER DASHBOARD
     // =========================================================================
     // الصق هنا رابط Web App الناتج من Google Apps Script (ينتهي بـ /exec)
     const SHEET_API_URL = 'https://script.google.com/macros/s/AKfycbwDFPAm4zPWnjg97sE0qjP6NIkDd32XqwZNNFXoU147EIvXJUO5FuYKdcU9szq39gLbdg/exec';
@@ -1466,22 +1496,52 @@
 
     async function submitReportToSheet(rec) {
       if (!sheetConfigured()) {
-        setSheetStatus('err', '⚠️ حفظ السجل الشهري غير مفعّل بعد (رابط Google Sheet غير مضاف). التقرير جاهز للواتساب فقط.');
+        setSheetStatus('err', '⚠️ حفظ السجل غير مفعّل بعد (رابط Google Sheet غير مضاف). التقرير جاهز للواتساب فقط.');
         return;
       }
       const list = getPending();
       list.push(rec);
       setPending(list);
-      setSheetStatus('wait', '⏳ جاري حفظ التقرير في السجل الشهري...');
+      setSheetStatus('wait', '⏳ جاري حفظ التقرير في السجل...');
       const r = await flushPending();
       if (r.left === 0) {
-        setSheetStatus('ok', '✓ تم حفظ التقرير في السجل الشهري.');
+        setSheetStatus('ok', '✓ تم حفظ التقرير في السجل بنجاح.');
       } else {
         setSheetStatus('err', '⚠️ لم يُحفظ بعد (لا يوجد اتصال). سيُعاد الحفظ تلقائياً عند فتح الصفحة مرة ثانية.');
       }
     }
 
     // ---------- Manager dashboard ----------
+    function setPeriodMode(mode) {
+      state.managerPeriodMode = mode === 'daily' ? 'daily' : 'monthly';
+      const isDaily = state.managerPeriodMode === 'daily';
+
+      const dailyBtn = document.getElementById('modeDailyBtn');
+      const monthlyBtn = document.getElementById('modeMonthlyBtn');
+      const dailyWrap = document.getElementById('dailyPickerWrapper');
+      const monthlyWrap = document.getElementById('monthlyPickerWrapper');
+      const titleEl = document.getElementById('managerTitleHeading');
+
+      if (dailyBtn && monthlyBtn) {
+        dailyBtn.className = isDaily
+          ? 'period-mode-btn py-3 px-4 rounded-2xl border-2 border-[#B71C1C] bg-[#B71C1C] text-white font-extrabold text-sm shadow-sm transition flex items-center justify-center gap-2'
+          : 'period-mode-btn py-3 px-4 rounded-2xl border-2 border-[#F3C4C0] bg-[#FFF6F5] text-[#B71C1C] font-extrabold text-sm transition flex items-center justify-center gap-2';
+
+        monthlyBtn.className = !isDaily
+          ? 'period-mode-btn py-3 px-4 rounded-2xl border-2 border-[#B71C1C] bg-[#B71C1C] text-white font-extrabold text-sm shadow-sm transition flex items-center justify-center gap-2'
+          : 'period-mode-btn py-3 px-4 rounded-2xl border-2 border-[#F3C4C0] bg-[#FFF6F5] text-[#B71C1C] font-extrabold text-sm transition flex items-center justify-center gap-2';
+      }
+
+      if (dailyWrap) dailyWrap.classList.toggle('hidden', !isDaily);
+      if (monthlyWrap) monthlyWrap.classList.toggle('hidden', isDaily);
+      if (titleEl) {
+        titleEl.textContent = isDaily ? '📊 لوحة المدير — النسبة اليومية' : '📊 لوحة المدير — النسبة الشهرية';
+      }
+
+      document.getElementById('managerMessage').className = 'hidden';
+      document.getElementById('managerResults').innerHTML = '';
+    }
+
     function showManagerMessage(kind, msg) {
       const el = document.getElementById('managerMessage');
       const styles = {
@@ -1513,7 +1573,11 @@
     }
 
     async function loadManagerStats() {
-      const month = document.getElementById('managerMonthInput').value;
+      const isDaily = state.managerPeriodMode === 'daily';
+      const selectedDay = document.getElementById('managerDayInput').value;
+      const month = isDaily
+        ? String(selectedDay || '').slice(0, 7)
+        : document.getElementById('managerMonthInput').value;
       const pin = document.getElementById('managerPinInput').value.trim();
       const results = document.getElementById('managerResults');
       results.innerHTML = '';
@@ -1522,8 +1586,18 @@
         showManagerMessage('err', 'رابط Google Sheet غير مضاف في الكود بعد.');
         return;
       }
-      if (!month) { showManagerMessage('err', 'اختر الشهر أولاً.'); return; }
-      if (!pin) { showManagerMessage('err', 'اكتب رمز المدير.'); return; }
+      if (isDaily && !selectedDay) {
+        showManagerMessage('err', 'اختر اليوم أولاً.');
+        return;
+      }
+      if (!isDaily && !month) {
+        showManagerMessage('err', 'اختر الشهر أولاً.');
+        return;
+      }
+      if (!pin) {
+        showManagerMessage('err', 'اكتب رمز المدير.');
+        return;
+      }
 
       showManagerMessage('wait', '⏳ جاري تحميل البيانات...');
       try {
@@ -1535,13 +1609,85 @@
           return;
         }
         document.getElementById('managerMessage').className = 'hidden';
-        renderManagerStats(data.rows || [], month);
+
+        const allRows = data.rows || [];
+        if (isDaily) {
+          const dayRows = allRows.filter(r => String(r.date || '').slice(0, 10) === selectedDay);
+          renderDailyStats(dayRows, selectedDay);
+        } else {
+          renderMonthlyStats(allRows, month);
+        }
       } catch (e) {
         showManagerMessage('err', 'تعذر الاتصال بالسجل. تأكد من الإنترنت ومن رابط Apps Script.');
       }
     }
 
-    function renderManagerStats(rows, month) {
+    function renderDailyStats(rows, dayStr) {
+      const results = document.getElementById('managerResults');
+      if (!rows.length) {
+        results.innerHTML = `<div class="rounded-2xl bg-white border border-[#F3C4C0] p-5 text-center text-sm font-bold text-[#A93226]">لا توجد تقارير مسجلة ليوم ${escapeAttr(dayStr)}.</div>`;
+        return;
+      }
+
+      let allDone = 0;
+      let allApplicable = 0;
+      const staffNames = {};
+
+      rows.forEach(r => {
+        const name = normalizeName(r.staff) || 'بدون اسم';
+        staffNames[name] = true;
+        allDone += Number(r.done) || 0;
+        allApplicable += Number(r.applicable) || 0;
+      });
+
+      const overallPct = allApplicable > 0 ? Math.round((allDone / allApplicable) * 100) : 0;
+
+      const summaryHtml = `
+        <div class="rounded-2xl bg-[#B71C1C] text-white p-4 shadow flex items-center justify-between gap-3">
+          <div>
+            <div class="text-xs font-bold text-[#F3C4C0]">إجمالي يوم ${escapeAttr(dayStr)}</div>
+            <div class="text-sm font-extrabold">${rows.length} تقرير • ${Object.keys(staffNames).length} موظف • ${allDone} منجز من ${allApplicable}</div>
+          </div>
+          <span class="px-3.5 py-1.5 rounded-full bg-white text-[#B71C1C] text-base font-extrabold">${overallPct}%</span>
+        </div>
+      `;
+
+      const cardsHtml = rows.map(r => {
+        const name = normalizeName(r.staff) || 'بدون اسم';
+        const done = Number(r.done) || 0;
+        const applicable = Number(r.applicable) || 0;
+        const notDone = Number(r.notDone) || 0;
+        const pct = r.pct !== undefined && r.pct !== ''
+          ? Number(r.pct)
+          : (applicable > 0 ? Math.round((done / applicable) * 100) : 0);
+        const nd = String(r.notDoneItems || '').trim();
+        const note = String(r.note || '').trim();
+
+        return `
+          <div class="rounded-2xl bg-white border border-[#F3C4C0] shadow-sm p-4 space-y-2.5">
+            <div class="flex items-center justify-between gap-3">
+              <div>
+                <div class="text-sm sm:text-base font-extrabold text-[#B71C1C]">👤 ${escapeAttr(name)}</div>
+                <div class="text-xs font-bold text-[#A93226]">${escapeAttr(r.dept || '')} • ${escapeAttr(r.shift || '')}</div>
+              </div>
+              <span class="px-3 py-1 rounded-full ${pctBgClass(pct)} text-white text-sm font-extrabold">${pct}%</span>
+            </div>
+            <div class="w-full h-2 rounded-full bg-[#FDECEA] overflow-hidden">
+              <div class="h-full rounded-full ${pctBgClass(pct)}" style="width:${pct}%"></div>
+            </div>
+            <div class="text-[11px] sm:text-xs font-bold text-[#A93226]">
+              ${done} بند منجز من ${applicable} • ${notDone} غير منفذ
+            </div>
+            ${nd ? `<div class="rounded-xl bg-rose-50 border border-rose-200 p-2.5 text-xs font-bold text-rose-800">❌ ${escapeAttr(nd)}</div>` : ''}
+            ${note ? `<div class="rounded-xl bg-[#FFF6F5] border border-[#F3C4C0] p-2.5 text-xs font-semibold text-[#B71C1C]">📝 ${escapeAttr(note)}</div>` : ''}
+          </div>
+        `;
+      }).join('');
+
+      results.innerHTML = summaryHtml + cardsHtml;
+    }
+
+    function renderMonthlyStats(rows, month) {
       const results = document.getElementById('managerResults');
       if (!rows.length) {
         results.innerHTML = `<div class="rounded-2xl bg-white border border-[#F3C4C0] p-5 text-center text-sm font-bold text-[#A93226]">لا توجد تقارير مسجلة لشهر ${escapeAttr(month)}.</div>`;
@@ -1630,7 +1776,9 @@
       const yyyy = now.getFullYear();
       const mm = String(now.getMonth() + 1).padStart(2, '0');
       const dd = String(now.getDate()).padStart(2, '0');
-      document.getElementById('reportDateInput').value = `${yyyy}-${mm}-${dd}`;
+      const todayStr = `${yyyy}-${mm}-${dd}`;
+      document.getElementById('reportDateInput').value = todayStr;
+      document.getElementById('managerDayInput').value = todayStr;
 
       // Staff name live listener for Shift Supervisor mode
       const staffNameInput = document.getElementById('staffNameInput');
@@ -1707,6 +1855,8 @@
 
       // Manager dashboard
       document.getElementById('managerMonthInput').value = `${yyyy}-${mm}`;
+      document.getElementById('modeDailyBtn').addEventListener('click', () => setPeriodMode('daily'));
+      document.getElementById('modeMonthlyBtn').addEventListener('click', () => setPeriodMode('monthly'));
       document.getElementById('openManagerBtn').addEventListener('click', openManager);
       document.getElementById('closeManagerBtn').addEventListener('click', closeManager);
       document.getElementById('loadManagerBtn').addEventListener('click', loadManagerStats);

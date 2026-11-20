@@ -107,4 +107,1338 @@
       <!-- Live Progress Bar -->
       <div class="space-y-1.5">
         <div class="flex items-center justify-between text-xs text-[#EFEBE9]">
-          <span id="headerDeptLabel" class="font-bold
+          <span id="headerDeptLabel" class="font-bold">القسم الساخن</span>
+          <span id="headerProgressText" class="font-semibold text-[#D7CCC8]">0 من 34 بند مكتمل</span>
+        </div>
+        <div class="w-full h-2.5 rounded-full bg-[#261613] overflow-hidden">
+          <div
+            id="headerProgressBar"
+            class="h-full rounded-full bg-gradient-to-l from-emerald-400 to-[#1B5E20] transition-all duration-300"
+            style="width: 0%"
+          ></div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Container -->
+  <main class="max-w-3xl mx-auto px-4 pt-5 space-y-5">
+
+    <!-- ==================== FORM VIEW (STAFF INPUT) ==================== -->
+    <section id="formView" class="space-y-5 fade-in">
+
+      <!-- Operational Policy Reminder Banner -->
+      <div class="rounded-2xl bg-white border border-[#D7CCC8] p-3.5 sm:p-4 shadow-sm flex items-start gap-3">
+        <div class="w-9 h-9 rounded-xl bg-[#3E2723] text-[#EFEBE9] flex items-center justify-center shrink-0 mt-0.5">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
+          </svg>
+        </div>
+        <div class="text-xs sm:text-sm leading-relaxed text-[#3E2723]">
+          <span class="font-extrabold">تعليمات:</span> يُمنع خلع الصدرية أو المغادرة المبكرة بدون موافقة مسؤول الشفت، ويُمنع الإجازة أو الخروج المبكر يومي الخميس والجمعة لأي سبب. يرجى إكمال التنظيف والتدقيق بدقة عالية قبل إرسال التقرير.
+        </div>
+      </div>
+
+      <!-- Step 1: Staff Info Card -->
+      <div class="rounded-3xl bg-white border border-[#D7CCC8] shadow-sm p-4 sm:p-6 space-y-4">
+        <h2 class="text-base sm:text-lg font-extrabold text-[#3E2723] flex items-center gap-2 border-b border-[#EFEBE9] pb-3">
+          <span class="w-2.5 h-6 rounded-full bg-[#3E2723] inline-block"></span>
+          <span>1. البيانات الأساسية</span>
+        </h2>
+
+        <!-- Staff Name & Date -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label for="staffNameInput" class="block text-sm font-bold text-[#3E2723] mb-1.5">
+              اسم الموظف <span class="text-red-600">*</span>
+            </label>
+            <input
+              id="staffNameInput"
+              type="text"
+              placeholder="اكتب اسمك الكامل هنا..."
+              class="w-full py-3.5 px-4 rounded-2xl border-2 border-[#D7CCC8] focus:border-[#3E2723] focus:outline-none bg-[#F7F4F2] focus:bg-white text-sm sm:text-base font-bold text-[#3E2723] transition"
+            />
+            <p id="supervisorModeHint" class="hidden mt-1.5 text-xs font-extrabold text-[#1B5E20]">
+              ✓ تم تفعيل وضع مسؤول الشفت — تم فتح جميع الأقسام وبنود المسؤول (بصور إجبارية) للمراجعة الشاملة.
+            </p>
+          </div>
+
+          <div>
+            <label for="reportDateInput" class="block text-sm font-bold text-[#3E2723] mb-1.5">
+              التاريخ
+            </label>
+            <input
+              id="reportDateInput"
+              type="date"
+              class="w-full py-3.5 px-4 rounded-2xl border-2 border-[#D7CCC8] focus:border-[#3E2723] focus:outline-none bg-[#F7F4F2] focus:bg-white text-sm sm:text-base font-bold text-[#3E2723] transition"
+            />
+          </div>
+        </div>
+
+        <!-- Shift Selection -->
+        <div>
+          <label class="block text-sm font-bold text-[#3E2723] mb-2">
+            اختيار الشفت <span class="text-red-600">*</span>
+          </label>
+          <div class="grid grid-cols-2 gap-3">
+            <button
+              type="button"
+              data-shift="الشفت الصباحي"
+              class="shift-btn py-3.5 px-4 rounded-2xl border-2 border-[#3E2723] bg-[#3E2723] text-white font-extrabold text-sm sm:text-base shadow-sm transition flex items-center justify-center gap-2"
+            >
+              <span>☀️</span>
+              <span>الشفت الصباحي</span>
+            </button>
+            <button
+              type="button"
+              data-shift="الشفت المسائي"
+              class="shift-btn py-3.5 px-4 rounded-2xl border-2 border-[#D7CCC8] bg-[#F7F4F2] text-[#3E2723] font-extrabold text-sm sm:text-base transition flex items-center justify-center gap-2"
+            >
+              <span>🌙</span>
+              <span>الشفت المسائي</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Department Selection -->
+        <div id="departmentSelectorWrapper">
+          <label class="block text-sm font-bold text-[#3E2723] mb-2">
+            اختيار القسم <span class="text-red-600">*</span>
+          </label>
+          <div id="departmentGrid" class="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 2: Checklist Action Toolbar -->
+      <div class="rounded-3xl bg-white border border-[#D7CCC8] shadow-sm p-4 sm:p-5 space-y-3">
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <div>
+            <h2 id="activeSectionHeading" class="text-base sm:text-lg font-extrabold text-[#3E2723]">
+              بنود القسم الساخن
+            </h2>
+            <p class="text-xs text-[#6D4C41] font-medium">
+              اختر حالة كل بند (تم / غير منفذ / لا ينطبق) وأرفق الصور الإجبارية للبنود المحددة
+            </p>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <button
+              id="markAllDoneBtn"
+              type="button"
+              class="py-2.5 px-3.5 rounded-xl bg-[#1B5E20] hover:bg-[#144718] active:scale-95 text-white text-xs sm:text-sm font-extrabold shadow-sm transition flex items-center gap-1.5"
+            >
+              <span>✓</span>
+              <span>تحديد الكل كـ (تم)</span>
+            </button>
+            <button
+              id="resetSectionBtn"
+              type="button"
+              class="py-2.5 px-3 rounded-xl bg-[#EFEBE9] hover:bg-[#D7CCC8] active:scale-95 text-[#3E2723] text-xs font-bold transition"
+            >
+              تصفير
+            </button>
+          </div>
+        </div>
+
+        <!-- Mini Status Counters -->
+        <div class="grid grid-cols-3 gap-2 pt-1 text-center">
+          <div class="rounded-xl bg-emerald-50 border border-emerald-200 py-2 px-2">
+            <span class="block text-[11px] font-bold text-[#1B5E20]">تم</span>
+            <span id="countDone" class="text-base sm:text-lg font-extrabold text-[#1B5E20]">0</span>
+          </div>
+          <div class="rounded-xl bg-rose-50 border border-rose-200 py-2 px-2">
+            <span class="block text-[11px] font-bold text-rose-800">غير منفذ</span>
+            <span id="countNotDone" class="text-base sm:text-lg font-extrabold text-rose-700">0</span>
+          </div>
+          <div class="rounded-xl bg-stone-100 border border-stone-200 py-2 px-2">
+            <span class="block text-[11px] font-bold text-stone-700">لا ينطبق</span>
+            <span id="countNa" class="text-base sm:text-lg font-extrabold text-stone-700">0</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Checklist Items List -->
+      <div id="checklistContainer" class="space-y-3">
+        <!-- Rendered by JS -->
+      </div>
+
+      <!-- General Note & Submit Card -->
+      <div class="rounded-3xl bg-white border border-[#D7CCC8] shadow-sm p-4 sm:p-6 space-y-4">
+        <div>
+          <label for="generalNoteInput" class="block text-sm font-bold text-[#3E2723] mb-1.5">
+            ملاحظة عامة عن القسم (اختياري)
+          </label>
+          <textarea
+            id="generalNoteInput"
+            rows="3"
+            placeholder="أضف أي ملاحظة إضافية حول حالة الأجهزة، نقص المواد، أو تسليم الشفت..."
+            class="w-full p-3.5 rounded-2xl border-2 border-[#D7CCC8] focus:border-[#3E2723] focus:outline-none bg-[#F7F4F2] focus:bg-white text-sm font-medium text-[#3E2723] transition"
+          ></textarea>
+        </div>
+
+        <!-- Validation Error Banner -->
+        <div id="validationAlert" class="hidden rounded-2xl bg-rose-50 border-2 border-rose-300 text-rose-800 p-3.5 text-xs sm:text-sm font-bold leading-relaxed"></div>
+
+        <!-- Primary Finish & Send Button -->
+        <button
+          id="finishReportBtn"
+          type="button"
+          class="w-full py-4 px-6 rounded-2xl bg-[#3E2723] hover:bg-[#261613] active:scale-[0.99] text-white font-extrabold text-base sm:text-lg shadow-lg transition flex items-center justify-center gap-2.5"
+        >
+          <svg class="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+          <span>إنهاء وإرسال التقرير للمدير</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ==================== SUMMARY & WHATSAPP VIEW ==================== -->
+    <section id="summaryView" class="hidden space-y-5 fade-in">
+      <div class="rounded-3xl bg-white border-2 border-[#1B5E20]/40 shadow-md p-5 sm:p-6 space-y-5">
+        <!-- Success Header -->
+        <div class="flex items-center gap-3.5 border-b border-[#EFEBE9] pb-4">
+          <div class="w-12 h-12 rounded-2xl bg-[#1B5E20] text-white flex items-center justify-center shrink-0 shadow">
+            <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2.6" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+            </svg>
+          </div>
+          <div>
+            <h2 class="text-lg sm:text-xl font-extrabold text-[#1B5E20]">
+              تقرير الجيك لست جاهز للإرسال!
+            </h2>
+            <p id="summarySubtitleText" class="text-xs sm:text-sm text-[#5D4037] font-semibold">
+              اضغط على زر واتساب أدناه لإرسال التقرير والصور مباشرة إلى المدير.
+            </p>
+          </div>
+        </div>
+
+        <!-- Structured Summary Metadata -->
+        <div id="summaryMetaGrid" class="grid grid-cols-2 gap-3 rounded-2xl bg-[#F7F4F2] border border-[#D7CCC8] p-4 text-xs sm:text-sm">
+          <!-- Populated dynamically -->
+        </div>
+
+        <!-- Attached Photos Preview in Summary -->
+        <div id="summaryPhotosBox" class="hidden space-y-2">
+          <div class="text-xs sm:text-sm font-extrabold text-[#3E2723]">
+            الصور المرفقة مع التقرير:
+          </div>
+          <div id="summaryPhotosGrid" class="grid grid-cols-2 sm:grid-cols-3 gap-3"></div>
+        </div>
+
+        <!-- Formatted Report Preview Box -->
+        <div class="space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-xs sm:text-sm font-extrabold text-[#3E2723]">معاينة نص التقرير المنسق:</span>
+            <span class="text-[11px] font-bold text-[#6D4C41]">جاهز للإرسال</span>
+          </div>
+          <pre
+            id="formattedReportPreview"
+            class="w-full max-h-80 overflow-y-auto whitespace-pre-wrap break-words rounded-2xl bg-[#EFEBE9] border border-[#D7CCC8] p-4 text-xs sm:text-sm font-semibold text-[#261613] leading-relaxed"
+          ></pre>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="space-y-3 pt-1">
+          <!-- Direct WhatsApp / Share Send Button -->
+          <button
+            id="whatsappSendBtn"
+            type="button"
+            class="w-full py-4 px-5 rounded-2xl bg-[#1B5E20] hover:bg-[#144718] active:scale-[0.99] text-white font-extrabold text-base sm:text-lg shadow-lg transition flex items-center justify-center gap-2.5"
+          >
+            <svg class="w-6 h-6 shrink-0" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12.031 2c-5.516 0-9.97 4.454-9.97 9.97 0 1.76.46 3.477 1.335 4.993L2 22l5.217-1.368a9.93 9.93 0 004.814 1.238h.004c5.515 0 9.969-4.454 9.969-9.97 0-2.664-1.038-5.168-2.922-7.052A9.904 9.904 0 0012.031 2zm5.816 14.083c-.245.69-1.425 1.32-1.99 1.405-.51.076-1.155.108-1.865-.117-.43-.137-.98-.32-1.685-.625-2.965-1.28-4.9-4.265-5.048-4.463-.147-.197-1.205-1.603-1.205-3.058 0-1.455.763-2.17 1.034-2.466.27-.296.59-.37.787-.37.197 0 .394.002.566.01.182.008.425-.069.665.507.245.59.835 2.036.908 2.184.074.148.123.32.025.518-.098.197-.147.32-.295.493-.147.172-.31.385-.443.517-.147.148-.301.308-.13.604.173.295.768 1.266 1.648 2.05 1.132 1.01 2.086 1.323 2.382 1.47.295.148.468.124.64-.073.172-.197.738-.86.935-1.156.197-.295.394-.246.665-.148.27.099 1.72.812 2.015.96.295.147.492.221.566.344.074.123.074.714-.172 1.404z"/>
+            </svg>
+            <span id="whatsappSendBtnLabel">إرسال التقرير والصور عبر واتساب للمدير</span>
+          </button>
+
+          <!-- Copy Report & Start New Checklist Buttons -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <button
+              id="copyReportBtn"
+              type="button"
+              class="py-3.5 px-4 rounded-2xl bg-[#3E2723] hover:bg-[#261613] active:scale-[0.99] text-white font-extrabold text-sm sm:text-base transition flex items-center justify-center gap-2"
+            >
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+              </svg>
+              <span>نسخ التقرير</span>
+            </button>
+
+            <button
+              id="startNewChecklistBtn"
+              type="button"
+              class="py-3.5 px-4 rounded-2xl bg-[#EFEBE9] hover:bg-[#D7CCC8] active:scale-[0.99] text-[#3E2723] font-extrabold text-sm sm:text-base transition flex items-center justify-center gap-2"
+            >
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+              </svg>
+              <span>بدء جيك لست جديد</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Toast Message Box -->
+  <div id="toastBox" class="hidden fixed bottom-5 left-1/2 z-50 px-5 py-3 rounded-2xl bg-[#3E2723] text-white text-sm font-extrabold shadow-2xl border border-[#8D6E63] toast-pop"></div>
+
+  <script>
+    // =========================================================================
+    // 1. DEPARTMENT DATA & MANDATORY PHOTO ITEMS
+    // =========================================================================
+    function createItem(text, requiresPhoto = false) {
+      return { text, requiresPhoto };
+    }
+
+    const DEPARTMENTS = [
+      {
+        id: 'hot_bar',
+        name: 'القسم الساخن',
+        icon: '☕',
+        items: [
+          createItem('تنظيف حاويات النفايات'),
+          createItem('تنظيف ضاغطة المحلى'),
+          createItem('تنظيف ماكينة التركية'),
+          createItem('تنظيف سماور الشاي'),
+          createItem('تنظيف بيتشر تحضير القهوة'),
+          createItem('تنظيف خزان الإسبريسو'),
+          createItem('تنظيف تمبر القهوة'),
+          createItem('تنظيف بورتافلتر'),
+          createItem('تنظيف عيون ماكينة الإسبريسو'),
+          createItem('تنظيف حاويات الشوت'),
+          createItem('تنظيف الملاعق المعدنية الطويلة'),
+          createItem('تنظيف ملاعق المواد'),
+          createItem('تنظيف مطحنة القهوة الإلكترونية'),
+          createItem('تنظيف آلة الرسم على القهوة'),
+          createItem('تنظيف طابعة القسم'),
+          createItem('تنظيف طفاية الحريق'),
+          createItem('تنظيف شاشة عرض الإعلانات'),
+          createItem('تنظيف ميز خط عمل الساخن'),
+          createItem('تنظيف رفوف الديكور'),
+          createItem('تنظيف أرضية القسم'),
+          createItem('تنظيف السنك والخلاط'),
+          createItem('تنظيف بلانك شفاف لمواد الخليط'),
+          createItem('تنظيف أدوات الكيمكس'),
+          createItem('تنظيف حافظة أدوات التقديم'),
+          createItem('تنظيف وصل التنظيف'),
+          createItem('ترتيب المواد السفرية بالقسم'),
+          createItem('التزام الموظف بالزي الموحد'),
+          createItem('فحص وزن وطعم الإسبريسو والتبوير'),
+          createItem('فحص حليب خالي اللاكتوز واللوز والشوفان ووضع ستيكر عند الفتح'),
+          createItem('التأكد من وضع ستيكر يوضح تاريخ فتح العبوة على الحليب بأنواعه عند فتحها', true),
+          createItem('تنظيف فتحة تصريف المياه'),
+          createItem('التأكد من تغطية المواد المفتوحة'),
+          createItem('التأكد من كبس أكياس الخلايط عند تعويض النقص'),
+          createItem('وضع ستيكر عند طحن القهوة التركية')
+        ]
+      },
+      {
+        id: 'cold_bar',
+        name: 'قسم البارد',
+        icon: '🧊',
+        items: [
+          createItem('تنظيف تختة تقطيع الفواكه'),
+          createItem('تنظيف التي كريب'),
+          createItem('تنظيف مسدس الكريمة'),
+          createItem('تنظيف قيف العجين'),
+          createItem('تنظيف البتشر'),
+          createItem('تنظيف حافظة النعناع'),
+          createItem('تنظيف الشفرات'),
+          createItem('تنظيف ماكينة الوافل'),
+          createItem('تنظيف قدح قياس السيروب'),
+          createItem('تنظيف ماكينة الكريب'),
+          createItem('تنظيف سكوب الآيس كريم وحافظته'),
+          createItem('تنظيف ماكينة عصر الجزر'),
+          createItem('تنظيف الآيس ميكر'),
+          createItem('تنظيف فتحة تصريف المياه'),
+          createItem('تنظيف الخلاط الكهربائي'),
+          createItem('تنظيف البلانك الشفاف لمواد الخليط'),
+          createItem('تنظيف الطابعة والهاتف'),
+          createItem('تنظيف ماكينة عصر البرتقال'),
+          createItem('تنظيف براد عرض الآيس كريم'),
+          createItem('تنظيف الملقط'),
+          createItem('تنظيف البطل الزجاجي للتبوير'),
+          createItem('تنظيف حافظات تبوير عصير البرتقال'),
+          createItem('تنظيف بطل التزيين'),
+          createItem('تنظيف براد عرض الفواكه'),
+          createItem('تنظيف الشيكرات'),
+          createItem('تنظيف رفوف الديكور'),
+          createItem('تنظيف ملاعق المواد'),
+          createItem('تنظيف طفاية الحريق'),
+          createItem('تنظيف ميز خط العمل'),
+          createItem('تنظيف السنك والخلاط'),
+          createItem('تنظيف شاشة عرض الإعلان'),
+          createItem('فحص جودة الشاي المبور'),
+          createItem('فحص جودة القهوة المثلجة بالبندق'),
+          createItem('فحص العجين الحلو'),
+          createItem('التأكد من وضع العجينة الحلوة في البراد والتقاط صورة توضح الستيكر الموضوع', true),
+          createItem('فحص جودة العجين المالح'),
+          createItem('تنظيف وصلاحية أرضية القسم'),
+          createItem('تحديث الستيكرات للمواد الغذائية داخل خط العمل (مهم جداً)'),
+          createItem('وضع ستيكرات على الحليب بأنواعه، المربى، الجبن، والعسل، والتقاط صورة واحدة لجميع المنتجات توضح الستيكرات', true),
+          createItem('التأكد من كبس أكياس الخلايط عند تعويض النقص'),
+          createItem('التأكد من بسكت اوريو وبسكت لوتس غير معرضين للرطوبة')
+        ]
+      },
+      {
+        id: 'kitchen',
+        name: 'قسم المطبخ',
+        icon: '🍳',
+        items: [
+          createItem('تنظيف براد خزن الفواكه والكيك'),
+          createItem('تنظيف المايكرويف'),
+          createItem('تنظيف طفاية الحريق'),
+          createItem('تنظيف أنابيب صرف المياه'),
+          createItem('تنظيف براد خزن الآيس كريم (التأكد من نظافة الفلتر ودرجة الحرارة لا تقل عن -15)'),
+          createItem('تنظيف طاحونة الفستق أو السكر'),
+          createItem('تنظيف حمالات الفناجين'),
+          createItem('تنظيف الصحون والفناجين وعدم تركها داخل السنك لفترة طويلة'),
+          createItem('تنظيف صيدلية الإسعافات الأولية (وترتيب محتوياتها)'),
+          createItem('تنظيف السنك والكاونتر'),
+          createItem('تنظيف غسالة الوصل'),
+          createItem('تنظيف وتفريغ حاويات النفايات'),
+          createItem('تنظيف أرضية المطبخ وخلوها من الزيوت والانسكابات'),
+          createItem('ترتيب صناديق الماء والحليب'),
+          createItem('ترتيب ماسحات التنظيف والوصل الخاصة بالتنظيف'),
+          createItem('ترتيب الكاونتر مجرات وأبواب'),
+          createItem('التأكد من نظافة رفوف المخزن وصناديق الخلاطات'),
+          createItem('ترتيب وتنظيم المواد السفري بشكل مرتب وسهل الوصول')
+        ]
+      },
+      {
+        id: 'cake',
+        name: 'قسم الكيك',
+        icon: '🎂',
+        items: [
+          createItem('تنظيف براد الكيك (الزجاج من الداخل والخارج)'),
+          createItem('فحص درجات الحرارة لبراد الكيك (لازم تكون بين 0–8 درجة مئوية)'),
+          createItem('ترتيب المنتجات في براد الكيك'),
+          createItem('تنظيف المايكرويف (من الداخل والخارج)'),
+          createItem('تنظيف وترتيب الرفوف'),
+          createItem('ترتيب علب السفري'),
+          createItem('تنظيف أدوات التقطيع والتقديم')
+        ]
+      },
+      {
+        id: 'cashier',
+        name: 'قسم الكاشير',
+        icon: '🧾',
+        items: [
+          createItem('تنظيف جهاز USB'),
+          createItem('تنظيف وترتيب أرقام الطاولات'),
+          createItem('فحص وتشغيل نظام الصوت'),
+          createItem('ترتيب أكياس البيع المباشر (لوجو)'),
+          createItem('ترتيب وتنظيف الدكان (علب القهوة)'),
+          createItem('ترتيب التمر والمكسرات'),
+          createItem('تنظيف رفوف الديكور')
+        ]
+      },
+      {
+        id: 'hall',
+        name: 'قسم الصالة',
+        icon: '🪑',
+        items: [
+          createItem('تنظيف باب دخول الفرع'),
+          createItem('تنظيف أرضية الصالة'),
+          createItem('تنظيف اللوكو الخارجي والداخلي'),
+          createItem('تنظيف الطاولات'),
+          createItem('تنظيف الكراسي'),
+          createItem('ترتيب وتنظيف محتويات الطاولة (النفاظة، حافظة الكلينكس)'),
+          createItem('تنظيف وترتيب رف المنيو'),
+          createItem('تنظيف الزجاج (الجام)'),
+          createItem('العناية بالنباتات وتنظيف السنادين'),
+          createItem('تنظيف وترتيب المكتبة'),
+          createItem('تنظيف طفاية الحريق'),
+          createItem('التأكد من نظافة حمامات الزبائن وتوفر الكلينكس، الصابون، والمعطر')
+        ]
+      }
+    ];
+
+    const SUPERVISOR_SECTION = {
+      id: 'supervisor_checks',
+      name: 'بنود المسؤول (صور إجبارية)',
+      icon: '🌡️',
+      items: [
+        createItem('فحص درجة حرارة عارضة الكيك والتأكد من أنها أقل من 6 درجات مئوية، مع التقاط صورة توضح القراءة', true),
+        createItem('فحص درجة حرارة عارضة الآيس كريم والتأكد من وصولها إلى -16 درجة مئوية، مع التقاط صورة توضح القراءة', true),
+        createItem('فحص درجة حرارة الصاعق والتأكد من وصولها إلى -20 درجة مئوية، مع التقاط صورة توضح القراءة', true),
+        createItem('فحص درجة حرارة براد الفواكه والتأكد من أنها لا تتجاوز 8 درجات مئوية كحد أقصى، مع التقاط صورة توضح القراءة', true)
+      ]
+    };
+
+    // =========================================================================
+    // 1B. SHIFT SUPERVISORS CONFIGURATION
+    // =========================================================================
+    const SHIFT_SUPERVISORS = [
+      'علي خضير فرعين',
+      'سجاد خالد جميل'
+    ];
+
+    function normalizeName(name) {
+      return String(name || '').trim().replace(/\s+/g, ' ');
+    }
+
+    function isShiftSupervisor() {
+      const inputEl = document.getElementById('staffNameInput');
+      const currentName = normalizeName(inputEl ? inputEl.value : '');
+      return SHIFT_SUPERVISORS.includes(currentName);
+    }
+
+    function getTargetDepartments() {
+      return isShiftSupervisor() ? [...DEPARTMENTS, SUPERVISOR_SECTION] : [getActiveDept()];
+    }
+
+    // =========================================================================
+    // 2. APPLICATION STATE
+    // =========================================================================
+    const state = {
+      selectedDeptId: 'hot_bar',
+      selectedShift: 'الشفت الصباحي',
+      // statuses[deptId][index] = 'DONE' | 'NOT_DONE' | 'NA' | null
+      statuses: {},
+      // notes[deptId][index] = string
+      notes: {},
+      // showNoteInput[deptId][index] = boolean
+      showNoteInput: {},
+      // photos[deptId][index] = { file, previewUrl, name }
+      photos: {},
+      lastGeneratedReportText: '',
+      lastAttachedFiles: []
+    };
+
+    function ensureDeptState(deptId) {
+      if (!state.statuses[deptId]) state.statuses[deptId] = {};
+      if (!state.notes[deptId]) state.notes[deptId] = {};
+      if (!state.showNoteInput[deptId]) state.showNoteInput[deptId] = {};
+      if (!state.photos[deptId]) state.photos[deptId] = {};
+    }
+
+    function getActiveDept() {
+      return DEPARTMENTS.find(d => d.id === state.selectedDeptId) || DEPARTMENTS[0];
+    }
+
+    // =========================================================================
+    // 3. UI HELPERS
+    // =========================================================================
+    function showToast(msg) {
+      const box = document.getElementById('toastBox');
+      box.textContent = msg;
+      box.classList.remove('hidden');
+      box.classList.remove('toast-pop');
+      void box.offsetWidth;
+      box.classList.add('toast-pop');
+
+      clearTimeout(window.__toastTimer);
+      window.__toastTimer = setTimeout(() => {
+        box.classList.add('hidden');
+      }, 2800);
+    }
+
+    function escapeAttr(str) {
+      return String(str || '')
+        .replace(/&/g, '&amp;')
+        .replace(/"/g, '&quot;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+    }
+
+    // =========================================================================
+    // 4. RENDERING FUNCTIONS
+    // =========================================================================
+    function renderDepartments() {
+      const supervisorMode = isShiftSupervisor();
+      const selectorWrapper = document.getElementById('departmentSelectorWrapper');
+      const supervisorHint = document.getElementById('supervisorModeHint');
+
+      if (selectorWrapper) {
+        selectorWrapper.classList.toggle('hidden', supervisorMode);
+      }
+      if (supervisorHint) {
+        supervisorHint.classList.toggle('hidden', !supervisorMode);
+      }
+
+      const grid = document.getElementById('departmentGrid');
+      grid.innerHTML = DEPARTMENTS.map(dept => {
+        ensureDeptState(dept.id);
+        const isSelected = dept.id === state.selectedDeptId;
+        const statusObj = state.statuses[dept.id];
+        const answeredCount = Object.values(statusObj).filter(Boolean).length;
+        const total = dept.items.length;
+
+        return `
+          <button
+            type="button"
+            data-dept="${dept.id}"
+            class="dept-btn p-3.5 rounded-2xl border-2 text-right transition flex flex-col justify-between gap-1.5 ${
+              isSelected
+                ? 'border-[#3E2723] bg-[#3E2723] text-white shadow-md'
+                : 'border-[#D7CCC8] bg-[#F7F4F2] hover:bg-[#EFEBE9] text-[#3E2723]'
+            }"
+          >
+            <div class="flex items-center justify-between w-full">
+              <span class="text-xl">${dept.icon}</span>
+              <span class="text-[11px] font-extrabold px-2 py-0.5 rounded-full ${
+                isSelected ? 'bg-[#1B5E20] text-white' : 'bg-white text-[#5D4037] border border-[#D7CCC8]'
+              }">
+                ${answeredCount}/${total}
+              </span>
+            </div>
+            <div>
+              <div class="text-xs sm:text-sm font-extrabold leading-snug">${dept.name}</div>
+              <div class="text-[11px] ${isSelected ? 'text-[#D7CCC8]' : 'text-[#6D4C41]'} font-semibold">
+                ${total} بند
+              </div>
+            </div>
+          </button>
+        `;
+      }).join('');
+
+      grid.querySelectorAll('.dept-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          state.selectedDeptId = btn.dataset.dept;
+          document.getElementById('validationAlert').classList.add('hidden');
+          renderAll();
+        });
+      });
+    }
+
+    function updateProgressAndStats() {
+      const supervisorMode = isShiftSupervisor();
+      const targetDepts = getTargetDepartments();
+
+      let total = 0;
+      let done = 0;
+      let notDone = 0;
+      let na = 0;
+
+      targetDepts.forEach(dept => {
+        ensureDeptState(dept.id);
+        const statusObj = state.statuses[dept.id];
+        total += dept.items.length;
+
+        for (let i = 0; i < dept.items.length; i++) {
+          if (statusObj[i] === 'DONE') done++;
+          else if (statusObj[i] === 'NOT_DONE') notDone++;
+          else if (statusObj[i] === 'NA') na++;
+        }
+      });
+
+      const completedTotal = done + notDone + na;
+      const applicable = total - na;
+      const pct = applicable > 0 ? Math.round((done / applicable) * 100) : (na === total && total > 0 ? 100 : 0);
+
+      if (supervisorMode) {
+        document.getElementById('headerDeptLabel').textContent = `👑 جميع الأقسام + بنود المسؤول • ${state.selectedShift}`;
+        document.getElementById('activeSectionHeading').textContent = `جميع الأقسام وبنود المسؤول (${total} بند)`;
+      } else {
+        const dept = getActiveDept();
+        document.getElementById('headerDeptLabel').textContent = `${dept.icon} ${dept.name} • ${state.selectedShift}`;
+        document.getElementById('activeSectionHeading').textContent = `بنود ${dept.name} (${total} بند)`;
+      }
+
+      document.getElementById('headerProgressText').textContent = `${done} منجز • ${completedTotal} من ${total} معبأ`;
+      document.getElementById('headerPercentBadge').textContent = `${pct}%`;
+      document.getElementById('headerProgressBar').style.width = `${pct}%`;
+
+      document.getElementById('countDone').textContent = done;
+      document.getElementById('countNotDone').textContent = notDone;
+      document.getElementById('countNa').textContent = na;
+    }
+
+    function buildDeptItemCardHtml(dept, itemObj, idx) {
+      ensureDeptState(dept.id);
+      const statusObj = state.statuses[dept.id];
+      const notesObj = state.notes[dept.id];
+      const showNoteObj = state.showNoteInput[dept.id];
+      const photosObj = state.photos[dept.id];
+
+      const itemText = typeof itemObj === 'string' ? itemObj : itemObj.text;
+      const requiresPhoto = typeof itemObj === 'object' && !!itemObj.requiresPhoto;
+
+      const st = statusObj[idx] || null;
+      const noteText = notesObj[idx] || '';
+      const isNoteVisible = !!showNoteObj[idx] || st === 'NOT_DONE' || noteText.trim().length > 0;
+      const photoData = photosObj[idx] || null;
+
+      let cardBorder = 'border-[#D7CCC8] bg-white';
+      if (st === 'DONE') cardBorder = 'border-[#1B5E20]/60 bg-emerald-50/40';
+      else if (st === 'NOT_DONE') cardBorder = 'border-rose-400 bg-rose-50/40';
+      else if (st === 'NA') cardBorder = 'border-stone-300 bg-stone-50/70';
+
+      const photoBadgeHtml = requiresPhoto
+        ? `<span class="inline-flex items-center gap-1 mt-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-extrabold ${
+            photoData ? 'bg-emerald-100 text-[#1B5E20] border border-emerald-300' : 'bg-amber-100 text-amber-900 border border-amber-300'
+          }">
+            <span>📷</span>
+            <span>${photoData ? 'تم إرفاق الصورة' : 'صورة إجبارية'}</span>
+          </span>`
+        : '';
+
+      const photoBoxHtml = requiresPhoto
+        ? `<div class="rounded-2xl border border-dashed ${
+            photoData ? 'border-[#1B5E20] bg-emerald-50/50' : 'border-amber-500 bg-amber-50/50'
+          } p-3 space-y-2.5">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <span class="text-xs font-extrabold text-[#3E2723]">
+                ${photoData ? '✓ الصورة جاهزة للإرفاق' : 'يرجى التقاط أو اختيار صورة واضحة لهذا البند:'}
+              </span>
+              <div class="flex items-center gap-2">
+                <label class="cursor-pointer py-2 px-3 rounded-xl bg-[#3E2723] hover:bg-[#261613] text-white text-xs font-extrabold transition flex items-center gap-1.5">
+                  <span>📷</span>
+                  <span>${photoData ? 'تغيير الصورة' : 'التقاط / إرفاق صورة'}</span>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    capture="environment"
+                    data-dept-id="${dept.id}"
+                    data-photo-input="${idx}"
+                    class="hidden"
+                  />
+                </label>
+                ${
+                  photoData
+                    ? `<button
+                        type="button"
+                        data-dept-id="${dept.id}"
+                        data-remove-photo="${idx}"
+                        class="remove-photo-btn py-2 px-2.5 rounded-xl bg-rose-100 hover:bg-rose-200 text-rose-800 text-xs font-extrabold transition"
+                      >
+                        حذف
+                      </button>`
+                    : ''
+                }
+              </div>
+            </div>
+            ${
+              photoData
+                ? `<div class="flex items-center gap-3 pt-1">
+                    <img
+                      src="${photoData.previewUrl}"
+                      alt="صورة البند ${idx + 1}"
+                      class="w-20 h-20 object-cover rounded-xl border border-[#D7CCC8] shadow-sm shrink-0"
+                    />
+                    <div class="text-xs text-[#5D4037] font-bold break-all">
+                      ${escapeAttr(photoData.name)}
+                    </div>
+                  </div>`
+                : ''
+            }
+          </div>`
+        : '';
+
+      return `
+        <div class="rounded-2xl border-2 ${cardBorder} p-3.5 sm:p-4 shadow-sm transition space-y-3">
+          <!-- Item Title & Note Toggle -->
+          <div class="flex items-start justify-between gap-2">
+            <div class="text-sm sm:text-base font-extrabold text-[#3E2723] leading-snug">
+              <div>
+                <span class="inline-block min-w-[24px] text-[#8D6E63] font-extrabold">${idx + 1}.</span>
+                <span>${itemText}</span>
+              </div>
+              ${photoBadgeHtml}
+            </div>
+
+            <button
+              type="button"
+              data-dept-id="${dept.id}"
+              data-toggle-note="${idx}"
+              class="toggle-note-btn shrink-0 px-2.5 py-1 rounded-xl text-[11px] font-bold border transition ${
+                noteText.trim()
+                  ? 'bg-amber-100 border-amber-300 text-amber-900'
+                  : 'bg-[#F7F4F2] border-[#D7CCC8] text-[#5D4037] hover:bg-[#EFEBE9]'
+              }"
+            >
+              ${noteText.trim() ? '📝 ملاحظة' : '+ ملاحظة'}
+            </button>
+          </div>
+
+          <!-- Mandatory Photo Box -->
+          ${photoBoxHtml}
+
+          <!-- 3 Touch-Friendly Status Buttons -->
+          <div class="grid grid-cols-3 gap-2">
+            <button
+              type="button"
+              data-dept-id="${dept.id}"
+              data-idx="${idx}"
+              data-val="DONE"
+              class="status-choice-btn py-3 px-2 rounded-xl text-xs sm:text-sm font-extrabold border-2 transition flex items-center justify-center gap-1 ${
+                st === 'DONE'
+                  ? 'bg-[#1B5E20] border-[#1B5E20] text-white shadow-sm'
+                  : 'bg-[#F7F4F2] border-[#D7CCC8] text-[#3E2723] hover:border-[#1B5E20]/50'
+              }"
+            >
+              <span>✓</span>
+              <span>تم</span>
+            </button>
+
+            <button
+              type="button"
+              data-dept-id="${dept.id}"
+              data-idx="${idx}"
+              data-val="NOT_DONE"
+              class="status-choice-btn py-3 px-2 rounded-xl text-xs sm:text-sm font-extrabold border-2 transition flex items-center justify-center gap-1 ${
+                st === 'NOT_DONE'
+                  ? 'bg-rose-700 border-rose-700 text-white shadow-sm'
+                  : 'bg-[#F7F4F2] border-[#D7CCC8] text-[#3E2723] hover:border-rose-400'
+              }"
+            >
+              <span>✕</span>
+              <span>غير منفذ</span>
+            </button>
+
+            <button
+              type="button"
+              data-dept-id="${dept.id}"
+              data-idx="${idx}"
+              data-val="NA"
+              class="status-choice-btn py-3 px-2 rounded-xl text-xs sm:text-sm font-extrabold border-2 transition flex items-center justify-center gap-1 ${
+                st === 'NA'
+                  ? 'bg-stone-600 border-stone-600 text-white shadow-sm'
+                  : 'bg-[#F7F4F2] border-[#D7CCC8] text-[#3E2723] hover:border-stone-400'
+              }"
+            >
+              <span>—</span>
+              <span>لا ينطبق</span>
+            </button>
+          </div>
+
+          <!-- Optional Note Input -->
+          <div id="itemNoteWrapper_${dept.id}_${idx}" class="${isNoteVisible ? '' : 'hidden'}">
+            <input
+              type="text"
+              data-dept-id="${dept.id}"
+              data-note-input="${idx}"
+              value="${escapeAttr(noteText)}"
+              placeholder="${st === 'NOT_DONE' ? 'اكتب سبب عدم التنفيذ (اختياري)...' : 'اكتب ملاحظة قصيرة لهذا البند...'}"
+              class="w-full py-2.5 px-3.5 rounded-xl border border-[#D7CCC8] bg-white focus:border-[#3E2723] focus:outline-none text-xs sm:text-sm font-semibold text-[#3E2723]"
+            />
+          </div>
+        </div>
+      `;
+    }
+
+    function renderChecklistItems() {
+      const supervisorMode = isShiftSupervisor();
+      const targetDepts = getTargetDepartments();
+      const container = document.getElementById('checklistContainer');
+
+      if (supervisorMode) {
+        container.innerHTML = targetDepts.map(dept => {
+          const cardsHtml = dept.items.map((itemObj, idx) => buildDeptItemCardHtml(dept, itemObj, idx)).join('');
+          return `
+            <div class="space-y-3 pt-2">
+              <div class="rounded-2xl bg-[#3E2723] text-white px-4 py-3 shadow-sm flex items-center justify-between">
+                <span class="text-sm sm:text-base font-extrabold">${dept.icon} ${dept.name}</span>
+                <span class="text-xs font-bold text-[#D7CCC8]">${dept.items.length} بند</span>
+              </div>
+              <div class="space-y-3">
+                ${cardsHtml}
+              </div>
+            </div>
+          `;
+        }).join('');
+      } else {
+        const dept = targetDepts[0];
+        container.innerHTML = dept.items.map((itemObj, idx) => buildDeptItemCardHtml(dept, itemObj, idx)).join('');
+      }
+
+      // Attach status button handlers
+      container.querySelectorAll('.status-choice-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const deptId = btn.dataset.deptId;
+          ensureDeptState(deptId);
+          const idx = Number(btn.dataset.idx);
+          const val = btn.dataset.val;
+          state.statuses[deptId][idx] = state.statuses[deptId][idx] === val ? null : val;
+          if (state.statuses[deptId][idx] === 'NOT_DONE') {
+            state.showNoteInput[deptId][idx] = true;
+          }
+          renderDepartments();
+          updateProgressAndStats();
+          renderChecklistItems();
+        });
+      });
+
+      // Attach note toggle button handlers
+      container.querySelectorAll('.toggle-note-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const deptId = btn.dataset.deptId;
+          ensureDeptState(deptId);
+          const idx = Number(btn.dataset.toggleNote);
+          state.showNoteInput[deptId][idx] = !state.showNoteInput[deptId][idx];
+          const wrapper = document.getElementById(`itemNoteWrapper_${deptId}_${idx}`);
+          if (wrapper) {
+            wrapper.classList.toggle('hidden');
+            if (!wrapper.classList.contains('hidden')) {
+              const inp = wrapper.querySelector('input');
+              if (inp) inp.focus();
+            }
+          }
+        });
+      });
+
+      // Attach note text input handlers
+      container.querySelectorAll('input[data-note-input]').forEach(inp => {
+        inp.addEventListener('input', () => {
+          const deptId = inp.dataset.deptId;
+          ensureDeptState(deptId);
+          const idx = Number(inp.dataset.noteInput);
+          state.notes[deptId][idx] = inp.value;
+        });
+      });
+
+      // Attach photo file input handlers
+      container.querySelectorAll('input[type="file"][data-photo-input]').forEach(fileInp => {
+        fileInp.addEventListener('change', (e) => {
+          const file = e.target.files && e.target.files[0];
+          if (!file) return;
+          const deptId = fileInp.dataset.deptId;
+          const idx = Number(fileInp.dataset.photoInput);
+          ensureDeptState(deptId);
+
+          if (state.photos[deptId][idx] && state.photos[deptId][idx].previewUrl) {
+            URL.revokeObjectURL(state.photos[deptId][idx].previewUrl);
+          }
+
+          state.photos[deptId][idx] = {
+            file,
+            previewUrl: URL.createObjectURL(file),
+            name: file.name
+          };
+
+          document.getElementById('validationAlert').classList.add('hidden');
+          renderChecklistItems();
+          showToast('تم إرفاق الصورة بنجاح');
+        });
+      });
+
+      // Attach photo remove button handlers
+      container.querySelectorAll('.remove-photo-btn').forEach(remBtn => {
+        remBtn.addEventListener('click', () => {
+          const deptId = remBtn.dataset.deptId;
+          const idx = Number(remBtn.dataset.removePhoto);
+          ensureDeptState(deptId);
+          if (state.photos[deptId][idx] && state.photos[deptId][idx].previewUrl) {
+            URL.revokeObjectURL(state.photos[deptId][idx].previewUrl);
+          }
+          delete state.photos[deptId][idx];
+          renderChecklistItems();
+          showToast('تم حذف الصورة');
+        });
+      });
+    }
+
+    function renderAll() {
+      renderDepartments();
+      updateProgressAndStats();
+      renderChecklistItems();
+    }
+
+    // =========================================================================
+    // 5. REPORT GENERATION & WHATSAPP / SHARE INTEGRATION
+    // =========================================================================
+    function handleFinishAndGenerateReport() {
+      const validationAlert = document.getElementById('validationAlert');
+      const staffName = normalizeName(document.getElementById('staffNameInput').value);
+      const reportDate = document.getElementById('reportDateInput').value;
+
+      if (!staffName) {
+        validationAlert.textContent = 'يرجى كتابة اسم الموظف في الحقل المخصص أعلى الصفحة قبل إنهاء التقرير.';
+        validationAlert.classList.remove('hidden');
+        document.getElementById('staffNameInput').focus();
+        document.getElementById('staffNameInput').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+
+      const supervisorMode = isShiftSupervisor();
+      const targetDepts = getTargetDepartments();
+
+      // Check for any unanswered items across target departments
+      const unansweredList = [];
+      const missingPhotosList = [];
+
+      targetDepts.forEach(dept => {
+        ensureDeptState(dept.id);
+        const statusObj = state.statuses[dept.id];
+        const photosObj = state.photos[dept.id];
+
+        dept.items.forEach((itemObj, idx) => {
+          const requiresPhoto = typeof itemObj === 'object' && !!itemObj.requiresPhoto;
+          const hasPhoto = !!(photosObj[idx] && photosObj[idx].file);
+
+          if (!statusObj[idx]) {
+            unansweredList.push(supervisorMode ? `${dept.name} (${idx + 1})` : `${idx + 1}`);
+          }
+          if (requiresPhoto && !hasPhoto) {
+            missingPhotosList.push(supervisorMode ? `${dept.name} (${idx + 1})` : `${idx + 1}`);
+          }
+        });
+      });
+
+      if (unansweredList.length > 0) {
+        const previewNums = unansweredList.slice(0, 6).join('، ');
+        const moreText = unansweredList.length > 6 ? ` ... وغيرها (${unansweredList.length} بنود متبقية)` : '';
+        validationAlert.textContent = `يرجى تحديد حالة جميع البنود قبل الإرسال. البنود غير المحددة: ${previewNums}${moreText}.`;
+        validationAlert.classList.remove('hidden');
+        validationAlert.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+
+      if (missingPhotosList.length > 0) {
+        const previewPhotoNums = missingPhotosList.slice(0, 6).join('، ');
+        const morePhotoText = missingPhotosList.length > 6 ? ` ... وغيرها (${missingPhotosList.length} صور مطلوبة)` : '';
+        validationAlert.textContent = `يرجى إرفاق الصور الإجبارية للبنود المطلوبة قبل إنهاء التقرير. البنود الناقصة صورتها: ${previewPhotoNums}${morePhotoText}.`;
+        validationAlert.classList.remove('hidden');
+        validationAlert.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+
+      validationAlert.classList.add('hidden');
+
+      let total = 0;
+      const doneItems = [];
+      const notDoneItems = [];
+      const naItems = [];
+      const attachedFiles = [];
+      const attachedPhotoPreviews = [];
+
+      targetDepts.forEach(dept => {
+        ensureDeptState(dept.id);
+        const statusObj = state.statuses[dept.id];
+        const notesObj = state.notes[dept.id];
+        const photosObj = state.photos[dept.id];
+        total += dept.items.length;
+
+        dept.items.forEach((itemObj, idx) => {
+          const label = typeof itemObj === 'string' ? itemObj : itemObj.text;
+          const st = statusObj[idx];
+          const note = (notesObj[idx] || '').trim();
+          const photo = photosObj[idx] || null;
+
+          if (photo && photo.file) {
+            attachedFiles.push(photo.file);
+            attachedPhotoPreviews.push({
+              previewUrl: photo.previewUrl,
+              caption: `${supervisorMode ? dept.name + ' - ' : ''}بند ${idx + 1}: ${label}`
+            });
+          }
+
+          const entry = {
+            num: idx + 1,
+            deptName: dept.name,
+            label,
+            note,
+            hasPhoto: !!(photo && photo.file)
+          };
+          if (st === 'DONE') doneItems.push(entry);
+          else if (st === 'NOT_DONE') notDoneItems.push(entry);
+          else if (st === 'NA') naItems.push(entry);
+        });
+      });
+
+      const applicable = total - naItems.length;
+      const pct = applicable > 0 ? Math.round((doneItems.length / applicable) * 100) : 100;
+
+      const now = new Date();
+      const actualTimeStr = now.toLocaleTimeString('ar-IQ', {
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+
+      const formattedDateStr = reportDate || now.toISOString().split('T')[0];
+      const generalNote = document.getElementById('generalNoteInput').value.trim();
+      const deptSummaryLabel = supervisorMode
+        ? `جميع الأقسام + بنود المسؤول (مسؤول شفت)`
+        : targetDepts[0].name;
+
+      // Build formatted Arabic WhatsApp text
+      let lines = [];
+      lines.push(`إلى حضرة المدير المحترم: محمود عماد`);
+      lines.push(``);
+      lines.push(`☕ *تقرير النظافة والجودة اليومي*`);
+      lines.push(`*مقهى بن رضا علوان*`);
+
+      lines.push(`━━━━━━━━━━━━━━━━━━━━`);
+      lines.push(`🏢 *القسم:* ${deptSummaryLabel}`);
+      lines.push(`🕒 *الشفت:* ${state.selectedShift}`);
+      lines.push(`👤 *اسم الموظف:* ${staffName}`);
+      lines.push(`📅 *التاريخ:* ${formattedDateStr}`);
+      lines.push(`⏰ *وقت الإرسال:* ${actualTimeStr}`);
+      lines.push(`📷 *عدد الصور المرفقة:* ${attachedFiles.length}`);
+      lines.push(`📊 *نسبة الإنجاز:* ${pct}% (${doneItems.length} من ${applicable} بند مطبق)`);
+      lines.push(`━━━━━━━━━━━━━━━━━━━━`);
+      lines.push(`✅ *البنود المنجزة (${doneItems.length}):*`);
+
+      if (doneItems.length === 0) {
+        lines.push(`- لا يوجد`);
+      } else {
+        doneItems.forEach(item => {
+          const prefix = supervisorMode ? `[${item.deptName}] ` : '';
+          const photoTag = item.hasPhoto ? ' [صورة مرفقة 📷]' : '';
+          lines.push(`✓ ${prefix}${item.num}. ${item.label}${photoTag}${item.note ? ` (${item.note})` : ''}`);
+        });
+      }
+
+      if (notDoneItems.length > 0) {
+        lines.push(``);
+        lines.push(`❌ *بنود غير منفذة (${notDoneItems.length}):*`);
+        notDoneItems.forEach(item => {
+          const prefix = supervisorMode ? `[${item.deptName}] ` : '';
+          const photoTag = item.hasPhoto ? ' [صورة مرفقة 📷]' : '';
+          lines.push(`✕ ${prefix}${item.num}. ${item.label}${photoTag}${item.note ? ` — السبب/ملاحظة: ${item.note}` : ''}`);
+        });
+      }
+
+      if (naItems.length > 0) {
+        lines.push(``);
+        lines.push(`➖ *بنود لا تنطبق (${naItems.length}):*`);
+        naItems.forEach(item => {
+          const prefix = supervisorMode ? `[${item.deptName}] ` : '';
+          lines.push(`- ${prefix}${item.num}. ${item.label}${item.note ? ` (${item.note})` : ''}`);
+        });
+      }
+
+      if (generalNote) {
+        lines.push(``);
+        lines.push(`📝 *ملاحظة عامة:* ${generalNote}`);
+      }
+
+      lines.push(`━━━━━━━━━━━━━━━━━━━━`);
+
+      const finalReport = lines.join('\n');
+      state.lastGeneratedReportText = finalReport;
+      state.lastAttachedFiles = attachedFiles;
+
+      // Populate Summary View UI
+      const metaGrid = document.getElementById('summaryMetaGrid');
+      const deptIconDisplay = supervisorMode ? '👑' : targetDepts[0].icon;
+      metaGrid.innerHTML = `
+        <div>
+          <span class="text-[#6D4C41] font-bold block">القسم:</span>
+          <span class="font-extrabold text-[#3E2723]">${deptIconDisplay} ${deptSummaryLabel}</span>
+        </div>
+        <div>
+          <span class="text-[#6D4C41] font-bold block">الشفت:</span>
+          <span class="font-extrabold text-[#3E2723]">${state.selectedShift}</span>
+        </div>
+        <div>
+          <span class="text-[#6D4C41] font-bold block">اسم الموظف:</span>
+          <span class="font-extrabold text-[#3E2723]">${escapeAttr(staffName)}</span>
+        </div>
+        <div>
+          <span class="text-[#6D4C41] font-bold block">التاريخ والوقت:</span>
+          <span class="font-extrabold text-[#3E2723]">${formattedDateStr} • ${actualTimeStr}</span>
+        </div>
+        <div class="col-span-2 pt-2 border-t border-[#D7CCC8] flex items-center justify-between">
+          <span class="font-extrabold text-[#3E2723]">نسبة الإنجاز النهائية (${attachedFiles.length} صور):</span>
+          <span class="px-3 py-1 rounded-full bg-[#1B5E20] text-white font-extrabold text-sm">
+            ${pct}% (${doneItems.length}/${applicable})
+          </span>
+        </div>
+      `;
+
+      // Render summary photos if any
+      const summaryPhotosBox = document.getElementById('summaryPhotosBox');
+      const summaryPhotosGrid = document.getElementById('summaryPhotosGrid');
+      if (attachedPhotoPreviews.length > 0) {
+        summaryPhotosBox.classList.remove('hidden');
+        summaryPhotosGrid.innerHTML = attachedPhotoPreviews.map(p => `
+          <div class="rounded-xl border border-[#D7CCC8] bg-[#F7F4F2] p-2 space-y-1.5">
+            <img src="${p.previewUrl}" alt="${escapeAttr(p.caption)}" class="w-full h-24 object-cover rounded-lg" />
+            <p class="text-[11px] font-bold text-[#3E2723] line-clamp-2">${escapeAttr(p.caption)}</p>
+          </div>
+        `).join('');
+      } else {
+        summaryPhotosBox.classList.add('hidden');
+        summaryPhotosGrid.innerHTML = '';
+      }
+
+      document.getElementById('formattedReportPreview').textContent = finalReport;
+      document.getElementById('whatsappSendBtnLabel').textContent =
+        attachedFiles.length > 0
+          ? `إرسال التقرير و (${attachedFiles.length}) صور عبر واتساب`
+          : 'إرسال التقرير عبر واتساب للمدير';
+
+      // Switch to Summary View
+      document.getElementById('formView').classList.add('hidden');
+      document.getElementById('summaryView').classList.remove('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    async function sendReportViaWhatsAppOrShare() {
+      const text = state.lastGeneratedReportText;
+      const files = state.lastAttachedFiles || [];
+      if (!text) return;
+
+      if (navigator.share) {
+        const sharePayload = {
+          title: 'تقرير الفحص اليومي - مقهى بن رضا علوان',
+          text
+        };
+
+        if (files.length > 0 && (!navigator.canShare || navigator.canShare({ files }))) {
+          sharePayload.files = files;
+        }
+
+        try {
+          await navigator.share(sharePayload);
+          showToast('تم فتح نافذة المشاركة بنجاح');
+          return;
+        } catch (err) {
+          if (err && err.name === 'AbortError') {
+            showToast('تم إلغاء المشاركة');
+            return;
+          }
+        }
+      }
+
+      if (files.length > 0) {
+        showToast('متصفحك لا يدعم إرسال الصور تلقائياً عبر الرابط؛ سيتم فتح واتساب للنص وأرفق الصور يدوياً');
+      }
+
+      const encodedText = encodeURIComponent(text);
+      window.open(`https://api.whatsapp.com/send?text=${encodedText}`, '_blank', 'noopener,noreferrer');
+    }
+
+    function copyReportToClipboard() {
+      const text = state.lastGeneratedReportText;
+      if (!text) return;
+
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.select();
+      try {
+        document.execCommand('copy');
+        showToast('تم نسخ التقرير إلى الحافظة بنجاح');
+      } catch (err) {
+        showToast('تعذر النسخ التلقائي، يرجى تحديد النص ونسخه');
+      }
+      document.body.removeChild(textarea);
+    }
+
+    function startNewChecklist() {
+      const targetDepts = getTargetDepartments();
+      targetDepts.forEach(dept => {
+        state.statuses[dept.id] = {};
+        state.notes[dept.id] = {};
+        state.showNoteInput[dept.id] = {};
+        if (state.photos[dept.id]) {
+          Object.values(state.photos[dept.id]).forEach(p => {
+            if (p && p.previewUrl) URL.revokeObjectURL(p.previewUrl);
+          });
+          state.photos[dept.id] = {};
+        }
+      });
+      state.lastAttachedFiles = [];
+      document.getElementById('generalNoteInput').value = '';
+      document.getElementById('validationAlert').classList.add('hidden');
+
+      document.getElementById('summaryView').classList.add('hidden');
+      document.getElementById('formView').classList.remove('hidden');
+      renderAll();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      showToast('تم فتح جيك لست جديد');
+    }
+
+    // =========================================================================
+    // 6. INITIALIZATION
+    // =========================================================================
+    function init() {
+      // Set default today's date in YYYY-MM-DD
+      const now = new Date();
+      const yyyy = now.getFullYear();
+      const mm = String(now.getMonth() + 1).padStart(2, '0');
+      const dd = String(now.getDate()).padStart(2, '0');
+      document.getElementById('reportDateInput').value = `${yyyy}-${mm}-${dd}`;
+
+      // Staff name live listener for Shift Supervisor mode
+      const staffNameInput = document.getElementById('staffNameInput');
+      let lastSupervisorState = isShiftSupervisor();
+      staffNameInput.addEventListener('input', () => {
+        const currentSupervisorState = isShiftSupervisor();
+        if (currentSupervisorState !== lastSupervisorState) {
+          lastSupervisorState = currentSupervisorState;
+          document.getElementById('validationAlert').classList.add('hidden');
+          renderAll();
+        }
+      });
+
+      // Shift buttons
+      document.querySelectorAll('.shift-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          state.selectedShift = btn.dataset.shift;
+          document.querySelectorAll('.shift-btn').forEach(b => {
+            const active = b.dataset.shift === state.selectedShift;
+            b.className = active
+              ? 'shift-btn py-3.5 px-4 rounded-2xl border-2 border-[#3E2723] bg-[#3E2723] text-white font-extrabold text-sm sm:text-base shadow-sm transition flex items-center justify-center gap-2'
+              : 'shift-btn py-3.5 px-4 rounded-2xl border-2 border-[#D7CCC8] bg-[#F7F4F2] text-[#3E2723] font-extrabold text-sm sm:text-base transition flex items-center justify-center gap-2';
+          });
+          updateProgressAndStats();
+        });
+      });
+
+      // Mark All as Done button
+      document.getElementById('markAllDoneBtn').addEventListener('click', () => {
+        const supervisorMode = isShiftSupervisor();
+        const targetDepts = getTargetDepartments();
+        targetDepts.forEach(dept => {
+          ensureDeptState(dept.id);
+          dept.items.forEach((_, idx) => {
+            state.statuses[dept.id][idx] = 'DONE';
+          });
+        });
+        document.getElementById('validationAlert').classList.add('hidden');
+        renderAll();
+        showToast(
+          supervisorMode
+            ? 'تم تحديد جميع بنود كل الأقسام كـ (تم)'
+            : `تم تحديد جميع بنود ${targetDepts[0].name} كـ (تم)`
+        );
+      });
+
+      // Reset current section (or all sections for supervisor) button
+      document.getElementById('resetSectionBtn').addEventListener('click', () => {
+        const supervisorMode = isShiftSupervisor();
+        const targetDepts = getTargetDepartments();
+        targetDepts.forEach(dept => {
+          state.statuses[dept.id] = {};
+          state.notes[dept.id] = {};
+          state.showNoteInput[dept.id] = {};
+          if (state.photos[dept.id]) {
+            Object.values(state.photos[dept.id]).forEach(p => {
+              if (p && p.previewUrl) URL.revokeObjectURL(p.previewUrl);
+            });
+            state.photos[dept.id] = {};
+          }
+        });
+        document.getElementById('validationAlert').classList.add('hidden');
+        renderAll();
+        showToast(supervisorMode ? 'تم تصفير اختيارات جميع الأقسام' : 'تم تصفير اختيارات القسم');
+      });
+
+      // Finish & Generate Report
+      document.getElementById('finishReportBtn').addEventListener('click', handleFinishAndGenerateReport);
+
+      // WhatsApp / Share, Copy & Start New buttons in Summary View
+      document.getElementById('whatsappSendBtn').addEventListener('click', sendReportViaWhatsAppOrShare);
+      document.getElementById('copyReportBtn').addEventListener('click', copyReportToClipboard);
+      document.getElementById('startNewChecklistBtn').addEventListener('click', startNewChecklist);
+
+      renderAll();
+    }
+
+    window.addEventListener('DOMContentLoaded', init);
+  </script>
+  <footer style="text-align:center; padding:12px; font-size:12px; opacity:0.75;">
+    متابعة المدير: محمود عماد
+  </footer>
+</body>
+</html>

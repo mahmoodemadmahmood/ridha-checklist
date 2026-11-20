@@ -388,38 +388,6 @@
 
   <script>
     // =========================================================================
-    // GOOGLE APPS SCRIPT WEB APP URL (REPORTS SHEET)
-    // =========================================================================
-    const GOOGLE_SCRIPT_WEB_APP_URL =
-      'https://script.google.com/macros/s/AKfycbxKXbOZ6z8GeeQ5LnnesaXlS_LNKhtg_iKG6RqyFU_MX7wMS8cS-UsfAMDYSaVv7vYf/exec;
-
-    function fileToDataUrl(file) {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = () => reject(reader.error || new Error('فشل قراءة الصورة'));
-        reader.readAsDataURL(file);
-      });
-    }
-
-    async function sendReportToGoogleSheet(payload) {
-      if (!GOOGLE_SCRIPT_WEB_APP_URL) return;
-      try {
-        await fetch(GOOGLE_SCRIPT_WEB_APP_URL, {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: {
-            'Content-Type': 'text/plain;charset=utf-8'
-          },
-          body: JSON.stringify(payload)
-        });
-        showToast('تم إرسال البيانات إلى سجل التقارير (Reports)');
-      } catch (err) {
-        showToast('تعذر الإرسال التلقائي إلى جدول التقارير، يمكنك إرساله عبر واتساب');
-      }
-    }
-
-    // =========================================================================
     // 1. DEPARTMENT DATA & MANDATORY PHOTO ITEMS
     // =========================================================================
     function createItem(text, requiresPhoto = false) {
@@ -552,7 +520,7 @@
           createItem('تنظيف المايكرويف (من الداخل والخارج)'),
           createItem('تنظيف وترتيب الرفوف'),
           createItem('ترتيب علب السفري'),
-          createItem('ترتيب أدوات التقطيع والتقديم')
+          createItem('تنظيف أدوات التقطيع والتقديم')
         ]
       },
       {
@@ -1074,7 +1042,7 @@
     // =========================================================================
     // 5. REPORT GENERATION & WHATSAPP / SHARE INTEGRATION
     // =========================================================================
-    async function handleFinishAndGenerateReport() {
+    function handleFinishAndGenerateReport() {
       const validationAlert = document.getElementById('validationAlert');
       const staffName = normalizeName(document.getElementById('staffNameInput').value);
       const reportDate = document.getElementById('reportDateInput').value;
@@ -1138,17 +1106,15 @@
       const naItems = [];
       const attachedFiles = [];
       const attachedPhotoPreviews = [];
-      const sheetPhotos = [];
 
-      for (const dept of targetDepts) {
+      targetDepts.forEach(dept => {
         ensureDeptState(dept.id);
         const statusObj = state.statuses[dept.id];
         const notesObj = state.notes[dept.id];
         const photosObj = state.photos[dept.id];
         total += dept.items.length;
 
-        for (let idx = 0; idx < dept.items.length; idx++) {
-          const itemObj = dept.items[idx];
+        dept.items.forEach((itemObj, idx) => {
           const label = typeof itemObj === 'string' ? itemObj : itemObj.text;
           const st = statusObj[idx];
           const note = (notesObj[idx] || '').trim();
@@ -1156,25 +1122,10 @@
 
           if (photo && photo.file) {
             attachedFiles.push(photo.file);
-            const caption = `${supervisorMode ? dept.name + ' - ' : ''}بند ${idx + 1}: ${label}`;
             attachedPhotoPreviews.push({
               previewUrl: photo.previewUrl,
-              caption
+              caption: `${supervisorMode ? dept.name + ' - ' : ''}بند ${idx + 1}: ${label}`
             });
-            try {
-              const dataUrl = await fileToDataUrl(photo.file);
-              sheetPhotos.push({
-                name: photo.name,
-                caption,
-                dataUrl
-              });
-            } catch (e) {
-              sheetPhotos.push({
-                name: photo.name,
-                caption,
-                dataUrl: ''
-              });
-            }
           }
 
           const entry = {
@@ -1187,8 +1138,8 @@
           if (st === 'DONE') doneItems.push(entry);
           else if (st === 'NOT_DONE') notDoneItems.push(entry);
           else if (st === 'NA') naItems.push(entry);
-        }
-      }
+        });
+      });
 
       const applicable = total - naItems.length;
       const pct = applicable > 0 ? Math.round((doneItems.length / applicable) * 100) : 100;
@@ -1262,26 +1213,6 @@
       const finalReport = lines.join('\n');
       state.lastGeneratedReportText = finalReport;
       state.lastAttachedFiles = attachedFiles;
-
-      // Send payload to Google Apps Script (Reports sheet)
-      sendReportToGoogleSheet({
-        sheet: 'Reports',
-        targetSheet: 'Reports',
-        staffName,
-        department: deptSummaryLabel,
-        shift: state.selectedShift,
-        date: formattedDateStr,
-        time: actualTimeStr,
-        completionPercent: pct,
-        doneCount: doneItems.length,
-        notDoneCount: notDoneItems.length,
-        naCount: naItems.length,
-        applicableCount: applicable,
-        totalCount: total,
-        generalNote,
-        reportText: finalReport,
-        photos: sheetPhotos
-      });
 
       // Populate Summary View UI
       const metaGrid = document.getElementById('summaryMetaGrid');

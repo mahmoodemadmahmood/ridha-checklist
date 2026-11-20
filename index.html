@@ -436,6 +436,29 @@
           </div>
         </div>
 
+        <!-- Optional Staff Name Filter with Quick Clear -->
+        <div>
+          <label for="managerStaffFilterInput" class="block text-sm font-bold text-[#B71C1C] mb-1.5">
+            اسم الموظف (اختياري — اتركه فارغاً لعرض الكل)
+          </label>
+          <div class="relative flex items-center">
+            <input
+              id="managerStaffFilterInput"
+              type="text"
+              placeholder="اكتب اسم الموظف لمعرفة نسبة إنجازه..."
+              class="w-full py-3 px-4 pl-11 rounded-2xl border-2 border-[#F3C4C0] focus:border-[#B71C1C] focus:outline-none bg-[#FFF6F5] focus:bg-white text-sm font-bold text-[#B71C1C] transition"
+            />
+            <button
+              id="clearStaffFilterBtn"
+              type="button"
+              title="مسح اسم الموظف"
+              class="hidden absolute left-2.5 w-7 h-7 rounded-xl bg-[#FDECEA] hover:bg-[#F3C4C0] text-[#B71C1C] text-xs font-extrabold flex items-center justify-center transition"
+            >
+              ✕
+            </button>
+          </div>
+        </div>
+
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
           <button id="loadManagerBtn" type="button" class="sm:col-span-2 py-3.5 px-5 rounded-2xl bg-[#B71C1C] hover:bg-[#7F1111] active:scale-[0.99] text-white font-extrabold text-sm sm:text-base shadow transition">
             عرض النتائج
@@ -651,6 +674,14 @@
       return String(name || '').trim().replace(/\s+/g, ' ');
     }
 
+    function normalizeSearchName(name) {
+      return normalizeName(name)
+        .replace(/[أإآا]/g, 'ا')
+        .replace(/ى/g, 'ي')
+        .replace(/ة/g, 'ه')
+        .toLowerCase();
+    }
+
     function isShiftSupervisor() {
       const inputEl = document.getElementById('staffNameInput');
       const currentName = normalizeName(inputEl ? inputEl.value : '');
@@ -747,6 +778,56 @@
         return `${y}-${m}-${d}`;
       }
       return str.slice(0, 10);
+    }
+
+    function getTodayDateKey() {
+      const now = new Date();
+      const y = now.getFullYear();
+      const m = String(now.getMonth() + 1).padStart(2, '0');
+      const d = String(now.getDate()).padStart(2, '0');
+      return `${y}-${m}-${d}`;
+    }
+
+    function getMissingDatesForMonth(monthStr, submittedDateSet) {
+      if (!/^\d{4}-\d{2}$/.test(monthStr)) return [];
+      const [yearNum, monthNum] = monthStr.split('-').map(Number);
+      const totalDaysInMonth = new Date(yearNum, monthNum, 0).getDate();
+      const todayKey = getTodayDateKey();
+      const currentMonthKey = todayKey.slice(0, 7);
+
+      let maxDay = totalDaysInMonth;
+      if (monthStr === currentMonthKey) {
+        maxDay = Math.min(totalDaysInMonth, Number(todayKey.slice(8, 10)));
+      } else if (monthStr > currentMonthKey) {
+        maxDay = 0;
+      }
+
+      const missing = [];
+      for (let day = 1; day <= maxDay; day++) {
+        const key = `${monthStr}-${String(day).padStart(2, '0')}`;
+        if (!submittedDateSet.has(key)) {
+          missing.push(key);
+        }
+      }
+      return missing;
+    }
+
+    function getReportPct(r) {
+      const done = Number(r.done) || 0;
+      const applicable = Number(r.applicable) || 0;
+      if (r.pct !== undefined && r.pct !== '' && !isNaN(Number(r.pct))) {
+        return Number(r.pct);
+      }
+      return applicable > 0 ? Math.round((done / applicable) * 100) : 0;
+    }
+
+    function pickBestReportForDay(reports) {
+      if (!reports || !reports.length) return null;
+      return reports.slice().sort((a, b) => {
+        const pctDiff = getReportPct(b) - getReportPct(a);
+        if (pctDiff !== 0) return pctDiff;
+        return (Number(b.done) || 0) - (Number(a.done) || 0);
+      })[0];
     }
 
     // =========================================================================
@@ -1253,7 +1334,7 @@
         minute: '2-digit'
       });
 
-      const formattedDateStr = reportDate || now.toISOString().split('T')[0];
+      const formattedDateStr = reportDate || getTodayDateKey();
       const generalNote = document.getElementById('generalNoteInput').value.trim();
       const deptSummaryLabel = supervisorMode
         ? `جميع الأقسام + بنود المسؤول (مسؤول شفت)`
@@ -1572,6 +1653,13 @@
     }
 
     // ---------- Manager dashboard ----------
+    function syncStaffClearButton() {
+      const inp = document.getElementById('managerStaffFilterInput');
+      const btn = document.getElementById('clearStaffFilterBtn');
+      if (!inp || !btn) return;
+      btn.classList.toggle('hidden', !inp.value.trim());
+    }
+
     function setPeriodMode(mode) {
       state.managerPeriodMode = mode === 'daily' ? 'daily' : 'monthly';
       const isDaily = state.managerPeriodMode === 'daily';
@@ -1615,6 +1703,7 @@
 
     function openManager() {
       updatePendingBadge();
+      syncStaffClearButton();
       document.getElementById('formView').classList.add('hidden');
       document.getElementById('summaryView').classList.add('hidden');
       document.getElementById('managerView').classList.remove('hidden');
@@ -1640,6 +1729,8 @@
         ? selectedDay.slice(0, 7)
         : document.getElementById('managerMonthInput').value;
       const pin = document.getElementById('managerPinInput').value.trim();
+      const rawStaffFilterText = normalizeName(document.getElementById('managerStaffFilterInput').value);
+      const staffQuery = normalizeSearchName(rawStaffFilterText);
       const results = document.getElementById('managerResults');
       results.innerHTML = '';
 
@@ -1672,60 +1763,88 @@
         document.getElementById('managerMessage').className = 'hidden';
 
         const allRows = data.rows || [];
+        const periodRows = isDaily
+          ? allRows.filter(r => {
+              const rk = normalizeDateKey(r.date) || normalizeDateKey(r.sentAt);
+              return rk === selectedDay;
+            })
+          : allRows;
+
+        const filteredRows = staffQuery
+          ? periodRows.filter(r => normalizeSearchName(r.staff).includes(staffQuery))
+          : periodRows;
+
         if (isDaily) {
-          const dayRows = allRows.filter(r => {
-            const rk = normalizeDateKey(r.date) || normalizeDateKey(r.sentAt);
-            return rk === selectedDay;
-          });
-          renderDailyStats(dayRows, selectedDay);
+          renderDailyStats(filteredRows, selectedDay, rawStaffFilterText);
         } else {
-          renderMonthlyStats(allRows, month);
+          renderMonthlyStats(filteredRows, month, rawStaffFilterText);
         }
       } catch (e) {
         showManagerMessage('err', 'تعذر الاتصال بالسجل. تأكد من الإنترنت ومن رابط Apps Script.');
       }
     }
 
-    function renderDailyStats(rows, dayStr) {
+    function renderDailyStats(rows, dayStr, staffFilterLabel = '') {
       const results = document.getElementById('managerResults');
       if (!rows.length) {
-        results.innerHTML = `<div class="rounded-2xl bg-white border border-[#F3C4C0] p-5 text-center text-sm font-bold text-[#A93226]">لا توجد تقارير مسجلة ليوم ${escapeAttr(dayStr)}.</div>`;
+        const msg = staffFilterLabel
+          ? `لم يرسل الموظف "${escapeAttr(staffFilterLabel)}" تقريراً في يوم ${escapeAttr(dayStr)} (يوم غائب/بدون تقرير).`
+          : `لا توجد تقارير مسجلة ليوم ${escapeAttr(dayStr)}.`;
+        results.innerHTML = `<div class="rounded-2xl bg-white border border-[#F3C4C0] p-5 text-center text-sm font-bold text-[#A93226]">${msg}</div>`;
         return;
       }
 
-      let allDone = 0;
-      let allApplicable = 0;
-      const staffNames = {};
-
+      // Group by staff and keep the best report for that day per staff
+      const byStaffDay = {};
       rows.forEach(r => {
         const name = normalizeName(r.staff) || 'بدون اسم';
-        staffNames[name] = true;
-        allDone += Number(r.done) || 0;
-        allApplicable += Number(r.applicable) || 0;
+        if (!byStaffDay[name]) byStaffDay[name] = [];
+        byStaffDay[name].push(r);
+      });
+
+      const bestReports = [];
+      let allDone = 0;
+      let allApplicable = 0;
+
+      Object.keys(byStaffDay).forEach(name => {
+        const dayReports = byStaffDay[name];
+        const best = pickBestReportForDay(dayReports);
+        if (best) {
+          bestReports.push({
+            staffName: name,
+            best,
+            allDayReports: dayReports
+          });
+          allDone += Number(best.done) || 0;
+          allApplicable += Number(best.applicable) || 0;
+        }
       });
 
       const overallPct = allApplicable > 0 ? Math.round((allDone / allApplicable) * 100) : 0;
+      const titleText = staffFilterLabel
+        ? `أفضل نسبة إنجاز لـ "${escapeAttr(staffFilterLabel)}" في يوم ${escapeAttr(dayStr)}`
+        : `إجمالي يوم ${escapeAttr(dayStr)} (أفضل تقرير لكل موظف)`;
 
       const summaryHtml = `
         <div class="rounded-2xl bg-[#B71C1C] text-white p-4 shadow flex items-center justify-between gap-3">
           <div>
-            <div class="text-xs font-bold text-[#F3C4C0]">إجمالي يوم ${escapeAttr(dayStr)}</div>
-            <div class="text-sm font-extrabold">${rows.length} تقرير • ${Object.keys(staffNames).length} موظف • ${allDone} منجز من ${allApplicable}</div>
+            <div class="text-xs font-bold text-[#F3C4C0]">${titleText}</div>
+            <div class="text-sm font-extrabold">${bestReports.length} موظف • ${rows.length} تقرير مرسل • ${allDone} منجز من ${allApplicable}</div>
           </div>
           <span class="px-3.5 py-1.5 rounded-full bg-white text-[#B71C1C] text-base font-extrabold">${overallPct}%</span>
         </div>
       `;
 
-      const cardsHtml = rows.map(r => {
-        const name = normalizeName(r.staff) || 'بدون اسم';
+      const cardsHtml = bestReports.map(item => {
+        const r = item.best;
+        const name = item.staffName;
         const done = Number(r.done) || 0;
         const applicable = Number(r.applicable) || 0;
         const notDone = Number(r.notDone) || 0;
-        const pct = r.pct !== undefined && r.pct !== ''
-          ? Number(r.pct)
-          : (applicable > 0 ? Math.round((done / applicable) * 100) : 0);
+        const pct = getReportPct(r);
         const nd = String(r.notDoneItems || '').trim();
         const note = String(r.note || '').trim();
+        const extraCount = item.allDayReports.length - 1;
 
         return `
           <div class="rounded-2xl bg-white border border-[#F3C4C0] shadow-sm p-4 space-y-2.5">
@@ -1740,7 +1859,7 @@
               <div class="h-full rounded-full ${pctBgClass(pct)}" style="width:${pct}%"></div>
             </div>
             <div class="text-[11px] sm:text-xs font-bold text-[#A93226]">
-              ${done} بند منجز من ${applicable} • ${notDone} غير منفذ
+              ${done} بند منجز من ${applicable} • ${notDone} غير منفذ${extraCount > 0 ? ` • (محتسب الأفضل من ${item.allDayReports.length} تقارير في نفس اليوم)` : ''}
             </div>
             ${nd ? `<div class="rounded-xl bg-rose-50 border border-rose-200 p-2.5 text-xs font-bold text-rose-800">❌ ${escapeAttr(nd)}</div>` : ''}
             ${note ? `<div class="rounded-xl bg-[#FFF6F5] border border-[#F3C4C0] p-2.5 text-xs font-semibold text-[#B71C1C]">📝 ${escapeAttr(note)}</div>` : ''}
@@ -1751,59 +1870,123 @@
       results.innerHTML = summaryHtml + cardsHtml;
     }
 
-    function renderMonthlyStats(rows, month) {
+    function renderMonthlyStats(rows, month, staffFilterLabel = '') {
       const results = document.getElementById('managerResults');
       if (!rows.length) {
-        results.innerHTML = `<div class="rounded-2xl bg-white border border-[#F3C4C0] p-5 text-center text-sm font-bold text-[#A93226]">لا توجد تقارير مسجلة لشهر ${escapeAttr(month)}.</div>`;
+        const msg = staffFilterLabel
+          ? `لا توجد تقارير مسجلة للموظف "${escapeAttr(staffFilterLabel)}" لشهر ${escapeAttr(month)}.`
+          : `لا توجد تقارير مسجلة لشهر ${escapeAttr(month)}.`;
+        results.innerHTML = `<div class="rounded-2xl bg-white border border-[#F3C4C0] p-5 text-center text-sm font-bold text-[#A93226]">${msg}</div>`;
         return;
       }
 
       const byStaff = {};
-      let allDone = 0, allApplicable = 0;
+      let allDone = 0;
+      let allApplicable = 0;
+      const allSubmittedDays = new Set();
 
       rows.forEach(r => {
         const name = normalizeName(r.staff) || 'بدون اسم';
-        const s = byStaff[name] || (byStaff[name] = { name, reports: [], days: {}, done: 0, applicable: 0, notDone: 0 });
-        const done = Number(r.done) || 0;
-        const applicable = Number(r.applicable) || 0;
-        const dk = normalizeDateKey(r.date) || String(r.date);
+        const dk = normalizeDateKey(r.date) || normalizeDateKey(r.sentAt) || String(r.date || '');
+        if (dk) allSubmittedDays.add(dk);
+
+        const s = byStaff[name] || (byStaff[name] = {
+          name,
+          reports: [],
+          byDay: {}
+        });
         s.reports.push(r);
-        s.days[dk] = true;
-        s.done += done;
-        s.applicable += applicable;
-        s.notDone += Number(r.notDone) || 0;
-        allDone += done;
-        allApplicable += applicable;
+        if (dk) {
+          if (!s.byDay[dk]) s.byDay[dk] = [];
+          s.byDay[dk].push(r);
+        }
       });
 
-      const list = Object.values(byStaff).map(s => ({
-        ...s,
-        pct: s.applicable > 0 ? Math.round((s.done / s.applicable) * 100) : 0,
-        daysCount: Object.keys(s.days).length
-      })).sort((a, b) => b.pct - a.pct);
+      const list = Object.values(byStaff).map(s => {
+        const dayKeys = Object.keys(s.byDay).sort();
+        let bestDone = 0;
+        let bestApplicable = 0;
+        let bestNotDone = 0;
+
+        dayKeys.forEach(dk => {
+          const best = pickBestReportForDay(s.byDay[dk]);
+          if (best) {
+            bestDone += Number(best.done) || 0;
+            bestApplicable += Number(best.applicable) || 0;
+            bestNotDone += Number(best.notDone) || 0;
+          }
+        });
+
+        const missingDays = getMissingDatesForMonth(month, new Set(dayKeys));
+        const pct = bestApplicable > 0 ? Math.round((bestDone / bestApplicable) * 100) : 0;
+
+        allDone += bestDone;
+        allApplicable += bestApplicable;
+
+        return {
+          name: s.name,
+          reports: s.reports,
+          byDay: s.byDay,
+          daysCount: dayKeys.length,
+          missingDays,
+          done: bestDone,
+          applicable: bestApplicable,
+          notDone: bestNotDone,
+          pct
+        };
+      }).sort((a, b) => b.pct - a.pct);
 
       const overallPct = allApplicable > 0 ? Math.round((allDone / allApplicable) * 100) : 0;
+      const titleText = staffFilterLabel
+        ? `نسبة إنجاز "${escapeAttr(staffFilterLabel)}" في شهر ${escapeAttr(month)} (أفضل تقرير يومياً)`
+        : `إجمالي الشهر ${escapeAttr(month)} (أفضل تقرير لكل موظف يومياً)`;
+
+      const missingSummaryLine = staffFilterLabel && list.length === 1
+        ? ` • ${list[0].missingDays.length} يوم بدون تقرير`
+        : '';
 
       const summaryHtml = `
         <div class="rounded-2xl bg-[#B71C1C] text-white p-4 shadow flex items-center justify-between gap-3">
           <div>
-            <div class="text-xs font-bold text-[#F3C4C0]">إجمالي الشهر ${escapeAttr(month)}</div>
-            <div class="text-sm font-extrabold">${rows.length} تقرير • ${list.length} موظف</div>
+            <div class="text-xs font-bold text-[#F3C4C0]">${titleText}</div>
+            <div class="text-sm font-extrabold">${rows.length} تقرير • ${list.length} موظف • ${allDone} منجز من ${allApplicable}${missingSummaryLine}</div>
           </div>
           <span class="px-3.5 py-1.5 rounded-full bg-white text-[#B71C1C] text-base font-extrabold">${overallPct}%</span>
         </div>
       `;
 
       const cardsHtml = list.map(s => {
-        const reportsSorted = s.reports.slice().sort((a, b) => normalizeDateKey(a.date).localeCompare(normalizeDateKey(b.date)));
+        const reportsSorted = s.reports.slice().sort((a, b) => {
+          const da = normalizeDateKey(a.date) || String(a.date || '');
+          const db = normalizeDateKey(b.date) || String(b.date || '');
+          return da.localeCompare(db);
+        });
+
+        // Determine best report id per day so we can mark it clearly
+        const bestIdByDay = {};
+        Object.keys(s.byDay).forEach(dk => {
+          const best = pickBestReportForDay(s.byDay[dk]);
+          if (best) {
+            bestIdByDay[dk] = best.id || `${dk}_${getReportPct(best)}_${best.sentAt || ''}`;
+          }
+        });
+
         const detailsHtml = reportsSorted.map(r => {
           const nd = String(r.notDoneItems || '').trim();
-          const dLabel = normalizeDateKey(r.date) || String(r.date);
+          const dLabel = normalizeDateKey(r.date) || String(r.date || '');
+          const rPct = getReportPct(r);
+          const curKey = r.id || `${dLabel}_${rPct}_${r.sentAt || ''}`;
+          const isBest = bestIdByDay[dLabel] === curKey;
+          const dayCountForStaff = (s.byDay[dLabel] || []).length;
+
           return `
-            <div class="rounded-xl bg-[#FFF6F5] border border-[#F3C4C0] p-2.5 text-xs font-semibold text-[#B71C1C] space-y-1">
+            <div class="rounded-xl bg-[#FFF6F5] border ${isBest && dayCountForStaff > 1 ? 'border-[#1B5E20]' : 'border-[#F3C4C0]'} p-2.5 text-xs font-semibold text-[#B71C1C] space-y-1">
               <div class="flex items-center justify-between gap-2">
-                <span>${escapeAttr(dLabel)} • ${escapeAttr(r.dept)} • ${escapeAttr(r.shift)}</span>
-                <span class="px-2 py-0.5 rounded-full ${pctBgClass(Number(r.pct) || 0)} text-white font-extrabold">${Number(r.pct) || 0}%</span>
+                <span>
+                  ${escapeAttr(dLabel)} • ${escapeAttr(r.dept)} • ${escapeAttr(r.shift)}
+                  ${dayCountForStaff > 1 ? (isBest ? ' <span class="text-[#1B5E20] font-extrabold">(الأفضل المحتسب)</span>' : ' <span class="text-[#A93226]">(مكرر)</span>') : ''}
+                </span>
+                <span class="px-2 py-0.5 rounded-full ${pctBgClass(rPct)} text-white font-extrabold">${rPct}%</span>
               </div>
               ${nd ? `<div class="text-rose-800 font-bold">❌ ${escapeAttr(nd)}</div>` : ''}
               ${String(r.note || '').trim() ? `<div class="text-[#A93226]">📝 ${escapeAttr(r.note)}</div>` : ''}
@@ -1811,8 +1994,17 @@
           `;
         }).join('');
 
+        const missingBoxHtml = s.missingDays.length > 0
+          ? `<div class="rounded-xl bg-amber-50 border border-amber-300 p-2.5 text-xs font-bold text-amber-900 space-y-1">
+              <div>📅 الأيام التي لم يرسل فيها تقريراً (${s.missingDays.length} يوم):</div>
+              <div class="text-[11px] font-extrabold leading-relaxed">${s.missingDays.map(d => escapeAttr(d)).join(' ، ')}</div>
+            </div>`
+          : `<div class="rounded-xl bg-emerald-50 border border-emerald-200 p-2 text-xs font-bold text-[#1B5E20]">
+              ✓ أرسل تقريراً في جميع أيام الفترة حتى الآن.
+            </div>`;
+
         return `
-          <details class="rounded-2xl bg-white border border-[#F3C4C0] shadow-sm p-4">
+          <details class="rounded-2xl bg-white border border-[#F3C4C0] shadow-sm p-4" ${staffFilterLabel ? 'open' : ''}>
             <summary class="cursor-pointer list-none space-y-2.5">
               <div class="flex items-center justify-between gap-3">
                 <span class="text-sm sm:text-base font-extrabold text-[#B71C1C]">👤 ${escapeAttr(s.name)}</span>
@@ -1822,10 +2014,13 @@
                 <div class="h-full rounded-full ${pctBgClass(s.pct)}" style="width:${s.pct}%"></div>
               </div>
               <div class="text-[11px] sm:text-xs font-bold text-[#A93226]">
-                ${s.reports.length} تقرير • ${s.daysCount} يوم • ${s.done} بند منجز من ${s.applicable} • ${s.notDone} غير منفذ
+                ${s.daysCount} يوم مرسل • ${s.missingDays.length} يوم بدون تقرير • ${s.done} منجز من ${s.applicable} • ${s.notDone} غير منفذ
               </div>
             </summary>
-            <div class="mt-3 space-y-2">${detailsHtml}</div>
+            <div class="mt-3 space-y-2">
+              ${missingBoxHtml}
+              ${detailsHtml}
+            </div>
           </details>
         `;
       }).join('');
@@ -1920,6 +2115,15 @@
       document.getElementById('startNewChecklistBtn').addEventListener('click', startNewChecklist);
 
       // Manager dashboard
+      const staffFilterInp = document.getElementById('managerStaffFilterInput');
+      const clearStaffFilterBtn = document.getElementById('clearStaffFilterBtn');
+      staffFilterInp.addEventListener('input', syncStaffClearButton);
+      clearStaffFilterBtn.addEventListener('click', () => {
+        staffFilterInp.value = '';
+        syncStaffClearButton();
+        staffFilterInp.focus();
+      });
+
       document.getElementById('managerMonthInput').value = `${yyyy}-${mm}`;
       document.getElementById('modeDailyBtn').addEventListener('click', () => setPeriodMode('daily'));
       document.getElementById('modeMonthlyBtn').addEventListener('click', () => setPeriodMode('monthly'));
